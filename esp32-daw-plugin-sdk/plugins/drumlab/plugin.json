@@ -1,0 +1,14 @@
+{
+  "name": "drumlab",
+  "id": "org.smhgzll.drumlab",
+  "entry": "daw_plugin_entry_drumlab",
+  "licenseFiles": ["LICENSE.DaisySP"],
+  "provenance": [
+    {"component": "drumlab", "origin": "original work (voice handling, clap, key map, parameters)", "author": "smhgzll", "license": "MIT"},
+    {"component": "DaisySP drum models", "origin": "https://github.com/electro-smith/DaisySP", "commit": "2c72eaf9eac5fc0dca1919d65d606da907832618",
+     "files": ["Source/Drums/*", "Source/Filters/svf.*", "Source/Synthesis/oscillator.*", "Source/Utility/dsp.h"],
+     "license": "MIT", "modifications": "third_party/patches/daisysp-esp32-daw.patch: per-object generator replaces libc rand(); resonator Q mapping fixed (Plaits Q -> Svf res) in AnalogSnareDrum / AnalogBassDrum; AnalogBassDrum decay range restored to Plaits 0..1; Plaits one-pole restored for the snare pulse low-pass; single-precision sin / cos / literals on the audio path (AnalogBassDrum, AnalogSnareDrum, HiHat); AnalogBassDrum / SyntheticBassDrum cache parameter and sample-rate coefficients; Svf sets frequency / Plaits Q together, avoiding redundant damping, general exponentiation and an inactive stability limit; HiHat caches decay / tone / noise coefficients and filter settings; SquareNoise caches oscillator increments until pitch changes; AnalogSnareDrum / SyntheticSnareDrum cache coefficients, filter settings, mode gains and static modulation factors"}
+  ],
+  "dependencies": [{"name": "DaisySP", "version": "2c72eaf", "license": "MIT"}],
+  "ui": {"editor": "generic", "color": "#4cd964", "icon": "drum"}
+}

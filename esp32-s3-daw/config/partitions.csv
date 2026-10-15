@@ -1,0 +1,19 @@
+# esp32-s3-daw partition table, 16 MB flash (N16R16). docs/STORAGE.md explains every region.
+# Name,    Type, SubType,  Offset,    Size
+nvs,       data, nvs,      0x9000,    0x6000
+otadata,   data, ota,      0xF000,    0x2000
+phy_init,  data, phy,      0x11000,   0x1000
+ota_0,     app,  ota_0,    0x20000,   0x300000
+ota_1,     app,  ota_1,    0x320000,  0x300000
+# 8 project slots x 256 KB (slot 0 = autosave), A/B halves: <= 128 KB of project JSON per slot
+projects,  data, 0x40,     0x620000,  0x200000
+# user presets (one small JSON per preset, same power-safe store as the samples)
+presets,   data, 0x41,     0x820000,  0x80000
+# sample library (reserved: sampler milestone; quota enforced there)
+samples,   data, 0x42,     0x8A0000,  0x600000
+# reserved: staging area for full-device backups (not used by 0.1: a project import is parsed and
+# validated in RAM, applied, then persisted by the autosave)
+stage,     data, 0x43,     0xEA0000,  0x100000
+# diagnostics log (reserved)
+diag,      data, 0x44,     0xFA0000,  0x50000
+coredump,  data, coredump, 0xFF0000,  0x10000

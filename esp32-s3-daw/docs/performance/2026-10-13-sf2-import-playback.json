@@ -1,0 +1,174 @@
+{
+  "imageSha256": "ddb217c473728cf98dd178ce07ad66bd08c162e9e08fdd56ae44ca22bbf8a09e",
+  "durationSeconds": 180.0,
+  "boot": 57,
+  "partition": "ota_1",
+  "otaState": "valid",
+  "cpuMean": 59.86179775280899,
+  "cpuMaxOneSecond": 83.7,
+  "counterDeltas": {
+    "overruns": 0,
+    "cpuGuardDrops": 0,
+    "underruns": 0,
+    "audioLate": 0,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0
+  },
+  "startupCounters": {
+    "overruns": 0,
+    "cpuGuardDrops": 0,
+    "underruns": 0,
+    "audioLate": 0,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0
+  },
+  "plugins": [
+    {
+      "name": "Distortion Guitar",
+      "plugin": "org.smhgzll.soundfont",
+      "voicesMax": 7,
+      "cpuMean": 6.8382022471910116
+    },
+    {
+      "name": "Overdriven Guitar",
+      "plugin": "org.smhgzll.soundfont",
+      "voicesMax": 6,
+      "cpuMean": 7.680337078651685
+    },
+    {
+      "name": "Electric Bass (pick)",
+      "plugin": "org.smhgzll.soundfont",
+      "voicesMax": 2,
+      "cpuMean": 2.0443820224719103
+    },
+    {
+      "name": "Drums",
+      "plugin": "org.smhgzll.soundfont",
+      "voicesMax": 24,
+      "cpuMean": 36.68651685393258
+    },
+    {
+      "name": "84",
+      "plugin": "org.smhgzll.fx.reverb",
+      "voicesMax": 0,
+      "cpuMean": 13.419101123595505
+    }
+  ],
+  "loadedInstances": 5,
+  "projectUnchanged": true,
+  "samplesUnchanged": true,
+  "lastTransport": {
+    "mode": "song",
+    "play": 1,
+    "tick": 108946
+  },
+  "finalDiagnostics": {
+    "t": "diag",
+    "cpu": 75.7,
+    "renderUsAvg": 4397,
+    "renderUsMax": 5728,
+    "budgetUs": 5804,
+    "overruns": 0,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "cpuGuardDrops": 0,
+    "load": 74.5,
+    "workerWait": 51.1,
+    "workerBusy": 67.9,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0,
+    "voices": 25,
+    "blocks": 33023,
+    "backlog": 0,
+    "plugins": [
+      {
+        "where": "channel",
+        "id": 2,
+        "plugin": "org.smhgzll.soundfont",
+        "cpu": 7.4,
+        "voices": 1,
+        "memFast": 5428,
+        "memLarge": 352144,
+        "reports": 0
+      },
+      {
+        "where": "channel",
+        "id": 3,
+        "plugin": "org.smhgzll.soundfont",
+        "cpu": 7,
+        "voices": 2,
+        "memFast": 5428,
+        "memLarge": 352144,
+        "reports": 0
+      },
+      {
+        "where": "channel",
+        "id": 4,
+        "plugin": "org.smhgzll.soundfont",
+        "cpu": 0.8,
+        "voices": 0,
+        "memFast": 5428,
+        "memLarge": 352144,
+        "reports": 0
+      },
+      {
+        "where": "channel",
+        "id": 5,
+        "plugin": "org.smhgzll.soundfont",
+        "cpu": 52.6,
+        "voices": 22,
+        "memFast": 5428,
+        "memLarge": 352144,
+        "reports": 0
+      },
+      {
+        "where": "fx",
+        "id": 84,
+        "plugin": "org.smhgzll.fx.reverb",
+        "cpu": 13.4,
+        "voices": 0,
+        "memFast": 752,
+        "memLarge": 137184,
+        "reports": 0
+      }
+    ],
+    "heapInternal": 53783,
+    "heapInternalMin": 10196,
+    "heapInternalLargest": 31744,
+    "psramFree": 8802100,
+    "psramTotal": 16764084,
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 0,
+    "audioLate": 0,
+    "audioWriteUsMax": 29746,
+    "audioBackend": "i2s",
+    "uptimeMs": 195008,
+    "boot": 57,
+    "wsDropped": 4,
+    "wsClients": 2,
+    "audioStackFree": 4048,
+    "parallelInstruments": true,
+    "dspStackFree": 4696,
+    "partition": "ota_1",
+    "otaState": "valid"
+  },
+  "result": "PASS",
+  "reverbQuality": "Light (user setting preserved)",
+  "notes": "Four TimGM6mb SF2 channels plus FX 84 Reverb; unsynchronized Song windows, not a controlled speed comparison."
+}

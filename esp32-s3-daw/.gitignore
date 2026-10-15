@@ -1,0 +1,76 @@
+# builds
+/build/
+/build-*/
+/sdkconfig
+/sdkconfig.old
+/managed_components/
+*.elf
+*.map
+*.log
+*.wav
+!/examples/performance/perf-tone.wav
+/build-import.tmp.a
+
+# local settings and secrets (config/local.env.example is the template)
+/config/local.env
+/.idf_path
+/config/sdkconfig.local.defaults
+.env
+
+# imported plugin trees and generated files are reproducible from plugins/packages
+/plugins/imported/
+/plugins/packages/
+/plugins/generated/
+/plugins/plugins.lock.json
+*.espplug
+
+# Private libraries and projects; redistribute only the documented example resources.
+/sf2/
+/mod/
+/backups/
+*.esp32daw.json
+*.[mM][iI][dD]
+*.[mM][iI][dD][iI]
+*.[sS][fF]2
+*.[sS][fF]3
+*.[mM][oO][dD]
+*.[xX][mM]
+*.[sS]3[mM]
+*.[iI][tT]
+*.[rR][oO][mM]
+!/examples/midi/groove-format0.mid
+!/examples/midi/groove-format1.mid
+!/examples/midi/bach-invention-02.mid
+!/examples/midi/haydn-emperor-quartet-2.mid
+!/examples/midi/joplin-the-entertainer.mid
+!/examples/performance/perf-sine.sf2
+
+# web
+/web/node_modules/
+/web/dist/
+/web/test-results/
+/web/playwright-report/
+/tests/browser/out/
+
+# tools, editors
+__pycache__/
+.pytest_cache/
+/.vscode/
+/.idea/
+/.claude/
+/CLAUDE.md
+/.codex/
+/.agents/
+/.aws/
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+*.o
+*.a
+*.bin
+*.swp
+*~

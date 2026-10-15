@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-14",
+  "browserImports": {
+    "saragossa": {
+      "result": "PASS",
+      "channels": 9,
+      "patterns": 144,
+      "clips": 144,
+      "storedNotes": 13997,
+      "boot": 80,
+      "sampleLibraryUnchanged": true
+    },
+    "alphaville": {
+      "result": "PASS",
+      "channels": 15,
+      "patterns": 97,
+      "clips": 210,
+      "storedNotes": 6333,
+      "boot": 80,
+      "sampleLibraryUnchanged": true
+    }
+  },
+  "oldSaragossaLargestNotesSetBytes": 87116,
+  "newSaragossaLargestNotesSetBytes": 59576,
+  "fragmentedPingBytes": 100000,
+  "fragmentedPingResult": "ACK echo=12345",
+  "pcmComparison": {
+    "presets": 510,
+    "stereoFrames": 47001600,
+    "result": "bit-identical",
+    "fonts": [
+      "Phoenix_MT-32.sf2",
+      "TimGM6mb.sf2 (local 5,994,284-byte variant)",
+      "win-gm.sf2"
+    ],
+    "largestOnePresetSubsetBytes": 2605058
+  },
+  "deployedFirmware": {
+    "bytes": 1621136,
+    "sha256": "62bdb33c846d3deb919b7384137228551fb4fa8353fccbe79662291543cdbe80",
+    "boot": 81,
+    "partition": "ota_1",
+    "otaState": "valid"
+  },
+  "validation": {
+    "core": "PASS",
+    "webUnitTests": 24,
+    "hostNetworkChecks": 54,
+    "midiBridgeChecks": 6,
+    "testClientTimeoutRegression": "PASS (3 frame lengths)",
+    "qemuSelfTest": "PASS",
+    "crossTargetRender": "MATCH",
+    "qemuNetworkChecks": 54,
+    "qemuOtaThisRun": "skipped; hardware OTA valid and project/library preserved"
+  }
+}

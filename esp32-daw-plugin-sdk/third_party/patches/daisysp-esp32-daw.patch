@@ -1,0 +1,1253 @@
+--- a/Source/Drums/analogbassdrum.cpp
++++ b/Source/Drums/analogbassdrum.cpp
+@@ -7,6 +7,12 @@
+ void AnalogBassDrum::Init(float sample_rate)
+ {
+     sample_rate_ = sample_rate;
++    trigger_duration_ = static_cast<int>(1.0e-3f * sample_rate_);
++    fm_duration_ = static_cast<int>(6.0e-3f * sample_rate_);
++    pulse_decay_ = 1.0f - 1.0f / (0.2e-3f * sample_rate_);
++    pulse_filter_ = 1.0f / (0.1e-3f * sample_rate_);
++    retrig_decay_ = 1.0f - 1.0f / (0.05f * sample_rate_);
++    coefficients_dirty_ = true;
+ 
+     trig_ = false;
+ 
+@@ -43,31 +49,22 @@
+     else
+     {
+         x *= 2.0f;
+-        return 0.7f * x / (1.0f + fabsf(x));
++        return FastDiv(0.7f * x, 1.0f + fabsf(x)); // esp32-daw-plugin-sdk: was a division
+     }
+ }
+ 
+ float AnalogBassDrum::Process(bool trigger)
+ {
+-    const int kTriggerPulseDuration  = static_cast<int>(1.0e-3f * sample_rate_);
+-    const int kFMPulseDuration       = static_cast<int>(6.0e-3f * sample_rate_);
+-    const float kPulseDecayTime      = 0.2e-3f * sample_rate_;
+-    const float kPulseFilterTime     = 0.1e-3f * sample_rate_;
+-    const float kRetrigPulseDuration = 0.05f * sample_rate_;
+-
+-    const float scale = 0.001f / f0_;
+-    const float q     = 1500.0f * powf(2.f, kOneTwelfth * decay_ * 80.0f);
+-    const float tone_f
+-        = fmin(4.0f * f0_ * powf(2.f, kOneTwelfth * tone_ * 108.0f), 1.0f);
+-    const float exciter_leak = 0.08f * (tone_ + 0.25f);
++    if(coefficients_dirty_)
++        UpdateCoefficients();
+ 
+ 
+     if(trigger || trig_)
+     {
+         trig_ = false;
+ 
+-        pulse_remaining_samples_    = kTriggerPulseDuration;
+-        fm_pulse_remaining_samples_ = kFMPulseDuration;
++        pulse_remaining_samples_    = trigger_duration_;
++        fm_pulse_remaining_samples_ = fm_duration_;
+         pulse_height_               = 3.0f + 7.0f * accent_;
+         lp_out_                     = 0.0f;
+     }
+@@ -82,7 +79,7 @@
+     }
+     else
+     {
+-        pulse_ *= 1.0f - 1.0f / kPulseDecayTime;
++        pulse_ *= pulse_decay_;
+         pulse = pulse_;
+     }
+     if(sustain_)
+@@ -91,7 +88,7 @@
+     }
+ 
+     // C40 / R163 / R162 / D83
+-    fonepole(pulse_lp_, pulse, 1.0f / kPulseFilterTime);
++    fonepole(pulse_lp_, pulse, pulse_filter_);
+     pulse = Diode((pulse - pulse_lp_) + pulse * 0.044f);
+ 
+     // Q41 / Q42
+@@ -106,13 +103,13 @@
+     else
+     {
+         // C39 / R161
+-        retrig_pulse_ *= 1.0f - 1.0f / kRetrigPulseDuration;
++        retrig_pulse_ *= retrig_decay_;
+     }
+     if(sustain_)
+     {
+         fm_pulse = 0.0f;
+     }
+-    fonepole(fm_pulse_lp_, fm_pulse, 1.0f / kPulseFilterTime);
++    fonepole(fm_pulse_lp_, fm_pulse, pulse_filter_);
+ 
+     // Q43 and R170 leakage
+     float punch = 0.7f + Diode(10.0f * lp_out_ - 1.0f);
+@@ -130,25 +127,33 @@
+         phase_ += f;
+         phase_ = phase_ >= 1.f ? phase_ - 1.f : phase_;
+ 
+-        resonator_out = sin(TWOPI_F * phase_) * sustain_gain_;
+-        lp_out_       = cos(TWOPI_F * phase_) * sustain_gain_;
++        resonator_out = sinf(TWOPI_F * phase_) * sustain_gain_; // esp32-daw-plugin-sdk: float (was double sin / cos)
++        lp_out_       = cosf(TWOPI_F * phase_) * sustain_gain_;
+     }
+     else
+     {
+-        resonator_.SetFreq(f * sample_rate_);
+-        //resonator_.SetRes(1.0f + q * f);
+-        resonator_.SetRes(.4f * q * f);
++        // Update both controls directly from Q, avoiding a redundant Q -> res -> Q conversion.
++        resonator_.SetFreqAndQ(f * sample_rate_, 1.0f + q_ * f);
+ 
+-        resonator_.Process((pulse - retrig_pulse_ * 0.2f) * scale);
++        resonator_.Process((pulse - retrig_pulse_ * 0.2f) * scale_);
+         resonator_out = resonator_.Band();
+         lp_out_       = resonator_.Low();
+     }
+ 
+-    fonepole(tone_lp_, pulse * exciter_leak + resonator_out, tone_f);
++    fonepole(tone_lp_, pulse * exciter_leak_ + resonator_out, tone_f_);
+ 
+     return tone_lp_;
+ }
+ 
++void AnalogBassDrum::UpdateCoefficients()
++{
++    scale_ = 0.001f / f0_;
++    q_ = 1500.0f * powf(2.f, kOneTwelfth * decay_ * 80.0f);
++    tone_f_ = fminf(4.0f * f0_ * powf(2.f, kOneTwelfth * tone_ * 108.0f), 1.0f);
++    exciter_leak_ = 0.08f * (tone_ + 0.25f);
++    coefficients_dirty_ = false;
++}
++
+ void AnalogBassDrum::Trig()
+ {
+     trig_ = true;
+@@ -168,17 +173,21 @@
+ {
+     f0 /= sample_rate_;
+     f0_ = fclamp(f0, 0.f, .5f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void AnalogBassDrum::SetTone(float tone)
+ {
+     tone_ = fclamp(tone, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void AnalogBassDrum::SetDecay(float decay)
+ {
+-    decay_ = decay * .1f;
+-    decay_ -= .1f;
++    // esp32-daw-plugin-sdk: Plaits' 0..1 decay range again. Upstream squeezed it into -0.1..0
++    // (q 943..1500), which only kept the undamped resonator (see Process) from ringing forever.
++    decay_ = fclamp(decay, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void AnalogBassDrum::SetAttackFmAmount(float attack_fm_amount)
+--- a/Source/Drums/analogbassdrum.h
++++ b/Source/Drums/analogbassdrum.h
+@@ -84,11 +84,17 @@
+ 
+   private:
+     inline float Diode(float x);
++    void UpdateCoefficients();
+ 
+     float sample_rate_;
+ 
+     float accent_, f0_, tone_, decay_;
+     float attack_fm_amount_, self_fm_amount_;
++    // esp32-daw-plugin-sdk: parameter-only math is cached, not repeated per sample.
++    float scale_, q_, tone_f_, exciter_leak_;
++    float pulse_decay_, pulse_filter_, retrig_decay_;
++    int trigger_duration_, fm_duration_;
++    bool coefficients_dirty_;
+ 
+     bool trig_, sustain_;
+ 
+@@ -110,4 +116,4 @@
+ };
+ } // namespace daisysp
+ #endif
+-#endif
+\ No newline at end of file
++#endif
+--- a/Source/Drums/analogsnaredrum.cpp
++++ b/Source/Drums/analogsnaredrum.cpp
+@@ -10,6 +10,9 @@
+ void AnalogSnareDrum::Init(float sample_rate)
+ {
+     sample_rate_ = sample_rate;
++    trigger_duration_ = static_cast<int>(1.0e-3f * sample_rate_);
++    pulse_decay_ = 1.0f - 1.0f / (0.1e-3f * sample_rate_);
++    coefficients_dirty_ = true;
+ 
+     trig_ = false;
+ 
+@@ -55,17 +58,20 @@
+ {
+     f0  = f0 / sample_rate_;
+     f0_ = fclamp(f0, 0.f, .4f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void AnalogSnareDrum::SetTone(float tone)
+ {
+     tone_ = fclamp(tone, 0.f, 1.f);
+     tone_ *= 2.f;
++    coefficients_dirty_ = true;
+ }
+ 
+ void AnalogSnareDrum::SetDecay(float decay)
+ {
+     decay_ = decay;
++    coefficients_dirty_ = true;
+     return;
+     decay_ = fmax(decay, 0.f);
+ }
+@@ -73,46 +79,39 @@
+ void AnalogSnareDrum::SetSnappy(float snappy)
+ {
+     snappy_ = fclamp(snappy, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+ 
+-float AnalogSnareDrum::Process(bool trigger)
++void AnalogSnareDrum::UpdateCoefficients()
+ {
+     const float decay_xt = decay_ * (1.0f + decay_ * (decay_ - 1.0f));
+-    const int   kTriggerPulseDuration = 1.0e-3 * sample_rate_;
+-    const float kPulseDecayTime       = 0.1e-3 * sample_rate_;
+     const float q = 2000.0f * powf(2.f, kOneTwelfth * decay_xt * 84.0f);
+-    const float noise_envelope_decay
++    noise_envelope_decay_
+         = 1.0f
+           - 0.0017f
+                 * powf(2.f,
+                        kOneTwelfth * (-decay_ * (50.0f + snappy_ * 10.0f)));
+-    const float exciter_leak = snappy_ * (2.0f - snappy_) * 0.1f;
++    exciter_leak_ = snappy_ * (2.0f - snappy_) * 0.1f;
+ 
+     float snappy = snappy_ * 1.1f - 0.05f;
+     snappy       = fclamp(snappy, 0.0f, 1.0f);
++    snappy_amount_ = snappy;
+ 
+     float tone = tone_;
+ 
+-    if(trigger || trig_)
+-    {
+-        trig_                    = false;
+-        pulse_remaining_samples_ = kTriggerPulseDuration;
+-        pulse_height_            = 3.0f + 7.0f * accent_;
+-        noise_envelope_          = 2.0f;
+-    }
+-
+     static const float kModeFrequencies[kNumModes]
+         = {1.00f, 2.00f, 3.18f, 4.16f, 5.62f};
+ 
+-    float f[kNumModes];
+-    float gain[kNumModes];
++    float* f = frequencies_;
++    float* gain = gains_;
+ 
+     for(int i = 0; i < kNumModes; ++i)
+     {
+         f[i] = fmin(f0_ * kModeFrequencies[i], 0.499f);
+         resonator_[i].SetFreq(f[i] * sample_rate_);
+         //        resonator_[i].SetRes(1.0f + f[i] * (i == 0 ? q : q * 0.25f));
+-        resonator_[i].SetRes((f[i] * (i == 0 ? q : q * 0.25f)) * .2);
++        // esp32-daw-plugin-sdk: Plaits' Q mapped onto this Svf (was SetRes(f * q * .2): undamped)
++        resonator_[i].SetRes(PlaitsQToSvfRes(1.0f + f[i] * (i == 0 ? q : q * 0.25f)));
+     }
+ 
+     if(tone < 0.666667f)
+@@ -143,7 +142,22 @@
+     fclamp(f_noise, 0.0f, 0.499f);
+     noise_filter_.SetFreq(f_noise * sample_rate_);
+     //noise_filter_.SetRes(1.0f + f_noise * 1.5f);
+-    noise_filter_.SetRes(f_noise * 1.5f);
++    noise_filter_.SetRes(PlaitsQToSvfRes(1.0f + f_noise * 1.5f)); // esp32-daw-plugin-sdk
++    coefficients_dirty_ = false;
++}
++
++float AnalogSnareDrum::Process(bool trigger)
++{
++    if(coefficients_dirty_)
++        UpdateCoefficients();
++
++    if(trigger || trig_)
++    {
++        trig_                    = false;
++        pulse_remaining_samples_ = trigger_duration_;
++        pulse_height_            = 3.0f + 7.0f * accent_;
++        noise_envelope_          = 2.0f;
++    }
+ 
+     // Q45 / Q46
+     float pulse = 0.0f;
+@@ -155,14 +169,14 @@
+     }
+     else
+     {
+-        pulse_ *= 1.0f - 1.0f / kPulseDecayTime;
++        pulse_ *= pulse_decay_;
+         pulse = pulse_;
+     }
+ 
+     float sustain_gain_value = sustain_gain_ = accent_ * decay_;
+ 
+     // R189 / C57 / R190 + C58 / C59 / R197 / R196 / IC14
+-    pulse_lp_ = fclamp(pulse_lp_, pulse, 0.75f);
++    fonepole(pulse_lp_, pulse, 0.75f); // esp32-daw-plugin-sdk: Plaits' ONE_POLE (fclamp's result was discarded)
+ 
+     float shell = 0.0f;
+     for(int i = 0; i < kNumModes; ++i)
+@@ -170,15 +184,15 @@
+         float excitation
+             = i == 0 ? (pulse - pulse_lp_) + 0.006f * pulse : 0.026f * pulse;
+ 
+-        phase_[i] += f[i];
++        phase_[i] += frequencies_[i];
+         phase_[i] = phase_[i] >= 1.f ? phase_[i] - 1.f : phase_[i];
+ 
+         resonator_[i].Process(excitation);
+ 
+-        shell += gain[i]
++        shell += gains_[i]
+                  * (sustain_
+                         ? sin(phase_[i] * TWOPI_F) * sustain_gain_value * 0.25f
+-                        : resonator_[i].Band() + excitation * exciter_leak);
++                        : resonator_[i].Band() + excitation * exciter_leak_);
+     }
+     shell = SoftClip(shell);
+ 
+@@ -186,20 +200,20 @@
+     float noise = 2.0f * rand() * kRandFrac - 1.0f;
+     if(noise < 0.0f)
+         noise = 0.0f;
+-    noise_envelope_ *= noise_envelope_decay;
+-    noise *= (sustain_ ? sustain_gain_value : noise_envelope_) * snappy * 2.0f;
++    noise_envelope_ *= noise_envelope_decay_;
++    noise *= (sustain_ ? sustain_gain_value : noise_envelope_) * snappy_amount_ * 2.0f;
+ 
+     // C66 / R201 / C67 / R202 / R203 / Q49
+     noise_filter_.Process(noise);
+     noise = noise_filter_.Band();
+ 
+     // IC13
+-    return noise + shell * (1.0f - snappy);
++    return noise + shell * (1.0f - snappy_amount_);
+ }
+ 
+ inline float AnalogSnareDrum::SoftLimit(float x)
+ {
+-    return x * (27.0f + x * x) / (27.0f + 9.0f * x * x);
++    return FastDiv(x * (27.0f + x * x), 27.0f + 9.0f * x * x); // esp32-daw-plugin-sdk: was a division
+ }
+ 
+ inline float AnalogSnareDrum::SoftClip(float x)
+@@ -216,4 +230,4 @@
+     {
+         return SoftLimit(x);
+     }
+-}
+\ No newline at end of file
++}
+--- a/Source/Drums/analogsnaredrum.h
++++ b/Source/Drums/analogsnaredrum.h
+@@ -11,6 +11,7 @@
+ #define DSY_ANALOG_SNARE_H
+ 
+ #include "Filters/svf.h"
++#include "Utility/dsp.h" // esp32-daw-plugin-sdk: LocalRand
+ 
+ #include <stdint.h>
+ #ifdef __cplusplus
+@@ -29,6 +30,8 @@
+ */
+ class AnalogSnareDrum
+ {
++    LocalRand rand; // esp32-daw-plugin-sdk: replaces libc rand() (see Utility/dsp.h)
++
+   public:
+     AnalogSnareDrum() {}
+     ~AnalogSnareDrum() {}
+@@ -79,8 +82,14 @@
+     void SetSnappy(float snappy);
+ 
+   private:
++    void UpdateCoefficients();
+     float sample_rate_;
+ 
++    int trigger_duration_;
++    float pulse_decay_, noise_envelope_decay_, exciter_leak_, snappy_amount_;
++    float frequencies_[kNumModes], gains_[kNumModes];
++    bool coefficients_dirty_;
++
+     float f0_, tone_, accent_, snappy_, decay_;
+     bool  sustain_;
+     bool  trig_;
+--- a/Source/Drums/hihat.cpp
++++ b/Source/Drums/hihat.cpp
+@@ -6,6 +6,7 @@
+ 
+ void SquareNoise::Init(float sample_rate)
+ {
++    last_f0_ = -1.0f;
+     for(int i = 0; i < 6; i++)
+     {
+         phase_[i] = 0;
+@@ -14,42 +15,32 @@
+ 
+ float SquareNoise::Process(float f0)
+ {
+-    const float ratios[6] = {// Nominal f0: 414 Hz
+-                             1.0f,
+-                             1.304f,
+-                             1.466f,
+-                             1.787f,
+-                             1.932f,
+-                             2.536f};
++    // esp32-daw-plugin-sdk: a static ratio table and in-place phase updates (the local table and
++    // phase copies cost two memcpy calls per sample on the ESP32-S3); same arithmetic.
++    static const float ratios[6] = {// Nominal f0: 414 Hz
++                                    1.0f,
++                                    1.304f,
++                                    1.466f,
++                                    1.787f,
++                                    1.932f,
++                                    2.536f};
+ 
+-    uint32_t increment[6];
+-    uint32_t phase[6];
+-    for(int i = 0; i < 6; ++i)
++    if(f0 != last_f0_)
+     {
+-        float f = f0 * ratios[i];
+-        if(f >= 0.499f)
+-            f = 0.499f;
+-        increment[i] = static_cast<uint32_t>(f * 4294967296.0f);
+-        phase[i]     = phase_[i];
++        for(int i = 0; i < 6; ++i)
++        {
++            float f = f0 * ratios[i];
++            if(f >= 0.499f)
++                f = 0.499f;
++            increment_[i] = static_cast<uint32_t>(f * 4294967296.0f);
++        }
++        last_f0_ = f0;
+     }
+-
+-    phase[0] += increment[0];
+-    phase[1] += increment[1];
+-    phase[2] += increment[2];
+-    phase[3] += increment[3];
+-    phase[4] += increment[4];
+-    phase[5] += increment[5];
+     uint32_t noise = 0;
+-    noise += (phase[0] >> 31);
+-    noise += (phase[1] >> 31);
+-    noise += (phase[2] >> 31);
+-    noise += (phase[3] >> 31);
+-    noise += (phase[4] >> 31);
+-    noise += (phase[5] >> 31);
+-
+     for(int i = 0; i < 6; ++i)
+     {
+-        phase_[i] = phase[i];
++        phase_[i] += increment_[i];
++        noise += (phase_[i] >> 31);
+     }
+ 
+     return 0.33f * static_cast<float>(noise) - 1.0f;
+@@ -93,4 +84,4 @@
+     float temp_2 = osc[1].Process();
+ 
+     return temp_1 * temp_2;
+-}
+\ No newline at end of file
++}
+--- a/Source/Drums/hihat.h
++++ b/Source/Drums/hihat.h
+@@ -11,6 +11,7 @@
+ #define DSY_HIHAT_H
+ 
+ #include "Filters/svf.h"
++#include "Utility/dsp.h" // esp32-daw-plugin-sdk: LocalRand
+ #include "Synthesis/oscillator.h"
+ 
+ #include <stdint.h>
+@@ -41,6 +42,8 @@
+ 
+   private:
+     uint32_t phase_[6];
++    uint32_t increment_[6];
++    float    last_f0_;
+ };
+ 
+ /**  
+@@ -116,6 +119,8 @@
+           bool resonance               = true>
+ class HiHat
+ {
++    LocalRand rand; // esp32-daw-plugin-sdk: replaces libc rand() (see Utility/dsp.h)
++
+   public:
+     HiHat() {}
+     ~HiHat() {}
+@@ -126,6 +131,7 @@
+     void Init(float sample_rate)
+     {
+         sample_rate_ = sample_rate;
++        coefficients_dirty_ = true;
+ 
+         trig_ = false;
+ 
+@@ -151,10 +157,8 @@
+     */
+     float Process(bool trigger = false)
+     {
+-        const float envelope_decay
+-            = 1.0f - 0.003f * SemitonesToRatio(-decay_ * 84.0f);
+-        const float cut_decay
+-            = 1.0f - 0.0025f * SemitonesToRatio(-decay_ * 36.0f);
++        if(coefficients_dirty_)
++            UpdateCoefficients();
+ 
+         if(trigger || trig_)
+         {
+@@ -168,24 +172,13 @@
+         float out = metallic_noise_.Process(2.0f * f0_);
+ 
+         // Apply BPF on the metallic noise.
+-        float cutoff = 150.0f / sample_rate_ * SemitonesToRatio(tone_ * 72.0f);
+-
+-        cutoff = fclamp(cutoff, 0.0f, 16000.0f / sample_rate_);
+-
+-
+-        noise_coloration_svf_.SetFreq(cutoff * sample_rate_);
+-        noise_coloration_svf_.SetRes(resonance ? 3.0f + 6.0f * tone_ : 1.0f);
+-
+         noise_coloration_svf_.Process(out);
+         out = noise_coloration_svf_.Band();
+ 
+         // This is not at all part of the 808 circuit! But to add more variety, we
+         // add a variable amount of clocked noise to the output of the 6 schmitt
+         // trigger oscillators.
+-        float noise_f = f0_ * (16.0f + 16.0f * (1.0f - noisiness_));
+-        noise_f       = fclamp(noise_f, 0.0f, 0.5f);
+-
+-        noise_clock_ += noise_f;
++        noise_clock_ += noise_f_;
+         if(noise_clock_ >= 1.0f)
+         {
+             noise_clock_ -= 1.0f;
+@@ -196,11 +189,9 @@
+         // Apply VCA.
+         sustain_gain_ = accent_ * decay_;
+         VCA vca;
+-        envelope_ *= envelope_ > 0.5f ? envelope_decay : cut_decay;
++        envelope_ *= envelope_ > 0.5f ? envelope_decay_ : cut_decay_;
+         out = vca(out, sustain_ ? sustain_gain_ : envelope_);
+ 
+-        hpf_.SetFreq(cutoff * sample_rate_);
+-        hpf_.SetRes(.5f);
+         hpf_.Process(out);
+         out = hpf_.High();
+ 
+@@ -227,21 +218,27 @@
+     {
+         f0 /= sample_rate_;
+         f0_ = fclamp(f0, 0.f, 1.f);
++        coefficients_dirty_ = true;
+     }
+ 
+     /** Set the overall brightness / darkness of the hihat.
+         \param tone Works from 0-1.
+     */
+-    void SetTone(float tone) { tone_ = fclamp(tone, 0.f, 1.f); }
++    void SetTone(float tone)
++    {
++        tone_ = fclamp(tone, 0.f, 1.f);
++        coefficients_dirty_ = true;
++    }
+ 
+     /** Set the length of the hihat decay
+         \param decay Works > 0. Tuned for 0-1.
+     */
+     void SetDecay(float decay)
+     {
+-        decay_ = fmax(decay, 0.f);
+-        decay_ *= 1.7;
+-        decay_ -= 1.2;
++        decay_ = fmaxf(decay, 0.f); // esp32-daw-plugin-sdk: float (was double fmax / literals)
++        decay_ *= 1.7f;
++        decay_ -= 1.2f;
++        coefficients_dirty_ = true;
+     }
+ 
+     /** Sets the mix between tone and noise
+@@ -251,11 +248,28 @@
+     {
+         noisiness_ = fclamp(noisiness, 0.f, 1.f);
+         noisiness_ *= noisiness_;
++        coefficients_dirty_ = true;
+     }
+ 
+ 
+   private:
++    void UpdateCoefficients()
++    {
++        envelope_decay_ = 1.0f - 0.003f * SemitonesToRatio(-decay_ * 84.0f);
++        cut_decay_ = 1.0f - 0.0025f * SemitonesToRatio(-decay_ * 36.0f);
++        float cutoff = 150.0f / sample_rate_ * SemitonesToRatio(tone_ * 72.0f);
++        cutoff = fclamp(cutoff, 0.0f, 16000.0f / sample_rate_);
++        noise_coloration_svf_.SetFreq(cutoff * sample_rate_);
++        noise_coloration_svf_.SetRes(resonance ? 3.0f + 6.0f * tone_ : 1.0f);
++        hpf_.SetFreq(cutoff * sample_rate_);
++        hpf_.SetRes(.5f);
++        noise_f_ = fclamp(f0_ * (16.0f + 16.0f * (1.0f - noisiness_)), 0.0f, 0.5f);
++        coefficients_dirty_ = false;
++    }
++
+     float sample_rate_;
++    float envelope_decay_, cut_decay_, noise_f_;
++    bool  coefficients_dirty_;
+ 
+     float accent_, f0_, tone_, decay_, noisiness_;
+     bool  sustain_;
+@@ -274,4 +288,4 @@
+ };
+ } // namespace daisysp
+ #endif
+-#endif
+\ No newline at end of file
++#endif
+--- a/Source/Drums/synthbassdrum.cpp
++++ b/Source/Drums/synthbassdrum.cpp
+@@ -41,6 +41,8 @@
+ void SyntheticBassDrum::Init(float sample_rate)
+ {
+     sample_rate_ = sample_rate;
++    transient_env_decay_ = 1.0f - 1.0f / (0.005f * sample_rate_);
++    coefficients_dirty_ = true;
+ 
+     trig_ = false;
+ 
+@@ -81,33 +83,21 @@
+ 
+     phase            = phase_fractional;
+     float triangle   = (phase < 0.5f ? phase : 1.0f - phase) * 4.0f - 1.0f;
+-    float sine       = 2.0f * triangle / (1.0f + fabsf(triangle));
+-    float clean_sine = sinf(TWOPI_F * (phase + 0.75f));
++    float sine       = FastDiv(2.0f * triangle, 1.0f + fabsf(triangle)); // esp32-daw-plugin-sdk: was a division
++    float clean_sine = SinTwoPi(phase + 0.75f); // esp32-daw-plugin-sdk: was sinf(TWOPI_F * (phase + 0.75f))
+     return sine + (1.0f - dirtiness) * (clean_sine - sine);
+ }
+ 
+ inline float SyntheticBassDrum::TransistorVCA(float s, float gain)
+ {
+     s = (s - 0.6f) * gain;
+-    return 3.0f * s / (2.0f + fabsf(s)) + gain * 0.3f;
++    return FastDiv(3.0f * s, 2.0f + fabsf(s)) + gain * 0.3f; // esp32-daw-plugin-sdk: was a division
+ }
+ 
+ float SyntheticBassDrum::Process(bool trigger)
+ {
+-    float dirtiness = dirtiness_;
+-    dirtiness *= fmax(1.0f - 8.0f * new_f0_, 0.0f);
+-
+-    const float fm_decay
+-        = 1.0f
+-          - 1.0f / (0.008f * (1.0f + fm_envelope_decay_ * 4.0f) * sample_rate_);
+-
+-    const float body_env_decay
+-        = 1.0f
+-          - 1.0f / (0.02f * sample_rate_)
+-                * powf(2.f, (-decay_ * 60.0f) * kOneTwelfth);
+-    const float transient_env_decay = 1.0f - 1.0f / (0.005f * sample_rate_);
+-    const float tone_f              = fmin(
+-        4.0f * new_f0_ * powf(2.f, (tone_ * 108.0f) * kOneTwelfth), 1.0f);
++    if(coefficients_dirty_)
++        UpdateCoefficients();
+     const float transient_level = tone_;
+ 
+     if(trigger || trig_)
+@@ -133,7 +123,7 @@
+         {
+             phase_ -= 1.0f;
+         }
+-        float body = DistortedSine(phase_, phase_noise_, dirtiness);
++        float body = DistortedSine(phase_, phase_noise_, effective_dirtiness_);
+         mix -= TransistorVCA(body, sustain_gain_);
+     }
+     else
+@@ -145,10 +135,10 @@
+         }
+         else
+         {
+-            fm_ *= fm_decay;
++            fm_ *= fm_decay_;
+             float fm = 1.0f + fm_envelope_amount_ * 3.5f * fm_lp_;
+             f0_      = new_f0_;
+-            phase_ += fmin(f0_ * fm, 0.5f);
++            phase_ += fmin(f0_ * fm, 0.5f); // esp32-daw-plugin-sdk: inline, was a libm fminf call
+             if(phase_ >= 1.0f)
+             {
+                 phase_ -= 1.0f;
+@@ -161,8 +151,8 @@
+         }
+         else
+         {
+-            body_env_ *= body_env_decay;
+-            transient_env_ *= transient_env_decay;
++            body_env_ *= body_env_decay_;
++            transient_env_ *= transient_env_decay_;
+         }
+ 
+         const float envelope_lp_f = 0.1f;
+@@ -170,7 +160,7 @@
+         fonepole(transient_env_lp_, transient_env_, envelope_lp_f);
+         fonepole(fm_lp_, fm_, envelope_lp_f);
+ 
+-        float body      = DistortedSine(phase_, phase_noise_, dirtiness);
++        float body      = DistortedSine(phase_, phase_noise_, effective_dirtiness_);
+         float transient = click_.Process(body_env_pulse_width_ ? 0.0f : 1.0f)
+                           + noise_.Process();
+ 
+@@ -178,10 +168,20 @@
+         mix -= transient * transient_env_lp_ * transient_level;
+     }
+ 
+-    fonepole(tone_lp_, mix, tone_f);
++    fonepole(tone_lp_, mix, tone_f_);
+     return tone_lp_;
+ }
+ 
++void SyntheticBassDrum::UpdateCoefficients()
++{
++    effective_dirtiness_ = dirtiness_ * fmaxf(1.0f - 8.0f * new_f0_, 0.0f);
++    fm_decay_ = 1.0f - 1.0f / (0.008f * (1.0f + fm_envelope_decay_ * 4.0f) * sample_rate_);
++    body_env_decay_ = 1.0f - 1.0f / (0.02f * sample_rate_)
++                               * powf(2.f, (-decay_ * 60.0f) * kOneTwelfth);
++    tone_f_ = fminf(4.0f * new_f0_ * powf(2.f, (tone_ * 108.0f) * kOneTwelfth), 1.0f);
++    coefficients_dirty_ = false;
++}
++
+ void SyntheticBassDrum::Trig()
+ {
+     trig_ = true;
+@@ -201,22 +201,26 @@
+ {
+     freq /= sample_rate_;
+     new_f0_ = fclamp(freq, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void SyntheticBassDrum::SetTone(float tone)
+ {
+     tone_ = fclamp(tone, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void SyntheticBassDrum::SetDecay(float decay)
+ {
+     decay  = fclamp(decay, 0.f, 1.f);
+     decay_ = decay * decay;
++    coefficients_dirty_ = true;
+ }
+ 
+ void SyntheticBassDrum::SetDirtiness(float dirtiness)
+ {
+     dirtiness_ = fclamp(dirtiness, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void SyntheticBassDrum::SetFmEnvelopeAmount(float fm_envelope_amount)
+@@ -228,4 +232,5 @@
+ {
+     fm_envelope_decay  = fclamp(fm_envelope_decay, 0.f, 1.f);
+     fm_envelope_decay_ = fm_envelope_decay * fm_envelope_decay;
+-}
+\ No newline at end of file
++    coefficients_dirty_ = true;
++}
+--- a/Source/Drums/synthbassdrum.h
++++ b/Source/Drums/synthbassdrum.h
+@@ -60,6 +60,8 @@
+ */
+ class SyntheticBassDrumAttackNoise
+ {
++    LocalRand rand; // esp32-daw-plugin-sdk: replaces libc rand() (see Utility/dsp.h)
++
+   public:
+     SyntheticBassDrumAttackNoise() {}
+     ~SyntheticBassDrumAttackNoise() {}
+@@ -86,6 +88,8 @@
+ */
+ class SyntheticBassDrum
+ {
++    LocalRand rand; // esp32-daw-plugin-sdk: replaces libc rand() (see Utility/dsp.h)
++
+   public:
+     SyntheticBassDrum() {}
+     ~SyntheticBassDrum() {}
+@@ -153,8 +157,13 @@
+     void SetFmEnvelopeDecay(float fm_envelope_decay);
+ 
+   private:
++    void UpdateCoefficients();
++
+     float sample_rate_;
+ 
++    float effective_dirtiness_, fm_decay_, body_env_decay_, transient_env_decay_, tone_f_;
++    bool  coefficients_dirty_;
++
+     bool  trig_;
+     bool  sustain_;
+     float accent_, new_f0_, tone_, decay_;
+@@ -184,4 +193,4 @@
+ 
+ } // namespace daisysp
+ #endif
+-#endif
+\ No newline at end of file
++#endif
+--- a/Source/Drums/synthsnaredrum.cpp
++++ b/Source/Drums/synthsnaredrum.cpp
+@@ -8,6 +8,8 @@
+ void SyntheticSnareDrum::Init(float sample_rate)
+ {
+     sample_rate_ = sample_rate;
++    fm_decay_ = 1.0f - 1.0f / (0.007f * sample_rate_);
++    coefficients_dirty_ = true;
+ 
+     phase_[0]        = 0.0f;
+     phase_[1]        = 0.0f;
+@@ -34,15 +36,15 @@
+ inline float SyntheticSnareDrum::DistortedSine(float phase)
+ {
+     float triangle = (phase < 0.5f ? phase : 1.0f - phase) * 4.0f - 1.3f;
+-    return 2.0f * triangle / (1.0f + fabsf(triangle));
++    return FastDiv(2.0f * triangle, 1.0f + fabsf(triangle)); // esp32-daw-plugin-sdk: was a division
+ }
+ 
+ bool even = true;
+ 
+-float SyntheticSnareDrum::Process(bool trigger)
++void SyntheticSnareDrum::UpdateCoefficients()
+ {
+     const float decay_xt = decay_ * (1.0f + decay_ * (decay_ - 1.0f));
+-    const float drum_decay
++    drum_decay_
+         = 1.0f
+           - 1.0f / (0.015f * sample_rate_)
+                 * powf(2.f,
+@@ -50,17 +52,16 @@
+                            * (-decay_xt * 72.0f - fm_amount_ * 12.0f
+                               + snappy_ * 7.0f));
+ 
+-    const float snare_decay
++    snare_decay_
+         = 1.0f
+           - 1.0f / (0.01f * sample_rate_)
+                 * powf(2.f, kOneTwelfth * (-decay_ * 60.0f - snappy_ * 7.0f));
+-    const float fm_decay = 1.0f - 1.0f / (0.007f * sample_rate_);
+ 
+     float snappy = snappy_ * 1.1f - 0.05f;
+     snappy       = fclamp(snappy, 0.0f, 1.0f);
+ 
+-    const float drum_level  = sqrtf(1.0f - snappy);
+-    const float snare_level = sqrtf(snappy);
++    drum_level_  = sqrtf(1.0f - snappy);
++    snare_level_ = sqrtf(snappy);
+ 
+     const float snare_f_min = fmin(10.0f * f0_, 0.5f);
+     const float snare_f_max = fmin(35.0f * f0_, 0.5f);
+@@ -70,6 +71,17 @@
+     snare_lp_.SetRes(0.5f + 2.0f * snappy);
+ 
+     drum_lp_.SetFreq(3.0f * f0_ * sample_rate_);
++    reset_noise_amount_ = (0.125f - f0_) * 8.0f;
++    reset_noise_amount_ = fclamp(reset_noise_amount_, 0.0f, 1.0f);
++    reset_noise_amount_ *= reset_noise_amount_;
++    reset_noise_amount_ *= fm_amount_;
++    coefficients_dirty_ = false;
++}
++
++float SyntheticSnareDrum::Process(bool trigger)
++{
++    if(coefficients_dirty_)
++        UpdateCoefficients();
+ 
+     if(trigger || trig_)
+     {
+@@ -95,26 +107,23 @@
+         // The envelope for the snare has a "hold" stage which lasts between
+         // 40 and 70 ms
+         drum_amplitude_
+-            *= (drum_amplitude_ > 0.03f || even) ? drum_decay : 1.0f;
++            *= (drum_amplitude_ > 0.03f || even) ? drum_decay_ : 1.0f;
+         if(hold_counter_)
+         {
+             --hold_counter_;
+         }
+         else
+         {
+-            snare_amplitude_ *= snare_decay;
++            snare_amplitude_ *= snare_decay_;
+         }
+-        fm_ *= fm_decay;
++        fm_ *= fm_decay_;
+     }
+ 
+     // The 909 circuit has a funny kind of oscillator coupling - the signal
+     // leaving Q40's collector and resetting all oscillators allow some
+     // intermodulation.
+     float reset_noise        = 0.0f;
+-    float reset_noise_amount = (0.125f - f0_) * 8.0f;
+-    reset_noise_amount       = fclamp(reset_noise_amount, 0.0f, 1.0f);
+-    reset_noise_amount *= reset_noise_amount;
+-    reset_noise_amount *= fm_amount_;
++    const float reset_noise_amount = reset_noise_amount_;
+     reset_noise += phase_[0] > 0.5f ? -1.0f : 1.0f;
+     reset_noise += phase_[1] > 0.5f ? -1.0f : 1.0f;
+     reset_noise *= reset_noise_amount * 0.025f;
+@@ -148,7 +157,7 @@
+     float drum = -0.1f;
+     drum += DistortedSine(phase_[0]) * 0.60f;
+     drum += DistortedSine(phase_[1]) * 0.25f;
+-    drum *= drum_amplitude_ * drum_level;
++    drum *= drum_amplitude_ * drum_level_;
+ 
+     drum_lp_.Process(drum);
+     drum = drum_lp_.Low();
+@@ -158,7 +167,7 @@
+     float snare = snare_lp_.Low();
+     snare_hp_.Process(snare);
+     snare = snare_hp_.High();
+-    snare = (snare + 0.1f) * (snare_amplitude_ + fm_) * snare_level;
++    snare = (snare + 0.1f) * (snare_amplitude_ + fm_) * snare_level_;
+ 
+     return snare + drum; // It's a snare, it's a drum, it's a snare drum.
+ }
+@@ -182,20 +191,24 @@
+ {
+     f0 /= sample_rate_;
+     f0_ = fclamp(f0, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void SyntheticSnareDrum::SetFmAmount(float fm_amount)
+ {
+     fm_amount  = fclamp(fm_amount, 0.f, 1.f);
+     fm_amount_ = fm_amount * fm_amount;
++    coefficients_dirty_ = true;
+ }
+ 
+ void SyntheticSnareDrum::SetDecay(float decay)
+ {
+     decay_ = fmax(decay, 0.f);
++    coefficients_dirty_ = true;
+ }
+ 
+ void SyntheticSnareDrum::SetSnappy(float snappy)
+ {
+     snappy_ = fclamp(snappy, 0.f, 1.f);
++    coefficients_dirty_ = true;
+ }
+--- a/Source/Drums/synthsnaredrum.h
++++ b/Source/Drums/synthsnaredrum.h
+@@ -11,6 +11,7 @@
+ #define DSY_SYNTHSD_H
+ 
+ #include "Filters/svf.h"
++#include "Utility/dsp.h" // esp32-daw-plugin-sdk: LocalRand
+ 
+ #include <stdint.h>
+ #ifdef __cplusplus
+@@ -33,6 +34,8 @@
+ */
+ class SyntheticSnareDrum
+ {
++    LocalRand rand; // esp32-daw-plugin-sdk: replaces libc rand() (see Utility/dsp.h)
++
+   public:
+     SyntheticSnareDrum() {}
+     ~SyntheticSnareDrum() {}
+@@ -81,9 +84,12 @@
+     void SetSnappy(float snappy);
+ 
+   private:
++    void UpdateCoefficients();
+     inline float DistortedSine(float phase);
+ 
+     float sample_rate_;
++    float drum_decay_, snare_decay_, fm_decay_, drum_level_, snare_level_, reset_noise_amount_;
++    bool coefficients_dirty_;
+ 
+     bool  trig_;
+     bool  sustain_;
+@@ -102,4 +108,4 @@
+ };
+ } // namespace daisysp
+ #endif
+-#endif
+\ No newline at end of file
++#endif
+--- a/Source/Filters/svf.cpp
++++ b/Source/Filters/svf.cpp
+@@ -26,43 +26,18 @@
+     out_peak_  = 0.0f;
+     out_band_  = 0.0f;
+     fc_max_    = sr_ / 3.f;
++    inv_2sr_   = 1.0f / (sr_ * 2.0f);
+ }
+ 
+-void Svf::Process(float in)
+-{
+-    input_ = in;
+-    // first pass
+-    notch_ = input_ - damp_ * band_;
+-    low_   = low_ + freq_ * band_;
+-    high_  = notch_ - low_;
+-    band_  = freq_ * high_ + band_ - drive_ * band_ * band_ * band_;
+-    // take first sample of output
+-    out_low_   = 0.5f * low_;
+-    out_high_  = 0.5f * high_;
+-    out_band_  = 0.5f * band_;
+-    out_peak_  = 0.5f * (low_ - high_);
+-    out_notch_ = 0.5f * notch_;
+-    // second pass
+-    notch_ = input_ - damp_ * band_;
+-    low_   = low_ + freq_ * band_;
+-    high_  = notch_ - low_;
+-    band_  = freq_ * high_ + band_ - drive_ * band_ * band_ * band_;
+-    // average second pass outputs
+-    out_low_ += 0.5f * low_;
+-    out_high_ += 0.5f * high_;
+-    out_band_ += 0.5f * band_;
+-    out_peak_ += 0.5f * (low_ - high_);
+-    out_notch_ += 0.5f * notch_;
+-}
++// esp32-daw-plugin-sdk: Svf::Process is defined inline in svf.h.
+ 
+ void Svf::SetFreq(float f)
+ {
+     fc_ = fclamp(f, 1.0e-6, fc_max_);
+     // Set Internal Frequency for fc_
+-    freq_ = 2.0f
+-            * sinf(PI_F
+-                   * MIN(0.25f,
+-                         fc_ / (sr_ * 2.0f))); // fs*2 because double sampled
++    // fs*2 because double sampled (esp32-daw-plugin-sdk: SinPiQuarter and 1 / (2 sr) instead of
++    // sinf and a division)
++    freq_ = 2.0f * SinPiQuarter(MIN(0.25f, fc_ * inv_2sr_));
+     // recalculate damp
+     damp_ = MIN(2.0f * (1.0f - powf(res_, 0.25f)),
+                 MIN(2.0f, 2.0f / freq_ - freq_ * 0.5f));
+@@ -78,6 +53,8 @@
+     drive_ = pre_drive_ * res_;
+ }
+ 
++// esp32-daw-plugin-sdk: Svf::SetFreqAndQ is defined inline in svf.h.
++
+ void Svf::SetDrive(float d)
+ {
+     float drv  = fclamp(d * 0.1f, 0.f, 1.f);
+--- a/Source/Filters/svf.h
++++ b/Source/Filters/svf.h
+@@ -10,6 +10,8 @@
+ #ifndef DSY_SVF_H
+ #define DSY_SVF_H
+ 
++#include "dsp.h" // esp32-daw-plugin-sdk: fclamp / SinPiQuarter for the inline definitions below
++
+ namespace daisysp
+ {
+ /**      Double Sampled, Stable State Variable Filter
+@@ -37,7 +39,8 @@
+     /** 
+         Process the input signal, updating all of the outputs.
+     */
+-    void Process(float in);
++    // esp32-daw-plugin-sdk: defined in this header so the drum models' per-sample calls inline.
++    inline void Process(float in);
+ 
+ 
+     /** sets the frequency of the cutoff frequency. 
+@@ -50,6 +53,10 @@
+     */
+     void SetRes(float r);
+ 
++    // esp32-daw-plugin-sdk: set frequency and Plaits-style Q together (Q >= 0.51); inline, without
++    // a libm call or a division by the sample rate (the analog drums call it every sample).
++    inline void SetFreqAndQ(float f, float q);
++
+     /** sets the drive of the filter 
+         affects the response of the resonance of the filter
+     */
+@@ -81,7 +88,60 @@
+     float input_;
+     float out_low_, out_high_, out_band_, out_peak_, out_notch_;
+     float pre_drive_, fc_max_;
++    float inv_2sr_; // esp32-daw-plugin-sdk: 1 / (2 * sample rate), the double-sampled step
+ };
++
++// esp32-daw-plugin-sdk: Process and SetFreqAndQ moved here from svf.cpp (unchanged arithmetic,
++// except in SetFreqAndQ: SinPiQuarter instead of sinf, a multiplication by 1 / (2 sr) and FastDiv
++// instead of divisions).
++inline void Svf::Process(float in)
++{
++    input_ = in;
++    // first pass
++    notch_ = input_ - damp_ * band_;
++    low_   = low_ + freq_ * band_;
++    high_  = notch_ - low_;
++    band_  = freq_ * high_ + band_ - drive_ * band_ * band_ * band_;
++    // take first sample of output
++    out_low_   = 0.5f * low_;
++    out_high_  = 0.5f * high_;
++    out_band_  = 0.5f * band_;
++    out_peak_  = 0.5f * (low_ - high_);
++    out_notch_ = 0.5f * notch_;
++    // second pass
++    notch_ = input_ - damp_ * band_;
++    low_   = low_ + freq_ * band_;
++    high_  = notch_ - low_;
++    band_  = freq_ * high_ + band_ - drive_ * band_ * band_ * band_;
++    // average second pass outputs
++    out_low_ += 0.5f * low_;
++    out_high_ += 0.5f * high_;
++    out_band_ += 0.5f * band_;
++    out_peak_ += 0.5f * (low_ - high_);
++    out_notch_ += 0.5f * notch_;
++}
++
++inline void Svf::SetFreqAndQ(float f, float q)
++{
++    fc_ = fclamp(f, 1.0e-6f, fc_max_);
++    const float x = fc_ * inv_2sr_;
++    freq_ = 2.0f * SinPiQuarter(x < 0.25f ? x : 0.25f);
++    q = q < 0.51f ? 0.51f : q;
++    const float root = 1.0f - FastDiv(0.5f, q);
++    res_ = root * root * root * root;
++    // PlaitsQToSvfRes makes res_ = root^4; use root directly for the damping.
++    damp_ = 2.0f * (1.0f - root);
++    // fc <= sr / 3 keeps freq_ <= 1 and the stability bound >= 1.5.
++    // For Q >= 1, damping <= 1, so the bound cannot limit it.
++    if(q < 1.0f)
++    {
++        const float bound = FastDiv(2.0f, freq_) - freq_ * 0.5f;
++        const float lim   = bound < 2.0f ? bound : 2.0f;
++        damp_             = damp_ < lim ? damp_ : lim;
++    }
++    drive_ = pre_drive_ * res_;
++}
++
+ } // namespace daisysp
+ 
+ #endif
+--- a/Source/Utility/dsp.h
++++ b/Source/Utility/dsp.h
+@@ -31,6 +31,96 @@
+ //Avoids division for random floats. e.g. rand() * kRandFrac
+ static constexpr float kRandFrac = 1.f / (float)RAND_MAX;
+ 
++// esp32-daw-plugin-sdk modification: a per-object deterministic generator. Classes that called
++// libc rand() hold one of these as a member named `rand`, so rand() inside them resolves to it:
++// no global state shared between plugin instances, identical output for identical input, and no
++// libc call from the audio thread. Same range as RAND_MAX (0 .. 2^31-1).
++// esp32-daw-plugin-sdk modification: the drum models were ported from Plaits, whose resonators
++// take a quality factor Q. This Svf's damping is 2 * (1 - res^0.25) = 1 / Q, so
++// res = (1 - 1 / (2 Q))^4. (Passing Q-derived values straight to SetRes clamps them to 1: no
++// damping, the resonator rings forever and the decay setting has no effect.)
++inline float PlaitsQToSvfRes(float q)
++{
++    float d = 1.0f / (q < 0.51f ? 0.51f : q);
++    float r = 1.0f - 0.5f * d;
++    return r * r * r * r;
++}
++
++// esp32-daw-plugin-sdk modification: sines without a libm call on the audio path (sinf costs a
++// call and range reduction on the ESP32-S3).
++// sin(pi * x) for 0 <= x <= 0.25: odd Taylor polynomial to t^9, within 2e-9 of sin on [0, pi/4],
++// below a float's rounding of the result.
++inline float SinPiQuarter(float x)
++{
++    const float t = PI_F * x, t2 = t * t;
++    return t * (1.0f + t2 * (-1.0f / 6.0f + t2 * (1.0f / 120.0f + t2 * (-1.0f / 5040.0f + t2 * (1.0f / 362880.0f)))));
++}
++// sin(pi / 2 * r) for 0 <= r <= 1: odd Taylor polynomial to t^13, within 6e-10 of sin on [0, pi/2].
++inline float SinHalfPi(float r)
++{
++    const float t = HALFPI_F * r, t2 = t * t;
++    return t
++           * (1.0f
++              + t2
++                    * (-1.0f / 6.0f
++                       + t2 * (1.0f / 120.0f + t2 * (-1.0f / 5040.0f + t2 * (1.0f / 362880.0f + t2 * (-1.0f / 39916800.0f + t2 * (1.0f / 6227020800.0f)))))));
++}
++// sin(2 pi p) for any p, by quarter wave.
++inline float SinTwoPi(float p)
++{
++    p -= static_cast<float>(static_cast<int32_t>(p));
++    if(p < 0.0f)
++        p += 1.0f;
++    const float q = p * 4.0f;
++    int         k = static_cast<int>(q);
++    float       r = q - static_cast<float>(k);
++    switch(k & 3)
++    {
++        case 0: return SinHalfPi(r);
++        case 1: return SinHalfPi(1.0f - r);
++        case 2: return -SinHalfPi(r);
++        default: return -SinHalfPi(1.0f - r);
++    }
++}
++
++// esp32-daw-plugin-sdk modification: a / b on the audio path without the ESP32-S3's __divsf3
++// call (about 25 dependent FPU instructions behind a windowed call): a reciprocal seed from the
++// float's bits (within 12 %) refined by three Newton-Raphson steps, within an ulp or two of the
++// quotient. Only for normal, nonzero denominators (every call site divides by at least 0.5).
++// Exact division in host builds, so host renders are unchanged.
++inline float FastDiv(float a, float b)
++{
++#ifdef __XTENSA__
++    union
++    {
++        float    f;
++        uint32_t u;
++    } v;
++    v.f              = b;
++    const uint32_t s = v.u & 0x80000000u;
++    v.u              = (0x7EF311C7u - (v.u & 0x7FFFFFFFu)) | s;
++    float r          = v.f;
++    r                = r * (2.0f - b * r);
++    r                = r * (2.0f - b * r);
++    r                = r * (2.0f - b * r);
++    return a * r;
++#else
++    return a / b;
++#endif
++}
++
++struct LocalRand
++{
++    uint32_t s = 0x2545F491u;
++    inline int operator()()
++    {
++        s ^= s << 13;
++        s ^= s >> 17;
++        s ^= s << 5;
++        return (int)(s >> 1);
++    }
++};
++
+ //Convert from semitones to other units. e.g. 2 ^ (kOneTwelfth * x)
+ static constexpr float kOneTwelfth = 1.f / 12.f;
+ 

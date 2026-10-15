@@ -1,0 +1,9 @@
+{
+  "name": "fx_chorus",
+  "id": "org.smhgzll.fx.chorus",
+  "entry": "daw_plugin_entry_fx_chorus",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.chorus", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

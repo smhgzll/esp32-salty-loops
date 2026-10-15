@@ -1,0 +1,22 @@
+{
+  "name": "esp32-s3-daw-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser DAW for the ESP32-S3 DAW (served by the device and by daw-host)",
+  "author": "smhgzll",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --experimental-strip-types src/**/*.test.ts"
+  },
+  "dependencies": {
+    "preact": "10.29.8"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vite": "7.3.7"
+  }
+}

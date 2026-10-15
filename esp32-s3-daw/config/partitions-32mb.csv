@@ -1,0 +1,16 @@
+# Name,     Type, SubType,  Offset,    Size
+# 32 MB flash (the tested ESP32-S3 board): the same layout as partitions.csv up to the sample
+# library, which starts at the same offset (its files stay valid) and grows from 6 MB to 22 MB;
+# stage / diag / coredump move to the end of the flash. Selected by scripts/build-hardware.sh when
+# DAW_FLASH_SIZE_MB >= 32. Changing tables needs a USB flash (OTA never writes the table).
+nvs,       data, nvs,      0x9000,    0x6000
+otadata,   data, ota,      0xF000,    0x2000
+phy_init,  data, phy,      0x11000,   0x1000
+ota_0,     app,  ota_0,    0x20000,   0x300000
+ota_1,     app,  ota_1,    0x320000,  0x300000
+projects,  data, 0x40,     0x620000,  0x200000
+presets,   data, 0x41,     0x820000,  0x80000
+samples,   data, 0x42,     0x8A0000,  0x1600000
+stage,     data, 0x43,     0x1EA0000, 0x100000
+diag,      data, 0x44,     0x1FA0000, 0x50000
+coredump,  data, coredump, 0x1FF0000, 0x10000

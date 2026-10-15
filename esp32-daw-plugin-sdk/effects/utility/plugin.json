@@ -1,0 +1,9 @@
+{
+  "name": "fx_utility",
+  "id": "org.smhgzll.fx.utility",
+  "entry": "daw_plugin_entry_fx_utility",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.utility", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

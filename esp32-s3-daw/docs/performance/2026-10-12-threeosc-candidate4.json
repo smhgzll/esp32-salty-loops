@@ -1,0 +1,174 @@
+{
+  "imageSha256": "26b2ae7e1dd06e4e36bc3b185941992727a83507baba69a279bef8be9f0258b2",
+  "durationSeconds": 180.0,
+  "boot": 56,
+  "partition": "ota_0",
+  "otaState": "valid",
+  "cpuMean": 72.94044943820225,
+  "cpuMaxOneSecond": 85.8,
+  "counterDeltas": {
+    "overruns": 146,
+    "cpuGuardDrops": 406,
+    "underruns": 0,
+    "audioLate": 0,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0
+  },
+  "startupCounters": {
+    "overruns": 0,
+    "cpuGuardDrops": 0,
+    "underruns": 0,
+    "audioLate": 0,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0
+  },
+  "plugins": [
+    {
+      "name": "Distortion Guitar",
+      "plugin": "org.smhgzll.3xosc",
+      "voicesMax": 6,
+      "cpuMean": 24.094943820224717
+    },
+    {
+      "name": "Overdriven Guitar",
+      "plugin": "org.smhgzll.3xosc",
+      "voicesMax": 8,
+      "cpuMean": 23.40674157303371
+    },
+    {
+      "name": "Electric Bass (pick)",
+      "plugin": "org.smhgzll.acid303",
+      "voicesMax": 1,
+      "cpuMean": 14.769662921348315
+    },
+    {
+      "name": "Drums",
+      "plugin": "org.smhgzll.drumlab",
+      "voicesMax": 4,
+      "cpuMean": 24.512921348314606
+    },
+    {
+      "name": "84",
+      "plugin": "org.smhgzll.fx.reverb",
+      "voicesMax": 0,
+      "cpuMean": 21.74943820224719
+    }
+  ],
+  "loadedInstances": 5,
+  "projectUnchanged": true,
+  "samplesUnchanged": true,
+  "lastTransport": {
+    "mode": "song",
+    "play": 1,
+    "tick": 175623
+  },
+  "finalDiagnostics": {
+    "t": "diag",
+    "cpu": 76.8,
+    "renderUsAvg": 4463,
+    "renderUsMax": 6045,
+    "budgetUs": 5804,
+    "overruns": 146,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "cpuGuardDrops": 406,
+    "load": 86,
+    "workerWait": 12,
+    "workerBusy": 63.2,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0,
+    "voices": 15,
+    "blocks": 32989,
+    "backlog": 0,
+    "plugins": [
+      {
+        "where": "channel",
+        "id": 2,
+        "plugin": "org.smhgzll.3xosc",
+        "cpu": 24.2,
+        "voices": 6,
+        "memFast": 1744,
+        "memLarge": 0,
+        "reports": 853
+      },
+      {
+        "where": "channel",
+        "id": 3,
+        "plugin": "org.smhgzll.3xosc",
+        "cpu": 19.8,
+        "voices": 5,
+        "memFast": 1744,
+        "memLarge": 0,
+        "reports": 52
+      },
+      {
+        "where": "channel",
+        "id": 4,
+        "plugin": "org.smhgzll.acid303",
+        "cpu": 20,
+        "voices": 1,
+        "memFast": 792,
+        "memLarge": 0,
+        "reports": 0
+      },
+      {
+        "where": "channel",
+        "id": 5,
+        "plugin": "org.smhgzll.drumlab",
+        "cpu": 29.7,
+        "voices": 3,
+        "memFast": 2664,
+        "memLarge": 0,
+        "reports": 0
+      },
+      {
+        "where": "fx",
+        "id": 84,
+        "plugin": "org.smhgzll.fx.reverb",
+        "cpu": 21.9,
+        "voices": 0,
+        "memFast": 752,
+        "memLarge": 137184,
+        "reports": 0
+      }
+    ],
+    "heapInternal": 68679,
+    "heapInternalMin": 25108,
+    "heapInternalLargest": 31744,
+    "psramFree": 16252980,
+    "psramTotal": 16764084,
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 0,
+    "audioLate": 0,
+    "audioWriteUsMax": 29074,
+    "audioBackend": "i2s",
+    "uptimeMs": 192495,
+    "boot": 56,
+    "wsDropped": 4,
+    "wsClients": 2,
+    "audioStackFree": 3872,
+    "parallelInstruments": true,
+    "dspStackFree": 4520,
+    "partition": "ota_0",
+    "otaState": "valid"
+  },
+  "result": "FAIL: Full Reverb still skips notes; priority 24 has no DMA underruns in this window.",
+  "audioPriority": 24,
+  "measurementLimit": "Different song positions and window lengths; failing averages are depressed by skipped notes. Not a controlled A/B comparison."
+}

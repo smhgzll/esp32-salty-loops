@@ -1,0 +1,2579 @@
+{
+  "format": "esp32-daw-project",
+  "schema": 1,
+  "app": {
+    "name": "esp32-s3-daw",
+    "version": "0.1.0"
+  },
+  "meta": {
+    "name": "FM6 Electric Piano loop",
+    "author": "",
+    "bpm": 128,
+    "timeSig": [
+      4,
+      4
+    ],
+    "loop": {
+      "on": false,
+      "start": 0,
+      "end": 0
+    },
+    "metronome": false,
+    "countIn": 0,
+    "currentPattern": 13,
+    "ppq": 960
+  },
+  "nextId": 996,
+  "channels": [
+    {
+      "id": 1,
+      "name": "Kick",
+      "color": "#ff6b4a",
+      "icon": "drum",
+      "vol": 0.8384,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 1,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.drumlab",
+        "version": "0.1.0",
+        "params": {
+          "mode": 2,
+          "master": 0.85,
+          "kick_level": 1,
+          "kick_tune": 2,
+          "kick_decay": 0.35,
+          "kick_tone": 0.6,
+          "kick_char": 0.5,
+          "kick_pan": 0,
+          "kick2_level": 0.9,
+          "kick2_tune": 3,
+          "kick2_decay": 0.3,
+          "kick2_tone": 0.6,
+          "kick2_char": 0.6,
+          "kick2_pan": 0,
+          "snare_level": 0.8,
+          "snare_tune": 3,
+          "snare_decay": 0.25,
+          "snare_tone": 0.7,
+          "snare_char": 0.8,
+          "snare_pan": 0,
+          "snare2_level": 0.7,
+          "snare2_tune": 2,
+          "snare2_decay": 0.25,
+          "snare2_tone": 0.6,
+          "snare2_char": 0.7,
+          "snare2_pan": 0,
+          "chat_level": 0.6,
+          "chat_tune": 2,
+          "chat_decay": 0.12,
+          "chat_tone": 0.8,
+          "chat_char": 0.4,
+          "chat_pan": 0.25,
+          "ohat_level": 0.5,
+          "ohat_tune": 2,
+          "ohat_decay": 0.35,
+          "ohat_tone": 0.8,
+          "ohat_char": 0.4,
+          "ohat_pan": 0.25,
+          "clap_level": 0.75,
+          "clap_tune": 2,
+          "clap_decay": 0.3,
+          "clap_tone": 0.6,
+          "clap_char": 0.3,
+          "clap_pan": -0.15,
+          "tom_level": 0.6,
+          "tom_tune": 3,
+          "tom_decay": 0.35,
+          "tom_tone": 0.5,
+          "tom_char": 0.4,
+          "tom_pan": 0
+        },
+        "preset": "Tight"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Clap",
+      "color": "#ffb03a",
+      "icon": "drum",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 2,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.drumlab",
+        "version": "0.1.0",
+        "params": {
+          "mode": 7,
+          "master": 0.8,
+          "kick_level": 0.8,
+          "kick_tune": 0,
+          "kick_decay": 0.5,
+          "kick_tone": 0.5,
+          "kick_char": 0.3,
+          "kick_pan": 0,
+          "kick2_level": 0.8,
+          "kick2_tune": 0,
+          "kick2_decay": 0.45,
+          "kick2_tone": 0.4,
+          "kick2_char": 0.3,
+          "kick2_pan": 0,
+          "snare_level": 0.8,
+          "snare_tune": 0,
+          "snare_decay": 0.4,
+          "snare_tone": 0.5,
+          "snare_char": 0.6,
+          "snare_pan": 0,
+          "snare2_level": 0.8,
+          "snare2_tune": 0,
+          "snare2_decay": 0.4,
+          "snare2_tone": 0.5,
+          "snare2_char": 0.5,
+          "snare2_pan": 0,
+          "chat_level": 0.8,
+          "chat_tune": 0,
+          "chat_decay": 0.25,
+          "chat_tone": 0.6,
+          "chat_char": 0.3,
+          "chat_pan": 0.15,
+          "ohat_level": 0.8,
+          "ohat_tune": 0,
+          "ohat_decay": 0.65,
+          "ohat_tone": 0.55,
+          "ohat_char": 0.3,
+          "ohat_pan": 0.15,
+          "clap_level": 0.8,
+          "clap_tune": 0,
+          "clap_decay": 0.4,
+          "clap_tone": 0.5,
+          "clap_char": 0.5,
+          "clap_pan": -0.1,
+          "tom_level": 0.8,
+          "tom_tune": 0,
+          "tom_decay": 0.5,
+          "tom_tone": 0.4,
+          "tom_char": 0.2,
+          "tom_pan": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "name": "Hat",
+      "color": "#f5d547",
+      "icon": "drum",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 3,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.drumlab",
+        "version": "0.1.0",
+        "params": {
+          "mode": 6,
+          "master": 0.8,
+          "kick_level": 0.2569,
+          "kick_tune": -9.3083,
+          "kick_decay": 0.2314,
+          "kick_tone": 0.5,
+          "kick_char": 0.3,
+          "kick_pan": 0,
+          "kick2_level": 0.8555,
+          "kick2_tune": 0,
+          "kick2_decay": 0.45,
+          "kick2_tone": 0.4,
+          "kick2_char": 0.3,
+          "kick2_pan": 0,
+          "snare_level": 0.8,
+          "snare_tune": 0,
+          "snare_decay": 0.4,
+          "snare_tone": 0.5,
+          "snare_char": 0.6,
+          "snare_pan": 0,
+          "snare2_level": 0.8,
+          "snare2_tune": 0,
+          "snare2_decay": 0.4,
+          "snare2_tone": 0.5,
+          "snare2_char": 0.5,
+          "snare2_pan": 0,
+          "chat_level": 0.9935,
+          "chat_tune": 0,
+          "chat_decay": 0.25,
+          "chat_tone": 0.6,
+          "chat_char": 0.3,
+          "chat_pan": 0.15,
+          "ohat_level": 0.6022,
+          "ohat_tune": 16.8784,
+          "ohat_decay": 0.2413,
+          "ohat_tone": 0.8722,
+          "ohat_char": 0.6236,
+          "ohat_pan": -0.0088,
+          "clap_level": 0.8,
+          "clap_tune": 0,
+          "clap_decay": 0.5561,
+          "clap_tone": 0.4798,
+          "clap_char": 0.5,
+          "clap_pan": -0.1,
+          "tom_level": 0.8,
+          "tom_tune": 0,
+          "tom_decay": 0.5,
+          "tom_tone": 0.4,
+          "tom_char": 0.2,
+          "tom_pan": 0
+        },
+        "preset": "Default Kit"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Open Hat",
+      "color": "#c6e04a",
+      "icon": "drum",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 4,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.drumlab",
+        "version": "0.1.0",
+        "params": {
+          "mode": 6,
+          "master": 0.8,
+          "kick_level": 0.8,
+          "kick_tune": 0,
+          "kick_decay": 0.5,
+          "kick_tone": 0.5,
+          "kick_char": 0.3,
+          "kick_pan": 0,
+          "kick2_level": 0.8,
+          "kick2_tune": 0,
+          "kick2_decay": 0.45,
+          "kick2_tone": 0.4,
+          "kick2_char": 0.3,
+          "kick2_pan": 0,
+          "snare_level": 0.8,
+          "snare_tune": 0,
+          "snare_decay": 0.4,
+          "snare_tone": 0.5,
+          "snare_char": 0.6,
+          "snare_pan": 0,
+          "snare2_level": 0.8,
+          "snare2_tune": 0,
+          "snare2_decay": 0.4,
+          "snare2_tone": 0.5,
+          "snare2_char": 0.5,
+          "snare2_pan": 0,
+          "chat_level": 0.8,
+          "chat_tune": 0,
+          "chat_decay": 0.25,
+          "chat_tone": 0.6,
+          "chat_char": 0.3,
+          "chat_pan": 0.15,
+          "ohat_level": 0.8,
+          "ohat_tune": 0,
+          "ohat_decay": 0.65,
+          "ohat_tone": 0.55,
+          "ohat_char": 0.3,
+          "ohat_pan": 0.15,
+          "clap_level": 0.8,
+          "clap_tune": 0,
+          "clap_decay": 0.4,
+          "clap_tone": 0.5,
+          "clap_char": 0.5,
+          "clap_pan": -0.1,
+          "tom_level": 0.8,
+          "tom_tune": 0,
+          "tom_decay": 0.5,
+          "tom_tone": 0.4,
+          "tom_char": 0.2,
+          "tom_pan": 0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "name": "Bass",
+      "color": "#4cd9a0",
+      "icon": "wave-saw",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 5,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.3xosc",
+        "version": "0.1.0",
+        "params": {
+          "osc1_wave": 2,
+          "osc1_oct": -1,
+          "osc1_semi": 0,
+          "osc1_fine": -19.8,
+          "osc1_level": 0.8,
+          "osc1_pw": 0.5,
+          "osc2_wave": 3,
+          "osc2_oct": -1,
+          "osc2_semi": 0,
+          "osc2_fine": 7,
+          "osc2_level": 0.6,
+          "osc2_pw": 0.35,
+          "osc3_wave": 0,
+          "osc3_oct": -2,
+          "osc3_semi": 0,
+          "osc3_fine": 0,
+          "osc3_level": 0.6,
+          "osc3_pw": 0.5,
+          "amp_attack": 1,
+          "amp_decay": 250,
+          "amp_sustain": 0.5,
+          "amp_release": 80,
+          "flt_type": 0,
+          "cutoff": 600,
+          "resonance": 0.45,
+          "flt_env": 3.5,
+          "flt_key": 0.3,
+          "flt_attack": 1,
+          "flt_decay": 180,
+          "flt_sustain": 0,
+          "flt_release": 120,
+          "lfo_wave": 1,
+          "lfo_rate": 5,
+          "lfo_dest": 2,
+          "lfo_amount": 0.3848,
+          "glide": 60,
+          "porta": 1,
+          "polyphony": 1,
+          "vel_sens": 0.8,
+          "volume": 0.55
+        },
+        "preset": "Fat Bass"
+      }
+    },
+    {
+      "id": 6,
+      "name": "Lead",
+      "color": "#5fb3ff",
+      "icon": "wave-saw",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 6,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.3xosc",
+        "version": "0.1.0",
+        "params": {
+          "osc1_wave": 3,
+          "osc1_oct": 0,
+          "osc1_semi": 0,
+          "osc1_fine": 0,
+          "osc1_level": 0.7,
+          "osc1_pw": 0.3,
+          "osc2_wave": 2,
+          "osc2_oct": 1,
+          "osc2_semi": 0,
+          "osc2_fine": 5,
+          "osc2_level": 0.4,
+          "osc2_pw": 0.5,
+          "osc3_wave": 0,
+          "osc3_oct": 0,
+          "osc3_semi": 7,
+          "osc3_fine": 0,
+          "osc3_level": 0.3,
+          "osc3_pw": 0.5,
+          "amp_attack": 1,
+          "amp_decay": 350,
+          "amp_sustain": 0,
+          "amp_release": 300,
+          "flt_type": 0,
+          "cutoff": 900,
+          "resonance": 0.3,
+          "flt_env": 4,
+          "flt_key": 0.6,
+          "flt_attack": 1,
+          "flt_decay": 220,
+          "flt_sustain": 0,
+          "flt_release": 250,
+          "lfo_wave": 0,
+          "lfo_rate": 5,
+          "lfo_dest": 0,
+          "lfo_amount": 0.2,
+          "glide": 80,
+          "porta": 0,
+          "polyphony": 8,
+          "vel_sens": 0.9,
+          "volume": 0.5
+        },
+        "preset": "Pluck"
+      }
+    },
+    {
+      "id": 7,
+      "name": "Pad",
+      "color": "#9a7bff",
+      "icon": "wave-saw",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": true,
+      "solo": false,
+      "track": 7,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.3xosc",
+        "version": "0.1.0",
+        "params": {
+          "osc1_wave": 3,
+          "osc1_oct": 0,
+          "osc1_semi": 0,
+          "osc1_fine": 0,
+          "osc1_level": 0.7,
+          "osc1_pw": 0.25,
+          "osc2_wave": 2,
+          "osc2_oct": 0,
+          "osc2_semi": 0,
+          "osc2_fine": 6,
+          "osc2_level": 0.6,
+          "osc2_pw": 0.5,
+          "osc3_wave": 0,
+          "osc3_oct": -1,
+          "osc3_semi": 0,
+          "osc3_fine": 0,
+          "osc3_level": 0.4,
+          "osc3_pw": 0.5,
+          "amp_attack": 4,
+          "amp_decay": 400,
+          "amp_sustain": 0.85,
+          "amp_release": 250,
+          "flt_type": 0,
+          "cutoff": 3000,
+          "resonance": 0.35,
+          "flt_env": 1.5,
+          "flt_key": 0.5,
+          "flt_attack": 4,
+          "flt_decay": 300,
+          "flt_sustain": 0.5,
+          "flt_release": 300,
+          "lfo_wave": 0,
+          "lfo_rate": 5.5,
+          "lfo_dest": 1,
+          "lfo_amount": 0.15,
+          "glide": 60,
+          "porta": 2,
+          "polyphony": 1,
+          "vel_sens": 0.6,
+          "volume": 0.45
+        },
+        "preset": "Mono Lead"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Sine",
+      "color": "#ff7ad9",
+      "icon": "wave-sine",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 8,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.sine",
+        "version": "0.1.0",
+        "params": {
+          "level": 0.5,
+          "attack": 5,
+          "release": 120,
+          "tune": 0,
+          "polyphony": 8
+        }
+      }
+    },
+    {
+      "id": 994,
+      "name": "FM6",
+      "color": "#ff9a3c",
+      "icon": "",
+      "vol": 0.78,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "track": 9,
+      "root": 60,
+      "plugin": {
+        "id": "org.smhgzll.fm6",
+        "version": "0.1.0",
+        "params": {
+          "algorithm": 5,
+          "feedback": 6,
+          "level": 0.6,
+          "transpose": 0,
+          "polyphony": 4,
+          "vib_rate": 5,
+          "vib_depth": 0,
+          "op1_coarse": 1,
+          "op1_fine": 0,
+          "op1_detune": 3,
+          "op1_level": 99,
+          "op1_attack": 1.5,
+          "op1_decay": 3500,
+          "op1_sustain": 0,
+          "op1_release": 600,
+          "op1_vel": 0.6,
+          "op2_coarse": 14,
+          "op2_fine": 0,
+          "op2_detune": 0,
+          "op2_level": 58,
+          "op2_attack": 1,
+          "op2_decay": 400,
+          "op2_sustain": 0,
+          "op2_release": 400,
+          "op2_vel": 0.8,
+          "op3_coarse": 1,
+          "op3_fine": 0,
+          "op3_detune": -3,
+          "op3_level": 99,
+          "op3_attack": 1.5,
+          "op3_decay": 3000,
+          "op3_sustain": 0,
+          "op3_release": 600,
+          "op3_vel": 0.6,
+          "op4_coarse": 1,
+          "op4_fine": 0,
+          "op4_detune": 0,
+          "op4_level": 82,
+          "op4_attack": 1,
+          "op4_decay": 1800,
+          "op4_sustain": 0,
+          "op4_release": 500,
+          "op4_vel": 0.7,
+          "op5_coarse": 1,
+          "op5_fine": 0,
+          "op5_detune": -2,
+          "op5_level": 90,
+          "op5_attack": 1,
+          "op5_decay": 2500,
+          "op5_sustain": 0,
+          "op5_release": 600,
+          "op5_vel": 0.3,
+          "op6_coarse": 1,
+          "op6_fine": 0,
+          "op6_detune": 2,
+          "op6_level": 60,
+          "op6_attack": 1,
+          "op6_decay": 1200,
+          "op6_sustain": 0,
+          "op6_release": 400,
+          "op6_vel": 0.6
+        },
+        "preset": "Electric Piano"
+      }
+    }
+  ],
+  "patterns": [
+    {
+      "id": 11,
+      "name": "Beat",
+      "color": "#ff6b4a",
+      "length": 0,
+      "swing": 0,
+      "seqs": [
+        {
+          "channel": 1,
+          "stepCount": 16,
+          "pianoRoll": false,
+          "nextNoteId": 1,
+          "steps": [
+            [
+              1,
+              0.9,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0.9,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0.9,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0.9,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": []
+        },
+        {
+          "channel": 2,
+          "stepCount": 16,
+          "pianoRoll": false,
+          "nextNoteId": 1,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": []
+        },
+        {
+          "channel": 3,
+          "stepCount": 16,
+          "pianoRoll": false,
+          "nextNoteId": 1,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0.6,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0.6,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0.6,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0.6,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": []
+        },
+        {
+          "channel": 4,
+          "stepCount": 16,
+          "pianoRoll": false,
+          "nextNoteId": 1,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.5,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": []
+        },
+        {
+          "channel": 8,
+          "stepCount": 16,
+          "pianoRoll": true,
+          "nextNoteId": 1,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": []
+        },
+        {
+          "channel": 994,
+          "stepCount": 16,
+          "pianoRoll": false,
+          "nextNoteId": 1,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": []
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Bassline",
+      "color": "#4cd9a0",
+      "length": 0,
+      "swing": 0,
+      "seqs": [
+        {
+          "channel": 5,
+          "stepCount": 16,
+          "pianoRoll": true,
+          "nextNoteId": 9,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": [
+            [
+              1,
+              0,
+              360,
+              36,
+              0.9,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              2,
+              480,
+              360,
+              36,
+              0.7,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              3,
+              960,
+              360,
+              48,
+              0.9,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              4,
+              1440,
+              360,
+              36,
+              0.7,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              5,
+              1920,
+              360,
+              39,
+              0.9,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              6,
+              2400,
+              360,
+              36,
+              0.7,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              7,
+              2880,
+              480,
+              43,
+              0.9,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              8,
+              3360,
+              360,
+              41,
+              0.7,
+              0,
+              0,
+              0.5,
+              1,
+              1
+            ]
+          ]
+        },
+        {
+          "channel": 994,
+          "stepCount": 16,
+          "pianoRoll": false,
+          "nextNoteId": 1,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": []
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Chords",
+      "color": "#9a7bff",
+      "length": 0,
+      "swing": 0,
+      "seqs": [
+        {
+          "channel": 7,
+          "stepCount": 16,
+          "pianoRoll": true,
+          "nextNoteId": 13,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": [
+            [
+              1,
+              0,
+              960,
+              68,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              2,
+              3840,
+              960,
+              68,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              3,
+              7680,
+              960,
+              68,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "channel": 994,
+          "stepCount": 16,
+          "pianoRoll": true,
+          "nextNoteId": 14,
+          "steps": [
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0.78,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "notes": [
+            [
+              1,
+              0,
+              960,
+              60,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              6,
+              1440,
+              480,
+              55,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              10,
+              2400,
+              480,
+              57,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              2,
+              3840,
+              960,
+              60,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              7,
+              5280,
+              480,
+              55,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              13,
+              6240,
+              480,
+              57,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              11,
+              7200,
+              480,
+              55,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              3,
+              7680,
+              960,
+              60,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              8,
+              9120,
+              480,
+              57,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ],
+            [
+              9,
+              10560,
+              480,
+              58,
+              0.78,
+              0,
+              0,
+              0.5,
+              1,
+              0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "mixer": [
+    {
+      "index": 0,
+      "name": "Master",
+      "color": "#ff9a3c",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": [
+        {
+          "id": 9,
+          "enabled": true,
+          "mix": 1,
+          "plugin": {
+            "id": "org.smhgzll.fx.limiter",
+            "version": "0.1.0",
+            "params": {
+              "input": 0,
+              "ceiling": -0.3,
+              "release": 120
+            },
+            "preset": "Safety"
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "name": "Kick",
+      "color": "#ff6b4a",
+      "vol": 0.9594,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 2,
+      "name": "Clap",
+      "color": "#ffb03a",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 3,
+      "name": "Hat",
+      "color": "#f5d547",
+      "vol": 0.8621,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 4,
+      "name": "Open Hat",
+      "color": "#c6e04a",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 5,
+      "name": "Bass",
+      "color": "#4cd9a0",
+      "vol": 0.5135,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 6,
+      "name": "Lead",
+      "color": "#5fb3ff",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": [
+        {
+          "id": 10,
+          "enabled": false,
+          "mix": 1,
+          "plugin": {
+            "id": "org.smhgzll.fx.delay",
+            "version": "0.1.0",
+            "params": {
+              "time": 375,
+              "sync": 6,
+              "feedback": 40,
+              "damping": 6000,
+              "pingpong": 1,
+              "mix": 25
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "name": "Pad",
+      "color": "#9a7bff",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 8,
+      "name": "Sine",
+      "color": "#ff7ad9",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 9,
+      "name": "FM6",
+      "color": "#8a8f98",
+      "vol": 0.775,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": [
+        {
+          "id": 995,
+          "enabled": true,
+          "mix": 1,
+          "plugin": {
+            "id": "org.smhgzll.fx.delay",
+            "version": "0.1.0",
+            "params": {
+              "time": 375,
+              "sync": 6,
+              "feedback": 40,
+              "damping": 6000,
+              "pingpong": 1,
+              "mix": 30
+            }
+          }
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "name": "Insert 10",
+      "color": "#8a8f98",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 11,
+      "name": "Insert 11",
+      "color": "#8a8f98",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 12,
+      "name": "Insert 12",
+      "color": "#8a8f98",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 13,
+      "name": "Insert 13",
+      "color": "#8a8f98",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 14,
+      "name": "Insert 14",
+      "color": "#8a8f98",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 15,
+      "name": "Insert 15",
+      "color": "#8a8f98",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    },
+    {
+      "index": 16,
+      "name": "Insert 16",
+      "color": "#8a8f98",
+      "vol": 0.8,
+      "pan": 0,
+      "mute": false,
+      "solo": false,
+      "route": 0,
+      "sends": [],
+      "fx": []
+    }
+  ],
+  "playlist": {
+    "tracks": [
+      {
+        "name": "Track 1",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      },
+      {
+        "name": "Track 2",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      },
+      {
+        "name": "Track 3",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      },
+      {
+        "name": "Track 4",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      },
+      {
+        "name": "Track 5",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      },
+      {
+        "name": "Track 6",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      },
+      {
+        "name": "Track 7",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      },
+      {
+        "name": "Track 8",
+        "color": "#6b7280",
+        "mute": false,
+        "solo": false
+      }
+    ],
+    "clips": [
+      {
+        "id": 14,
+        "kind": "pattern",
+        "track": 0,
+        "start": 0,
+        "len": 23040,
+        "offset": 0,
+        "ref": 11
+      },
+      {
+        "id": 15,
+        "kind": "pattern",
+        "track": 1,
+        "start": 0,
+        "len": 23040,
+        "offset": 0,
+        "ref": 12
+      },
+      {
+        "id": 16,
+        "kind": "pattern",
+        "track": 2,
+        "start": 0,
+        "len": 23040,
+        "offset": 0,
+        "ref": 13
+      }
+    ],
+    "markers": []
+  },
+  "automation": [],
+  "samples": []
+}

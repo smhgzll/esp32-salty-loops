@@ -1,0 +1,17 @@
+{
+  "boot": 57,
+  "oldProjectCpu": 76.2,
+  "admissionLimit": 75,
+  "emptyProjectCpu": 0,
+  "firstChannelAckMs": 68.65993199971854,
+  "addedChannels": 4,
+  "allFontsBound": true,
+  "projectUnchanged": true,
+  "samplesUnchanged": true,
+  "restoredTransport": {
+    "play": 1,
+    "mode": "song",
+    "tick": 33363
+  },
+  "result": "PASS"
+}

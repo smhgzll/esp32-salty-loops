@@ -1,0 +1,698 @@
+{
+  "before": {
+    "list": [
+      {
+        "name": "AIRWOLF2.mod",
+        "size": 135862,
+        "crc": 1770702092,
+        "type": "module"
+      },
+      {
+        "name": "GOWEST.mod",
+        "size": 368204,
+        "crc": 3819641993,
+        "type": "module"
+      },
+      {
+        "name": "Phoenix_MT-32.sf2",
+        "size": 6308938,
+        "crc": 3724356293,
+        "type": "sf2"
+      },
+      {
+        "name": "TAKEONME.mod",
+        "size": 196616,
+        "crc": 2687631855,
+        "type": "module"
+      },
+      {
+        "name": "TimGM6mb.sf2",
+        "size": 5969788,
+        "crc": 3607064369,
+        "type": "sf2"
+      },
+      {
+        "name": "a-polar.it",
+        "size": 3179835,
+        "crc": 2325870710,
+        "type": "module"
+      },
+      {
+        "name": "aceman_-_mortal_combat.xm",
+        "size": 2165484,
+        "crc": 1868084775,
+        "type": "module"
+      },
+      {
+        "name": "gulpembe.mod",
+        "size": 121058,
+        "crc": 1311224635,
+        "type": "module"
+      },
+      {
+        "name": "oxygene.mod",
+        "size": 119043,
+        "crc": 3257563885,
+        "type": "module"
+      },
+      {
+        "name": "perf-sine.sf2",
+        "size": 44488,
+        "crc": 4157046382,
+        "type": "sf2"
+      },
+      {
+        "name": "perf-tone.wav",
+        "size": 44144,
+        "crc": 1055700768,
+        "type": "wav"
+      },
+      {
+        "name": "radix-weather_girl.xm",
+        "size": 41160,
+        "crc": 2331581702,
+        "type": "module"
+      },
+      {
+        "name": "surfonasinewave.xm",
+        "size": 427614,
+        "crc": 1779484093,
+        "type": "module"
+      },
+      {
+        "name": "win-gm.sf2",
+        "size": 3208108,
+        "crc": 321055999,
+        "type": "sf2"
+      },
+      {
+        "name": "x-files2.s3m",
+        "size": 541508,
+        "crc": 98324666,
+        "type": "module"
+      }
+    ],
+    "total": 23068672,
+    "free": 159744,
+    "largest": 98240
+  },
+  "imports": [
+    {
+      "file": "GOWEST.mod",
+      "seconds": 2.49,
+      "uploads": [],
+      "free": 7114752,
+      "largest": 6160320,
+      "info": "4:53 · 8 channels · 39 orders · 31 instruments · song tempo 125 BPM · player memory ~732 KB per channel"
+    },
+    {
+      "file": "a-polar.it",
+      "seconds": 23.92,
+      "uploads": [
+        {
+          "url": "http://<device-address>/api/samples?name=a-polar.it&reclaim=modules",
+          "status": 200
+        }
+      ],
+      "free": 4300800,
+      "largest": 4255680,
+      "info": "11:09 · 39 channels · 112 orders · 91 instruments · song tempo 282 BPM · player memory ~6454 KB per channel"
+    },
+    {
+      "file": "GOWEST.mod",
+      "seconds": 5.76,
+      "uploads": [
+        {
+          "url": "http://<device-address>/api/samples?name=GOWEST.mod&reclaim=modules",
+          "status": 200
+        }
+      ],
+      "free": 7114752,
+      "largest": 7069632,
+      "info": "4:53 · 8 channels · 39 orders · 31 instruments · song tempo 125 BPM · player memory ~732 KB per channel"
+    },
+    {
+      "file": "GOWEST.mod",
+      "seconds": 2.25,
+      "uploads": [],
+      "free": 7114752,
+      "largest": 7069632,
+      "info": "4:53 · 8 channels · 39 orders · 31 instruments · song tempo 125 BPM · player memory ~732 KB per channel"
+    }
+  ],
+  "playback": {
+    "seconds": 5,
+    "peak": 0.195,
+    "deltas": {
+      "overruns": 0,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+    },
+    "diagnostics": [
+      {
+        "t": "diag",
+        "cpu": 3.3,
+        "renderUsAvg": 195,
+        "renderUsMax": 5837,
+        "budgetUs": 5804,
+        "overruns": 3,
+        "eventDrops": 0,
+        "noteDrops": 0,
+        "cpuGuardDrops": 0,
+        "load": 5.5,
+        "workerWait": 0,
+        "workerBusy": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "voices": 1,
+        "blocks": 8170,
+        "backlog": 0,
+        "fileBufferBytes": 368204,
+        "fileSpareBytes": 3179835,
+        "plugins": [
+          {
+            "where": "channel",
+            "id": 2,
+            "plugin": "org.smhgzll.tracker",
+            "cpu": 0,
+            "voices": 1,
+            "memFast": 192,
+            "memLarge": 719194,
+            "reports": 0
+          }
+        ],
+        "heapInternal": 75719,
+        "heapInternalMin": 26756,
+        "heapInternalLargest": 31744,
+        "psramFree": 12344744,
+        "psramLargest": 11796480,
+        "psramTotal": 16764084,
+        "resetReason": 3,
+        "lastCrash": {
+          "task": "daw_ctl",
+          "reason": "abort() was called at PC 0x4200fd51 on core 0",
+          "elfSha256": "de5c19a32",
+          "pc": 1077425985,
+          "backtrace": [
+            1077425985,
+            1077425933,
+            1077459730,
+            1107361105,
+            1107511721,
+            1107512470,
+            1107482169,
+            1107482790,
+            1107484134,
+            1107484273,
+            1107487552,
+            1107459805,
+            1107466413,
+            1107358590,
+            1077429481
+          ]
+        },
+        "cpuMHz": 240,
+        "cpuClockSupport": {
+          "240": true,
+          "280": false,
+          "300": false,
+          "320": false
+        },
+        "underruns": 0,
+        "audioLate": 0,
+        "audioWriteUsMax": 221811,
+        "audioBackend": "i2s",
+        "uptimeMs": 59054,
+        "boot": 89,
+        "wsDropped": 122,
+        "wsClients": 2,
+        "audioStackFree": 4288,
+        "parallelInstruments": true,
+        "dspStackFree": 5380,
+        "partition": "ota_0",
+        "otaState": "valid"
+      },
+      {
+        "t": "diag",
+        "cpu": 4.3,
+        "renderUsAvg": 253,
+        "renderUsMax": 5837,
+        "budgetUs": 5804,
+        "overruns": 3,
+        "eventDrops": 0,
+        "noteDrops": 0,
+        "cpuGuardDrops": 0,
+        "load": 9.6,
+        "workerWait": 0,
+        "workerBusy": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "voices": 1,
+        "blocks": 8346,
+        "backlog": 0,
+        "fileBufferBytes": 368204,
+        "fileSpareBytes": 3179835,
+        "plugins": [
+          {
+            "where": "channel",
+            "id": 2,
+            "plugin": "org.smhgzll.tracker",
+            "cpu": 0.3,
+            "voices": 1,
+            "memFast": 192,
+            "memLarge": 719194,
+            "reports": 0
+          }
+        ],
+        "heapInternal": 75719,
+        "heapInternalMin": 26756,
+        "heapInternalLargest": 31744,
+        "psramFree": 12344744,
+        "psramLargest": 11796480,
+        "psramTotal": 16764084,
+        "resetReason": 3,
+        "lastCrash": {
+          "task": "daw_ctl",
+          "reason": "abort() was called at PC 0x4200fd51 on core 0",
+          "elfSha256": "de5c19a32",
+          "pc": 1077425985,
+          "backtrace": [
+            1077425985,
+            1077425933,
+            1077459730,
+            1107361105,
+            1107511721,
+            1107512470,
+            1107482169,
+            1107482790,
+            1107484134,
+            1107484273,
+            1107487552,
+            1107459805,
+            1107466413,
+            1107358590,
+            1077429481
+          ]
+        },
+        "cpuMHz": 240,
+        "cpuClockSupport": {
+          "240": true,
+          "280": false,
+          "300": false,
+          "320": false
+        },
+        "underruns": 0,
+        "audioLate": 0,
+        "audioWriteUsMax": 221811,
+        "audioBackend": "i2s",
+        "uptimeMs": 60074,
+        "boot": 89,
+        "wsDropped": 122,
+        "wsClients": 2,
+        "audioStackFree": 4208,
+        "parallelInstruments": true,
+        "dspStackFree": 5380,
+        "partition": "ota_0",
+        "otaState": "valid"
+      },
+      {
+        "t": "diag",
+        "cpu": 7.5,
+        "renderUsAvg": 440,
+        "renderUsMax": 5837,
+        "budgetUs": 5804,
+        "overruns": 3,
+        "eventDrops": 0,
+        "noteDrops": 0,
+        "cpuGuardDrops": 0,
+        "load": 9.3,
+        "workerWait": 0,
+        "workerBusy": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "voices": 1,
+        "blocks": 8521,
+        "backlog": 0,
+        "fileBufferBytes": 368204,
+        "fileSpareBytes": 3179835,
+        "plugins": [
+          {
+            "where": "channel",
+            "id": 2,
+            "plugin": "org.smhgzll.tracker",
+            "cpu": 2.4,
+            "voices": 1,
+            "memFast": 192,
+            "memLarge": 719194,
+            "reports": 0
+          }
+        ],
+        "heapInternal": 75719,
+        "heapInternalMin": 26756,
+        "heapInternalLargest": 31744,
+        "psramFree": 12343984,
+        "psramLargest": 11796480,
+        "psramTotal": 16764084,
+        "resetReason": 3,
+        "lastCrash": {
+          "task": "daw_ctl",
+          "reason": "abort() was called at PC 0x4200fd51 on core 0",
+          "elfSha256": "de5c19a32",
+          "pc": 1077425985,
+          "backtrace": [
+            1077425985,
+            1077425933,
+            1077459730,
+            1107361105,
+            1107511721,
+            1107512470,
+            1107482169,
+            1107482790,
+            1107484134,
+            1107484273,
+            1107487552,
+            1107459805,
+            1107466413,
+            1107358590,
+            1077429481
+          ]
+        },
+        "cpuMHz": 240,
+        "cpuClockSupport": {
+          "240": true,
+          "280": false,
+          "300": false,
+          "320": false
+        },
+        "underruns": 0,
+        "audioLate": 0,
+        "audioWriteUsMax": 221811,
+        "audioBackend": "i2s",
+        "uptimeMs": 61095,
+        "boot": 89,
+        "wsDropped": 122,
+        "wsClients": 2,
+        "audioStackFree": 4208,
+        "parallelInstruments": true,
+        "dspStackFree": 5380,
+        "partition": "ota_0",
+        "otaState": "valid"
+      },
+      {
+        "t": "diag",
+        "cpu": 9.6,
+        "renderUsAvg": 559,
+        "renderUsMax": 5837,
+        "budgetUs": 5804,
+        "overruns": 3,
+        "eventDrops": 0,
+        "noteDrops": 0,
+        "cpuGuardDrops": 0,
+        "load": 10.1,
+        "workerWait": 0,
+        "workerBusy": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "voices": 1,
+        "blocks": 8694,
+        "backlog": 0,
+        "fileBufferBytes": 368204,
+        "fileSpareBytes": 3179835,
+        "plugins": [
+          {
+            "where": "channel",
+            "id": 2,
+            "plugin": "org.smhgzll.tracker",
+            "cpu": 3.8,
+            "voices": 1,
+            "memFast": 192,
+            "memLarge": 719194,
+            "reports": 0
+          }
+        ],
+        "heapInternal": 75719,
+        "heapInternalMin": 26756,
+        "heapInternalLargest": 31744,
+        "psramFree": 12344740,
+        "psramLargest": 11796480,
+        "psramTotal": 16764084,
+        "resetReason": 3,
+        "lastCrash": {
+          "task": "daw_ctl",
+          "reason": "abort() was called at PC 0x4200fd51 on core 0",
+          "elfSha256": "de5c19a32",
+          "pc": 1077425985,
+          "backtrace": [
+            1077425985,
+            1077425933,
+            1077459730,
+            1107361105,
+            1107511721,
+            1107512470,
+            1107482169,
+            1107482790,
+            1107484134,
+            1107484273,
+            1107487552,
+            1107459805,
+            1107466413,
+            1107358590,
+            1077429481
+          ]
+        },
+        "cpuMHz": 240,
+        "cpuClockSupport": {
+          "240": true,
+          "280": false,
+          "300": false,
+          "320": false
+        },
+        "underruns": 0,
+        "audioLate": 0,
+        "audioWriteUsMax": 221811,
+        "audioBackend": "i2s",
+        "uptimeMs": 62095,
+        "boot": 89,
+        "wsDropped": 122,
+        "wsClients": 2,
+        "audioStackFree": 4208,
+        "parallelInstruments": true,
+        "dspStackFree": 5380,
+        "partition": "ota_0",
+        "otaState": "valid"
+      },
+      {
+        "t": "diag",
+        "cpu": 9.8,
+        "renderUsAvg": 571,
+        "renderUsMax": 5837,
+        "budgetUs": 5804,
+        "overruns": 3,
+        "eventDrops": 0,
+        "noteDrops": 0,
+        "cpuGuardDrops": 0,
+        "load": 14.1,
+        "workerWait": 0,
+        "workerBusy": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "voices": 1,
+        "blocks": 8867,
+        "backlog": 0,
+        "fileBufferBytes": 368204,
+        "fileSpareBytes": 3179835,
+        "plugins": [
+          {
+            "where": "channel",
+            "id": 2,
+            "plugin": "org.smhgzll.tracker",
+            "cpu": 3.9,
+            "voices": 1,
+            "memFast": 192,
+            "memLarge": 719194,
+            "reports": 0
+          }
+        ],
+        "heapInternal": 75719,
+        "heapInternalMin": 26756,
+        "heapInternalLargest": 31744,
+        "psramFree": 12344740,
+        "psramLargest": 11796480,
+        "psramTotal": 16764084,
+        "resetReason": 3,
+        "lastCrash": {
+          "task": "daw_ctl",
+          "reason": "abort() was called at PC 0x4200fd51 on core 0",
+          "elfSha256": "de5c19a32",
+          "pc": 1077425985,
+          "backtrace": [
+            1077425985,
+            1077425933,
+            1077459730,
+            1107361105,
+            1107511721,
+            1107512470,
+            1107482169,
+            1107482790,
+            1107484134,
+            1107484273,
+            1107487552,
+            1107459805,
+            1107466413,
+            1107358590,
+            1077429481
+          ]
+        },
+        "cpuMHz": 240,
+        "cpuClockSupport": {
+          "240": true,
+          "280": false,
+          "300": false,
+          "320": false
+        },
+        "underruns": 0,
+        "audioLate": 0,
+        "audioWriteUsMax": 221811,
+        "audioBackend": "i2s",
+        "uptimeMs": 63101,
+        "boot": 89,
+        "wsDropped": 122,
+        "wsClients": 2,
+        "audioStackFree": 4208,
+        "parallelInstruments": true,
+        "dspStackFree": 5380,
+        "partition": "ota_0",
+        "otaState": "valid"
+      }
+    ]
+  },
+  "after": {
+    "list": [
+      {
+        "name": "GOWEST.mod",
+        "size": 368204,
+        "crc": 3819641993,
+        "type": "module"
+      },
+      {
+        "name": "Phoenix_MT-32.sf2",
+        "size": 6308938,
+        "crc": 3724356293,
+        "type": "sf2"
+      },
+      {
+        "name": "TimGM6mb.sf2",
+        "size": 5969788,
+        "crc": 3607064369,
+        "type": "sf2"
+      },
+      {
+        "name": "perf-sine.sf2",
+        "size": 44488,
+        "crc": 4157046382,
+        "type": "sf2"
+      },
+      {
+        "name": "perf-tone.wav",
+        "size": 44144,
+        "crc": 1055700768,
+        "type": "wav"
+      },
+      {
+        "name": "win-gm.sf2",
+        "size": 3208108,
+        "crc": 321055999,
+        "type": "sf2"
+      }
+    ],
+    "total": 23068672,
+    "free": 7114752,
+    "largest": 7069632
+  },
+  "status": {
+    "name": "esp32daw",
+    "firmware": "0.1.0",
+    "target": "esp32s3",
+    "proto": 1,
+    "rev": 50,
+    "project": "Go West",
+    "clients": 2,
+    "playing": 0,
+    "cpu": 11,
+    "blocks": 9010,
+    "overruns": 3,
+    "plugins": 19,
+    "heapInternal": 75363,
+    "heapInternalMin": 26756,
+    "heapInternalLargest": 31744,
+    "psramFree": 12339564,
+    "psramLargest": 11796480,
+    "psramTotal": 16764084,
+    "resetReason": 3,
+    "lastCrash": {
+      "task": "daw_ctl",
+      "reason": "abort() was called at PC 0x4200fd51 on core 0",
+      "elfSha256": "de5c19a32",
+      "pc": 1077425985,
+      "backtrace": [
+        1077425985,
+        1077425933,
+        1077459730,
+        1107361105,
+        1107511721,
+        1107512470,
+        1107482169,
+        1107482790,
+        1107484134,
+        1107484273,
+        1107487552,
+        1107459805,
+        1107466413,
+        1107358590,
+        1077429481
+      ]
+    },
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 0,
+    "audioLate": 0,
+    "audioWriteUsMax": 221811,
+    "audioBackend": "i2s",
+    "uptimeMs": 63930,
+    "boot": 89,
+    "wsDropped": 122,
+    "wsClients": 2,
+    "audioStackFree": 4192,
+    "parallelInstruments": true,
+    "dspStackFree": 5380,
+    "partition": "ota_0",
+    "otaState": "valid"
+  },
+  "browserErrors": [],
+  "validation": {
+    "firmwareBytes": 1736624,
+    "firmwareSha256": "6675dcca7913e6e322881b4607d275121b359d74b65d9ccd529c1e85a5dccf99",
+    "samplesChecks": 169,
+    "sessionChecks": 383,
+    "hardwareBuild": "pass",
+    "webTypecheck": "pass (hardware web build)",
+    "qemu": "not run (user request)"
+  },
+  "_publicationNote": "Local network addresses have been redacted; numerical performance measurements are unchanged."
+}

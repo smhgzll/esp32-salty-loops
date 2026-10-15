@@ -1,0 +1,16 @@
+{
+  "name": "macrosynth",
+  "id": "org.smhgzll.macrosynth",
+  "entry": "daw_plugin_entry_macrosynth",
+  "licenseFiles": ["LICENSE.Braids"],
+  "provenance": [
+    {"component": "macrosynth", "origin": "original work (polyphonic voice handling, 2x rate with pitch correction, halfband decimator, ADSR amplifier, parameters, presets)", "author": "smhgzll", "license": "MIT"},
+    {"component": "Braids macro oscillator", "origin": "https://github.com/pichenettes/eurorack", "commit": "08460a69a7e1f7a81c5a2abcc7189c9a6b7208d4",
+     "files": ["braids/macro_oscillator.*", "braids/analog_oscillator.*", "braids/digital_oscillator.*", "braids/resources.*", "braids/settings.h", "braids/excitation.h", "braids/svf.h", "braids/parameter_interpolation.h"],
+     "license": "MIT", "modifications": "none"},
+    {"component": "stmlib (parts used by Braids)", "origin": "https://github.com/pichenettes/stmlib", "commit": "e3bd7c9cc00e4364166f9905c0509b6ffd0535ec",
+     "files": ["stmlib.h", "utils/dsp.h", "utils/random.h", "utils/random.cc"], "license": "MIT", "modifications": "none"}
+  ],
+  "dependencies": [{"name": "Braids (eurorack)", "version": "08460a6", "license": "MIT"}, {"name": "stmlib", "version": "e3bd7c9", "license": "MIT"}],
+  "ui": {"editor": "generic", "color": "#5ad1c8", "icon": "wave"}
+}

@@ -1,0 +1,133 @@
+menu "ESP32-S3 DAW"
+
+config DAW_QEMU_BUILD
+    bool "QEMU build (null audio, OpenCores Ethernet, boot self-test)"
+    default n
+
+config DAW_SELFTEST
+    bool "Run the boot self-test"
+    default y if DAW_QEMU_BUILD
+    default n
+
+menu "Audio"
+config DAW_SAMPLE_RATE
+    int "Sample rate"
+    default 44100
+
+config DAW_BLOCK_FRAMES
+    int "DSP block (frames)"
+    range 32 256
+    default 256
+
+config DAW_AUDIO_CORE
+    int "CPU core of the audio task"
+    range 0 1
+    default 1
+
+config DAW_AUDIO_PRIORITY
+    int "Audio task priority"
+    range 10 24
+    default 20
+
+config DAW_CPU_GUARD_PERMILLE
+    int "CPU guard: skip new notes above this render load (x1000 of the block period, 0 = off)"
+    range 0 1000
+    default 900
+    help
+        While the measured render time (smoothed over ~50 ms) is above this share of the audio
+        deadline, new note-ons are skipped (counted as cpuGuardDrops) so the output does not
+        glitch. Not applied under QEMU, where timing is not real.
+
+config DAW_PARALLEL_INSTRUMENTS
+    bool "Use the second CPU core for instruments and effect chains"
+    default y
+    depends on !DAW_QEMU_BUILD
+    help
+        One persistent worker on the other core renders instruments from the end of the
+        channel list and runs effect chains whose inputs are complete, while the audio core
+        works from the front. Mixer accumulation order and event timing are unchanged (the
+        output is bit-identical). Reserves a 6 KB task stack, 2 KB internal and 6 KB PSRAM
+        PCM buffers. Follows the audio task priority (24 in the hardware defaults, above
+        Wi-Fi); the worker sleeps between jobs and yields after an over-budget job.
+
+config DAW_CPU_ADMIT_PERMILLE
+    int "CPU admission: refuse new instruments / effects above this load (x1000, 0 = off)"
+    range 0 1000
+    default 750
+    help
+        New channels, effects and re-enabled effects are refused while the 1 s average render
+        load is above this share of the audio deadline. Not applied under QEMU.
+
+config DAW_I2S_BCLK_GPIO
+    int "PCM5102A BCK (bit clock) GPIO"
+    range -1 48
+    default 16
+    help
+        Measured wiring: GPIO16 (the adapter board labels this pin IO33). -1 = no I2S output.
+
+config DAW_I2S_WS_GPIO
+    int "PCM5102A LCK (word select) GPIO"
+    range -1 48
+    default 6
+    help
+        Measured wiring: GPIO6 (adapter label IO34).
+
+config DAW_I2S_DOUT_GPIO
+    int "PCM5102A DIN (data) GPIO"
+    range -1 48
+    default 7
+    help
+        Measured wiring: GPIO7 (adapter label IO35).
+
+config DAW_I2S_DMA_DESC
+    int "I2S DMA descriptors"
+    range 2 16
+    default 4
+
+config DAW_I2S_DMA_FRAMES
+    int "Frames per I2S DMA descriptor"
+    range 64 1023
+    default 256
+
+config DAW_DITHER
+    bool "TPDF dither to 24 bits"
+    default y
+endmenu
+
+menu "Network"
+config DAW_WIFI_MODE
+    string "Wi-Fi mode (AP or STA)"
+    default "AP"
+
+config DAW_WIFI_SSID
+    string "Wi-Fi SSID"
+    default "ESP32-DAW"
+
+config DAW_WIFI_PASSWORD
+    string "Wi-Fi password (>= 8 characters; set in config/local.env)"
+    default ""
+
+config DAW_HOSTNAME
+    string "Hostname (DHCP / mDNS)"
+    default "esp32daw"
+
+config DAW_MDNS
+    bool "Announce http://<hostname>.local/ over mDNS"
+    default y
+
+config DAW_WEB_PORT
+    int "HTTP port"
+    range 1 65535
+    default 80
+
+config DAW_ADMIN_PASSWORD
+    string "Password for privileged operations (OTA, factory reset, restore); empty = disabled"
+    default ""
+
+config DAW_MAX_CLIENTS
+    int "Browser connections (WebSocket)"
+    range 1 6
+    default 4
+endmenu
+
+endmenu

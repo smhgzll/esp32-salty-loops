@@ -1,0 +1,53 @@
+{
+  "presets": [
+    {
+      "case": "electric-piano",
+      "preset": 1,
+      "algorithm": 5,
+      "maxAbsoluteError": 4.291534423828125e-06,
+      "rmsError": 7.667158662328759e-07,
+      "relativeRmsDb": -108.1649865751003,
+      "rmsBefore": 0.1962834936065856,
+      "rmsAfter": 0.19628297127208677
+    },
+    {
+      "case": "bell",
+      "preset": 3,
+      "algorithm": 5,
+      "maxAbsoluteError": 4.5299530029296875e-06,
+      "rmsError": 8.288347583711855e-07,
+      "relativeRmsDb": -106.88953074273867,
+      "rmsBefore": 0.1832080248631227,
+      "rmsAfter": 0.18320753470762344
+    },
+    {
+      "case": "brass",
+      "preset": 4,
+      "algorithm": 22,
+      "maxAbsoluteError": 8.463859558105469e-06,
+      "rmsError": 7.777004940245153e-07,
+      "relativeRmsDb": -107.91868990094076,
+      "rmsBefore": 0.19352936422204137,
+      "rmsAfter": 0.19352914209803707
+    },
+    {
+      "case": "organ",
+      "preset": 5,
+      "algorithm": 32,
+      "maxAbsoluteError": 9.5367431640625e-07,
+      "rmsError": 2.495714695702367e-07,
+      "relativeRmsDb": -109.11102766628585,
+      "rmsBefore": 0.07124367595433499,
+      "rmsAfter": 0.07124345277527104
+    }
+  ],
+  "actualSong": {
+    "seconds": 24,
+    "serialParallelIdentical": true,
+    "maxAbsoluteError": 9.5367431640625e-07,
+    "rmsError": 1.5546945649776697e-07,
+    "relativeRmsDb": -113.865532113415
+  },
+  "bitIdentical": false,
+  "note": "The operator tiling alone passed 384 byte-identical reference renders. The final sine lookup keeps the 1e-5 absolute sine-error contract but changes rounding; high-feedback algorithms can amplify numeric differences."
+}

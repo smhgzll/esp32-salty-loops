@@ -1,0 +1,9 @@
+{
+  "name": "sampler",
+  "id": "org.smhgzll.sampler",
+  "entry": "daw_plugin_entry_sampler",
+  "licenseFiles": [],
+  "provenance": [{"component": "sampler", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic", "color": "#ff6b4a", "icon": "wave"}
+}

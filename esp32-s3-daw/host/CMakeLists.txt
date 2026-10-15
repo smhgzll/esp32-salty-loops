@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Native Linux build of the DAW: the same portable core as the firmware, with a Linux platform
+# layer, ALSA audio, an HTTP / WebSocket server for the browser DAW, offline rendering and tests.
+#   cmake -S host -B build-host && cmake --build build-host   (scripts/build-host.sh)
+cmake_minimum_required(VERSION 3.16)
+project(esp32_s3_daw_host C CXX)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE RelWithDebInfo)
+endif()
+get_filename_component(DAW_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/.. ABSOLUTE)
+option(DAW_SANITIZE "AddressSanitizer + UBSan" OFF)
+if(DAW_SANITIZE)
+  add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer)
+  add_link_options(-fsanitize=address,undefined)
+endif()
+
+include(${DAW_ROOT}/plugins/generated/plugins.cmake)
+
+file(GLOB DAW_CORE_SRC ${DAW_ROOT}/components/daw_core/src/*.cpp)
+add_library(daw_core STATIC ${DAW_CORE_SRC} ${DAW_ROOT}/third_party/cJSON/cJSON.c
+            ${DAW_ROOT}/plugins/generated/daw_plugin_registry.c platform_host.cpp)
+target_include_directories(daw_core PUBLIC ${DAW_ROOT}/components/daw_core/include
+                           ${DAW_ROOT}/third_party/daw_plugin_abi ${DAW_ROOT}/third_party/cJSON)
+target_compile_options(daw_core PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers>)
+find_package(ZLIB REQUIRED)  # project slots are deflated (the ESP32-S3 uses its ROM's miniz)
+target_link_libraries(daw_core PUBLIC ${DAW_PLUGIN_LIBS_HOST} ZLIB::ZLIB m)
+
+enable_testing()
+file(GLOB DAW_CORE_TESTS ${DAW_ROOT}/tests/core/test_*.cpp)
+foreach(t ${DAW_CORE_TESTS})
+  get_filename_component(n ${t} NAME_WE)
+  add_executable(${n} ${t})
+  target_include_directories(${n} PRIVATE ${DAW_ROOT}/tests/core)
+  target_link_libraries(${n} PRIVATE daw_core)
+  set_target_properties(${n} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
+  add_test(NAME ${n} COMMAND ${n})
+endforeach()
+
+# the server / workstation executable
+find_package(PkgConfig)
+if(PKG_CONFIG_FOUND)
+  pkg_check_modules(ALSA alsa)
+endif()
+add_executable(daw-host main.cpp http_server.cpp)
+target_link_libraries(daw-host PRIVATE daw_core pthread)
+target_compile_options(daw-host PRIVATE -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers)
+if(ALSA_FOUND)
+  target_compile_definitions(daw-host PRIVATE DAW_HAVE_ALSA=1)
+  target_include_directories(daw-host PRIVATE ${ALSA_INCLUDE_DIRS})
+  target_link_libraries(daw-host PRIVATE ${ALSA_LIBRARIES})
+endif()
+set_target_properties(daw-host PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)

@@ -1,0 +1,47 @@
+[
+  {
+    "project": "4-tracks-live.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "4-tracks-shared.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "4-tracks.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "6-tracks-live.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "6-tracks-shared.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "6-tracks.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "8-tracks-live.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "8-tracks-shared.json",
+    "seconds": 16,
+    "pcmExact": true
+  },
+  {
+    "project": "8-tracks.json",
+    "seconds": 16,
+    "pcmExact": true
+  }
+]

@@ -1,0 +1,173 @@
+{
+  "imageSha256": "645a995ae4a8765bbdd23126016dc5ab47091c3bf76d1642fc3d65fae306da55",
+  "durationSeconds": 120.0,
+  "boot": 53,
+  "partition": "ota_1",
+  "otaState": "valid",
+  "cpuMean": 75.18983050847457,
+  "cpuMaxOneSecond": 87.2,
+  "counterDeltas": {
+    "overruns": 257,
+    "cpuGuardDrops": 500,
+    "underruns": 2,
+    "audioLate": 0,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0
+  },
+  "startupCounters": {
+    "overruns": 17,
+    "cpuGuardDrops": 39,
+    "underruns": 0,
+    "audioLate": 0,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0
+  },
+  "plugins": [
+    {
+      "name": "Distortion Guitar",
+      "plugin": "org.smhgzll.3xosc",
+      "voicesMax": 6,
+      "cpuMean": 26.377118644067796
+    },
+    {
+      "name": "Overdriven Guitar",
+      "plugin": "org.smhgzll.3xosc",
+      "voicesMax": 7,
+      "cpuMean": 24.974576271186443
+    },
+    {
+      "name": "Electric Bass (pick)",
+      "plugin": "org.smhgzll.acid303",
+      "voicesMax": 1,
+      "cpuMean": 15.019491525423728
+    },
+    {
+      "name": "Drums",
+      "plugin": "org.smhgzll.drumlab",
+      "voicesMax": 4,
+      "cpuMean": 24.405084745762714
+    },
+    {
+      "name": "84",
+      "plugin": "org.smhgzll.fx.reverb",
+      "voicesMax": 0,
+      "cpuMean": 21.984745762711864
+    }
+  ],
+  "loadedInstances": 5,
+  "projectUnchanged": true,
+  "samplesUnchanged": true,
+  "lastTransport": {
+    "mode": "song",
+    "play": 1,
+    "tick": 93810
+  },
+  "finalDiagnostics": {
+    "t": "diag",
+    "cpu": 78.1,
+    "renderUsAvg": 4534,
+    "renderUsMax": 23366,
+    "budgetUs": 5804,
+    "overruns": 274,
+    "eventDrops": 0,
+    "noteDrops": 0,
+    "cpuGuardDrops": 539,
+    "load": 66.9,
+    "workerWait": 11.9,
+    "workerBusy": 65.3,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0,
+    "voices": 12,
+    "blocks": 22728,
+    "backlog": 0,
+    "plugins": [
+      {
+        "where": "channel",
+        "id": 2,
+        "plugin": "org.smhgzll.3xosc",
+        "cpu": 25,
+        "voices": 6,
+        "memFast": 1744,
+        "memLarge": 0,
+        "reports": 267
+      },
+      {
+        "where": "channel",
+        "id": 3,
+        "plugin": "org.smhgzll.3xosc",
+        "cpu": 22.4,
+        "voices": 2,
+        "memFast": 1744,
+        "memLarge": 0,
+        "reports": 4
+      },
+      {
+        "where": "channel",
+        "id": 4,
+        "plugin": "org.smhgzll.acid303",
+        "cpu": 19.2,
+        "voices": 1,
+        "memFast": 792,
+        "memLarge": 0,
+        "reports": 0
+      },
+      {
+        "where": "channel",
+        "id": 5,
+        "plugin": "org.smhgzll.drumlab",
+        "cpu": 30.3,
+        "voices": 3,
+        "memFast": 2664,
+        "memLarge": 0,
+        "reports": 0
+      },
+      {
+        "where": "fx",
+        "id": 84,
+        "plugin": "org.smhgzll.fx.reverb",
+        "cpu": 22.1,
+        "voices": 0,
+        "memFast": 752,
+        "memLarge": 137184,
+        "reports": 0
+      }
+    ],
+    "heapInternal": 68679,
+    "heapInternalMin": 25108,
+    "heapInternalLargest": 31744,
+    "psramFree": 16252108,
+    "psramTotal": 16764084,
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 2,
+    "audioLate": 0,
+    "audioWriteUsMax": 5519,
+    "audioBackend": "i2s",
+    "uptimeMs": 132930,
+    "boot": 53,
+    "wsDropped": 3,
+    "wsClients": 2,
+    "audioStackFree": 3968,
+    "parallelInstruments": true,
+    "dspStackFree": 4616,
+    "partition": "ota_1",
+    "otaState": "valid"
+  },
+  "result": "FAIL: steady guard skips, overruns and underruns remain.",
+  "comparisonLimit": "This 120-second current-song window is not the same segment as the earlier 30-second baseline."
+}

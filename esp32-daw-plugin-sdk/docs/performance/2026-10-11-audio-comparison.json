@@ -1,0 +1,31 @@
+{
+  "cases": 241,
+  "identical": 236,
+  "differences": [
+    {
+      "case": "org.smhgzll.soundfont.preset.0",
+      "maxPcm24Difference": 4,
+      "rmsDifference": 8.019436889356275e-08
+    },
+    {
+      "case": "org.smhgzll.soundfont.voices.1",
+      "maxPcm24Difference": 4,
+      "rmsDifference": 8.019436889356275e-08
+    },
+    {
+      "case": "org.smhgzll.soundfont.voices.4",
+      "maxPcm24Difference": 4,
+      "rmsDifference": 8.019436889356275e-08
+    },
+    {
+      "case": "org.smhgzll.soundfont.voices.8",
+      "maxPcm24Difference": 4,
+      "rmsDifference": 8.019436889356275e-08
+    },
+    {
+      "case": "org.smhgzll.soundfont.voices.24",
+      "maxPcm24Difference": 4,
+      "rmsDifference": 8.019436889356275e-08
+    }
+  ]
+}

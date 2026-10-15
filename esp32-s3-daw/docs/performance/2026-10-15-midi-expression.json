@@ -1,0 +1,624 @@
+{
+  "date": "2026-10-15",
+  "task": "Timed MIDI 1.0 file expression and lossless non-note lane retention for selected parts",
+  "firmware": {
+    "boot": 129,
+    "otaState": "valid",
+    "cpuMHz": 240,
+    "bytes": 1845840,
+    "sha256": "bc77b2deaf03946a79598e484d832efe06e94cfc099106c7b0acb45ab7bdd612"
+  },
+  "validation": {
+    "sdkPlugins": {
+      "checks": 1499,
+      "failed": 0
+    },
+    "sdkDsp": {
+      "checks": 350,
+      "failed": 0
+    },
+    "abi": {
+      "eventBytes": 32,
+      "compatible": true
+    },
+    "core": {
+      "suites": 10,
+      "failed": 0,
+      "midiChecks": 40,
+      "sessionChecks": 427
+    },
+    "web": [
+      {
+        "file": "web/src/midi/arrange.test.ts",
+        "passed": true,
+        "summary": [
+          "# tests 8",
+          "# fail 0"
+        ]
+      },
+      {
+        "file": "web/src/midi/expressive.test.ts",
+        "passed": true,
+        "summary": [
+          "# tests 9",
+          "# fail 0"
+        ]
+      },
+      {
+        "file": "web/src/midi/load.test.ts",
+        "passed": true,
+        "summary": [
+          "# tests 4",
+          "# fail 0"
+        ]
+      },
+      {
+        "file": "web/src/midi/smf.test.ts",
+        "passed": true,
+        "summary": [
+          "# tests 18",
+          "# fail 0"
+        ]
+      },
+      {
+        "file": "web/src/tracker/module.test.ts",
+        "passed": true,
+        "summary": [
+          "# tests 9",
+          "# fail 0"
+        ]
+      }
+    ],
+    "network": {
+      "e2e": "PASS",
+      "midiBridge": "PASS",
+      "note": "Run against localhost with network permissions after the sandbox refused socket operations."
+    },
+    "browser": {
+      "checks": 26,
+      "failed": 0,
+      "covers": [
+        "project import",
+        "exact notes",
+        "repeated pattern sharing",
+        "playback",
+        "piano import and undo",
+        "slot save",
+        "size estimate",
+        "guitar effects",
+        "invalid file refusal"
+      ]
+    },
+    "legacyPcm": {
+      "plugins": 19,
+      "stereoFrames": 670320,
+      "allByteIdentical": true,
+      "cases": [
+        {
+          "plugin": "org.smhgzll.3xosc",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "36f94ca43066acb727c6dc31830af8977b93fd8454f56f4e96dd40d04f6e5d09",
+          "logs": [
+            "org.smhgzll.3xosc: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.3xosc-before.wav",
+            "org.smhgzll.3xosc: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.3xosc-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.acid303",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "cce473fd32645568dec0f9072400c1803cd8735067c9ec24157d86e5f0ea4a9e",
+          "logs": [
+            "org.smhgzll.acid303: 0.80 s, peak L 0.317 R 0.317, rms L 0.0551 R 0.0551, hash 14943549e96afe53 -> /tmp/midi-expression/pcm-org.smhgzll.acid303-before.wav",
+            "org.smhgzll.acid303: 0.80 s, peak L 0.317 R 0.317, rms L 0.0551 R 0.0551, hash 14943549e96afe53 -> /tmp/midi-expression/pcm-org.smhgzll.acid303-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.drumlab",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "44ea48fcc2eccbf00ab28b82708b6eab220b9b4319dac577fc91d48c6f017bfb",
+          "logs": [
+            "org.smhgzll.drumlab: 0.80 s, peak L 1.115 R 1.143, rms L 0.0432 R 0.0439, hash 8d5f206c66841fb2 -> /tmp/midi-expression/pcm-org.smhgzll.drumlab-before.wav",
+            "org.smhgzll.drumlab: 0.80 s, peak L 1.115 R 1.143, rms L 0.0432 R 0.0439, hash 8d5f206c66841fb2 -> /tmp/midi-expression/pcm-org.smhgzll.drumlab-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fm6",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "36f94ca43066acb727c6dc31830af8977b93fd8454f56f4e96dd40d04f6e5d09",
+          "logs": [
+            "org.smhgzll.fm6: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.fm6-before.wav",
+            "org.smhgzll.fm6: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.fm6-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.chorus",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "2325e9e7b6465a651cdcb0f1680f00254831dbc4220fdcc968c66ced7262a48d",
+          "logs": [
+            "org.smhgzll.fx.chorus: 0.80 s, peak L 0.356 R 0.336, rms L 0.0772 R 0.0766, hash 5dad08e899bf0a3a -> /tmp/midi-expression/pcm-org.smhgzll.fx.chorus-before.wav",
+            "org.smhgzll.fx.chorus: 0.80 s, peak L 0.356 R 0.336, rms L 0.0772 R 0.0766, hash 5dad08e899bf0a3a -> /tmp/midi-expression/pcm-org.smhgzll.fx.chorus-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.compressor",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "21e3266f3671b11057634f1bdfcd522f75d35f9870c6909800f036038dbe8e67",
+          "logs": [
+            "org.smhgzll.fx.compressor: 0.80 s, peak L 0.391 R 0.391, rms L 0.0730 R 0.0731, hash b30f6fd1b7cc68b8 -> /tmp/midi-expression/pcm-org.smhgzll.fx.compressor-before.wav",
+            "org.smhgzll.fx.compressor: 0.80 s, peak L 0.391 R 0.391, rms L 0.0730 R 0.0731, hash b30f6fd1b7cc68b8 -> /tmp/midi-expression/pcm-org.smhgzll.fx.compressor-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.delay",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "ff3efd8e3db3e2cc77cac24af4622f5fe38035b454b79a94021d45a6deab767b",
+          "logs": [
+            "org.smhgzll.fx.delay: 0.80 s, peak L 0.401 R 0.400, rms L 0.1006 R 0.0939, hash 2109a4576a0c736b -> /tmp/midi-expression/pcm-org.smhgzll.fx.delay-before.wav",
+            "org.smhgzll.fx.delay: 0.80 s, peak L 0.401 R 0.400, rms L 0.1006 R 0.0939, hash 2109a4576a0c736b -> /tmp/midi-expression/pcm-org.smhgzll.fx.delay-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.distortion",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "c16aacd43f78466b3ab7a4d233f64a273c67cf22da9039f1501e42856cb9ea44",
+          "logs": [
+            "org.smhgzll.fx.distortion: 0.80 s, peak L 0.501 R 0.501, rms L 0.2463 R 0.2461, hash 3943db69ba837302 -> /tmp/midi-expression/pcm-org.smhgzll.fx.distortion-before.wav",
+            "org.smhgzll.fx.distortion: 0.80 s, peak L 0.501 R 0.501, rms L 0.2463 R 0.2461, hash 3943db69ba837302 -> /tmp/midi-expression/pcm-org.smhgzll.fx.distortion-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.eq",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "544decb4f22dd2e0646c54b515f6420041835e053e7a734344f5087723078cf8",
+          "logs": [
+            "org.smhgzll.fx.eq: 0.80 s, peak L 0.573 R 0.571, rms L 0.1340 R 0.1339, hash 7daf81968faf82c9 -> /tmp/midi-expression/pcm-org.smhgzll.fx.eq-before.wav",
+            "org.smhgzll.fx.eq: 0.80 s, peak L 0.573 R 0.571, rms L 0.1340 R 0.1339, hash 7daf81968faf82c9 -> /tmp/midi-expression/pcm-org.smhgzll.fx.eq-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.filter",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "cc39628a6c88294b1db20a87e8cb8f8bf003b80302c2679867a4a1471251f060",
+          "logs": [
+            "org.smhgzll.fx.filter: 0.80 s, peak L 0.555 R 0.552, rms L 0.1310 R 0.1309, hash 249d7d8902938e60 -> /tmp/midi-expression/pcm-org.smhgzll.fx.filter-before.wav",
+            "org.smhgzll.fx.filter: 0.80 s, peak L 0.555 R 0.552, rms L 0.1310 R 0.1309, hash 249d7d8902938e60 -> /tmp/midi-expression/pcm-org.smhgzll.fx.filter-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.flanger",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "862d1297f951e1f3f95a04fe1970415046b7106075919aa91d876b2dc4b3eefc",
+          "logs": [
+            "org.smhgzll.fx.flanger: 0.80 s, peak L 0.372 R 0.373, rms L 0.0718 R 0.0785, hash 4cb25ae0682dda43 -> /tmp/midi-expression/pcm-org.smhgzll.fx.flanger-before.wav",
+            "org.smhgzll.fx.flanger: 0.80 s, peak L 0.372 R 0.373, rms L 0.0718 R 0.0785, hash 4cb25ae0682dda43 -> /tmp/midi-expression/pcm-org.smhgzll.fx.flanger-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.limiter",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "ea075d52fa1744247f7f7c0dad87560e40ed575482589a71af7d7eafcf5fbf6b",
+          "logs": [
+            "org.smhgzll.fx.limiter: 0.80 s, peak L 0.573 R 0.571, rms L 0.1340 R 0.1339, hash e13b1cfa3adcaac9 -> /tmp/midi-expression/pcm-org.smhgzll.fx.limiter-before.wav",
+            "org.smhgzll.fx.limiter: 0.80 s, peak L 0.573 R 0.571, rms L 0.1340 R 0.1339, hash e13b1cfa3adcaac9 -> /tmp/midi-expression/pcm-org.smhgzll.fx.limiter-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.reverb",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "e81a016b215d54d4e8c18b7e3039d974f52c7f249f97c58e23a60929315b7034",
+          "logs": [
+            "org.smhgzll.fx.reverb: 0.80 s, peak L 0.430 R 0.428, rms L 0.1001 R 0.1073, hash 70b456584971a1ba -> /tmp/midi-expression/pcm-org.smhgzll.fx.reverb-before.wav",
+            "org.smhgzll.fx.reverb: 0.80 s, peak L 0.430 R 0.428, rms L 0.1001 R 0.1073, hash 70b456584971a1ba -> /tmp/midi-expression/pcm-org.smhgzll.fx.reverb-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.fx.utility",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "b097e6118e5219809c71f372ba23cfbe1e44a31ffe452f413f406285ba6e03c3",
+          "logs": [
+            "org.smhgzll.fx.utility: 0.80 s, peak L 0.573 R 0.571, rms L 0.1340 R 0.1339, hash 2ad78e9e6c98e36c -> /tmp/midi-expression/pcm-org.smhgzll.fx.utility-before.wav",
+            "org.smhgzll.fx.utility: 0.80 s, peak L 0.573 R 0.571, rms L 0.1340 R 0.1339, hash 2ad78e9e6c98e36c -> /tmp/midi-expression/pcm-org.smhgzll.fx.utility-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.macrosynth",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "36f94ca43066acb727c6dc31830af8977b93fd8454f56f4e96dd40d04f6e5d09",
+          "logs": [
+            "org.smhgzll.macrosynth: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.macrosynth-before.wav",
+            "org.smhgzll.macrosynth: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.macrosynth-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.sampler",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "36f94ca43066acb727c6dc31830af8977b93fd8454f56f4e96dd40d04f6e5d09",
+          "logs": [
+            "org.smhgzll.sampler: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.sampler-before.wav",
+            "org.smhgzll.sampler: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.sampler-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.sine",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "36f94ca43066acb727c6dc31830af8977b93fd8454f56f4e96dd40d04f6e5d09",
+          "logs": [
+            "org.smhgzll.sine: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.sine-before.wav",
+            "org.smhgzll.sine: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.sine-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.soundfont",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "36f94ca43066acb727c6dc31830af8977b93fd8454f56f4e96dd40d04f6e5d09",
+          "logs": [
+            "org.smhgzll.soundfont: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.soundfont-before.wav",
+            "org.smhgzll.soundfont: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.soundfont-after.wav"
+          ]
+        },
+        {
+          "plugin": "org.smhgzll.tracker",
+          "frames": 35280,
+          "identical": true,
+          "sha256": "36f94ca43066acb727c6dc31830af8977b93fd8454f56f4e96dd40d04f6e5d09",
+          "logs": [
+            "org.smhgzll.tracker: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.tracker-before.wav",
+            "org.smhgzll.tracker: 0.80 s, peak L 0.000 R 0.000, rms L 0.0000 R 0.0000, hash 20d0cc9144f5aca5 -> /tmp/midi-expression/pcm-org.smhgzll.tracker-after.wav"
+          ]
+        }
+      ]
+    }
+  },
+  "physicalMidi": {
+    "seconds": 5,
+    "font": "TimGM6mb.sf2",
+    "messages": 23,
+    "smfHex": "4d546864000000060000000101e04d54726b000000bb00ff031e4d4944492065787072657373696f6e20686172647761726520636865636b00b0000000b0200000c00000b0650000b0640000b0060c00903c5a78b0407f78b0427f8170803c408170b0420050b040008120c0280090405a8170e000608170b0073c8120b0013c50d05a50a0405081208040208134b07900822cc0000090435a836080434078f0047f7f04010af7030064f7813eb05b468120ff050f507265736572766564206c797269630090485a836080484000ff2f00",
+    "browserDialog": "Import a MIDI file as a project\n\nexpression-hardware.mid — format 0, 1 part, 2 bars, 120 BPM, 4/4\n\nAutomatic instruments\nBuilt-in synths (closest to each part's GM program)\nSoundFont Phoenix_MT-32.sf2 (each part's GM bank and program)\nSoundFont TimGM6mb.sf2 (each part's GM bank and program)\nSoundFont perf-sine.sf2 (each part's GM bank and program)\nSoundFont win-gm.sf2 (each part's GM bank and program)\n\tPart\tInstrument\n\t\nAcoustic Grand Piano\n4 notes · C4–C5\n\t\nAuto: SoundFont 0:0 Piano 1\nSoundFont Phoenix_MT-32.sf2\nSoundFont TimGM6mb.sf2\nSoundFont perf-sine.sf2\nSoundFont win-gm.sf2\n3xOSC · Init\n3xOSC · Super Saw\n3xOSC · Fat Bass\n3xOSC · Pluck\n3xOSC · Warm Pad\n3xOSC · Mono Lead\nAcid303 · Init\nAcid303 · Classic Acid\nAcid303 · Squelch\nAcid303 · Square Bass\nAcid303 · Deep Sub\nAcid303 · Acid Lead\nDrumLab · Default Kit\nDrumLab · Boom 808\nDrumLab · Tight\nFM6 · Init\nFM6 · Electric Piano\nFM6 · FM Bass\nFM6 · Tubular Bell\nFM6 · Brass\nFM6 · Drawbar Organ\nMacroSynth · Init\nMacroSynth · Vowel Pad\nMacroSynth · Plucked String\nMacroSynth · Struck Bell\nMacroSynth · FM Bass\nMacroSynth · Saw Swarm\nMacroSynth · Kick\nSine · Init\nSine · Soft Pad\nSine · Pluck\nSine · Sub\nTracker · Default\n6 voices · ~5 %\nPatterns of\n1 bar\n2 bars\n4 bars\n8 bars\n16 bars\nrepeated parts share one pattern\n\n→ 1 channels, 2 patterns, 2 clips; about 11 KB (~3 KB compressed) of the 128 KB a project slot holds\n\nEstimated DSP load ~25 % of the audio deadline (measured costs; an estimate).\n\nPreserved without a built-in sound mapping: CC 91.\n\n2 SysEx/system messages are preserved. GM/GS/XG global reset, volume and tuning are applied; other vendor commands require a matching synthesizer.\n\nReplaces the current project (save it first to keep it).\nCancel\nImport",
+    "savedMidiRows": [
+      [
+        [
+          0,
+          1,
+          255,
+          3,
+          77,
+          73,
+          68,
+          73,
+          32,
+          101,
+          120,
+          112,
+          114,
+          101,
+          115,
+          115,
+          105,
+          111,
+          110,
+          32,
+          104,
+          97,
+          114,
+          100,
+          119,
+          97,
+          114,
+          101,
+          32,
+          99,
+          104,
+          101,
+          99,
+          107
+        ],
+        [
+          0,
+          2,
+          176,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          176,
+          32,
+          0
+        ],
+        [
+          0,
+          4,
+          192,
+          0
+        ],
+        [
+          0,
+          5,
+          176,
+          101,
+          0
+        ],
+        [
+          0,
+          6,
+          176,
+          100,
+          0
+        ],
+        [
+          0,
+          7,
+          176,
+          6,
+          12
+        ],
+        [
+          240,
+          1,
+          176,
+          64,
+          127
+        ],
+        [
+          480,
+          1,
+          176,
+          66,
+          127
+        ],
+        [
+          1440,
+          1,
+          176,
+          66,
+          0
+        ],
+        [
+          1600,
+          1,
+          176,
+          64,
+          0
+        ],
+        [
+          1920,
+          1,
+          192,
+          40
+        ],
+        [
+          2400,
+          1,
+          224,
+          0,
+          96
+        ],
+        [
+          2880,
+          1,
+          176,
+          7,
+          60
+        ],
+        [
+          3200,
+          1,
+          176,
+          1,
+          60
+        ],
+        [
+          3360,
+          1,
+          208,
+          90
+        ],
+        [
+          3520,
+          1,
+          160,
+          64,
+          80
+        ],
+        [
+          4200,
+          1,
+          176,
+          121,
+          0
+        ],
+        [
+          4800,
+          1,
+          192,
+          0
+        ],
+        [
+          6000,
+          1,
+          240,
+          127,
+          127,
+          4,
+          1
+        ],
+        [
+          6020,
+          1,
+          247,
+          0,
+          100,
+          247
+        ],
+        [
+          6400,
+          1,
+          176,
+          91,
+          70
+        ],
+        [
+          6720,
+          1,
+          255,
+          5,
+          80,
+          114,
+          101,
+          115,
+          101,
+          114,
+          118,
+          101,
+          100,
+          32,
+          108,
+          121,
+          114,
+          105,
+          99
+        ]
+      ]
+    ],
+    "programs": [
+      0,
+      40,
+      0
+    ],
+    "projectRoundTrip": true,
+    "seekTest": true,
+    "browserErrors": [],
+    "deltas": {
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "overruns": 0,
+      "underruns": 0
+    },
+    "voicesAfterStop": 0,
+    "cpuOneSecondValues": [
+      3.4,
+      8.2,
+      10.3,
+      7.5,
+      9
+    ],
+    "note": "No DAC recording or listening claim: note/preset/bend/pressure semantics have separate native PCM assertions; board check uses meters, voices and diagnostics."
+  },
+  "existingProjectBefore": {
+    "seconds": 5,
+    "boot": 128,
+    "publishedCpu": [
+      4.6,
+      4.5,
+      5.4,
+      21.5,
+      20.8
+    ],
+    "meanCpu": 11.36,
+    "counterDeltas": {
+      "underruns": 0,
+      "overruns": 0
+    },
+    "note": "Short window from song start, partly silent; this is a regression smoke check, not a performance comparison."
+  },
+  "existingProjectAfter": {
+    "seconds": 5,
+    "boot": 129,
+    "publishedCpu": [
+      5,
+      4.5,
+      4.5,
+      15.7,
+      21.9
+    ],
+    "meanCpu": 10.32,
+    "counterDeltas": {
+      "underruns": 0,
+      "overruns": 0
+    },
+    "note": "Short window from song start, partly silent; this is a regression smoke check, not a performance comparison."
+  },
+  "restore": {
+    "project": "Stayin' Alive",
+    "channels": 7,
+    "exportIdentical": true,
+    "libraryIdentical": true,
+    "libraryFiles": [
+      {
+        "name": "Phoenix_MT-32.sf2",
+        "size": 6308938,
+        "crc": 3724356293,
+        "type": "sf2"
+      },
+      {
+        "name": "TimGM6mb.sf2",
+        "size": 5969788,
+        "crc": 3607064369,
+        "type": "sf2"
+      },
+      {
+        "name": "ac-ootb.it",
+        "size": 2580466,
+        "crc": 3949241785,
+        "type": "module"
+      },
+      {
+        "name": "perf-sine.sf2",
+        "size": 44488,
+        "crc": 4157046382,
+        "type": "sf2"
+      },
+      {
+        "name": "perf-tone.wav",
+        "size": 44144,
+        "crc": 1055700768,
+        "type": "wav"
+      },
+      {
+        "name": "win-gm.sf2",
+        "size": 3208108,
+        "crc": 321055999,
+        "type": "sf2"
+      }
+    ],
+    "transport": {
+      "mode": "song",
+      "play": 0,
+      "tick": 0,
+      "pattern": 9
+    },
+    "backup": "../../../backups/2026-10-15-before-midi-expression.esp32daw.json"
+  },
+  "limits": [
+    "Manufacturer patch dumps, arbitrary NRPN/RPN, effect routing, portamento and full MT-32/GS/XG synthesizer emulation are retained data without a matching sound implementation.",
+    "SMF 0/1 musical time only; original capacity, polyphony and audio guard limits remain.",
+    "Live SysEx and controller recording are separate from this MIDI file-import change.",
+    "Reimport original MIDI to recover expression previously discarded.",
+    "No QEMU or long stability run."
+  ]
+}

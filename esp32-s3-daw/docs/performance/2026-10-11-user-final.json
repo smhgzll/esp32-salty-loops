@@ -1,0 +1,50 @@
+{
+  "boot": 16,
+  "sampleRate": 44100,
+  "imageSha256": "2637dc70bb95d3bad55b3dd508894de7c17e1e8a6255ad748f15b257edb572e7",
+  "cpuMean": 20.57,
+  "cpuMax": 21.1,
+  "seconds": 70.51,
+  "counterDeltas": {
+    "overruns": 0,
+    "underruns": 0,
+    "cpuGuardDrops": 0,
+    "noteDrops": 0,
+    "eventDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0,
+    "audioLate": 0
+  },
+  "finalCounters": {
+    "overruns": 0,
+    "underruns": 0,
+    "cpuGuardDrops": 0,
+    "noteDrops": 0,
+    "eventDrops": 0,
+    "nanResets": 0,
+    "fxFailures": 0,
+    "cmdOverflow": 0,
+    "retireOverflow": 0,
+    "audioLate": 0
+  },
+  "expectedPlugins": 10,
+  "loadedPlugins": 10,
+  "heapInternal": 78259,
+  "heapInternalMin": 34688,
+  "psramFree": 15902268,
+  "psramTotal": 16764084,
+  "channelPeaks": [
+    0,
+    0,
+    0,
+    0,
+    0.267,
+    0,
+    0,
+    0
+  ],
+  "projectIdentical": true,
+  "playing": 1
+}

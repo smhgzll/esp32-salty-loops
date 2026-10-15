@@ -1,0 +1,7 @@
+# Real hardware: ESP32-S3 N16R16 (octal PSRAM 80 MHz), Wi-Fi, I2S to the PCM5102A on the measured
+# pins GPIO16 (BCK) / GPIO6 (LCK) / GPIO7 (DIN) (the Kconfig defaults; see docs/HARDWARE_TESTS.md).
+CONFIG_DAW_QEMU_BUILD=n
+# Audio and the DSP worker run above the Wi-Fi task; both sleep between blocks.
+CONFIG_DAW_AUDIO_PRIORITY=24
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_DAW_MDNS=y

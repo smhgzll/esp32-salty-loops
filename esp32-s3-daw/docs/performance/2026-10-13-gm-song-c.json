@@ -1,0 +1,91 @@
+{
+ "notes": "GM pop song C (9 TimGM6mb parts, 6,478 notes, drums up to 20 voices), boot 66, imported through the board UI. 60 s Song mode from the start; one-second figures from the diag frames; QEMU not involved.",
+ "secs": 60.0,
+ "cpuMean": 37.4,
+ "cpuMax": 55.6,
+ "renderUsMax": 5153,
+ "budgetUs": 5804,
+ "deltas": {
+  "overruns": 0,
+  "cpuGuardDrops": 0,
+  "underruns": 0,
+  "audioLate": 0,
+  "eventDrops": 0,
+  "noteDrops": 0,
+  "fxFailures": 0,
+  "nanResets": 0
+ },
+ "voicesMax": 56,
+ "instances": 9,
+ "heapInternal": 75659,
+ "heapInternalMin": 27528,
+ "psramFree": 6710804,
+ "workerBusy": 37.4,
+ "boot": 66,
+ "partition": "ota_0",
+ "plugins": {
+  "channel2 soundfont": {
+   "cpuMean": 7.7,
+   "cpuMax": 16.1,
+   "voicesMax": 18,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel3 soundfont": {
+   "cpuMean": 2.3,
+   "cpuMax": 3.4,
+   "voicesMax": 2,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel4 soundfont": {
+   "cpuMean": 2.7,
+   "cpuMax": 4.1,
+   "voicesMax": 3,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel5 soundfont": {
+   "cpuMean": 1.6,
+   "cpuMax": 4.2,
+   "voicesMax": 4,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel6 soundfont": {
+   "cpuMean": 8.0,
+   "cpuMax": 15.9,
+   "voicesMax": 13,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel7 soundfont": {
+   "cpuMean": 4.1,
+   "cpuMax": 8.6,
+   "voicesMax": 6,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel8 soundfont": {
+   "cpuMean": 1.9,
+   "cpuMax": 5.9,
+   "voicesMax": 4,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel9 soundfont": {
+   "cpuMean": 0.0,
+   "cpuMax": 0,
+   "voicesMax": 0,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel10 soundfont": {
+   "cpuMean": 18.7,
+   "cpuMax": 29.1,
+   "voicesMax": 20,
+   "memFast": 48,
+   "memLarge": 358104
+  }
+ }
+}

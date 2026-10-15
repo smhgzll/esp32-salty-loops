@@ -1,0 +1,1522 @@
+{
+  "before": {
+    "name": "esp32daw",
+    "firmware": "0.1.0",
+    "target": "esp32s3",
+    "proto": 1,
+    "rev": 2,
+    "project": "Untitled",
+    "clients": 0,
+    "playing": 0,
+    "cpu": 9.5,
+    "blocks": 855,
+    "overruns": 0,
+    "plugins": 18,
+    "heapInternal": 66535,
+    "heapInternalMin": 22928,
+    "heapInternalLargest": 31744,
+    "psramFree": 15921148,
+    "psramTotal": 16764084,
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 0,
+    "audioLate": 0,
+    "audioWriteUsMax": 25513,
+    "audioBackend": "i2s",
+    "uptimeMs": 5207,
+    "boot": 8,
+    "wsDropped": 0,
+    "wsClients": 0,
+    "audioStackFree": 4604,
+    "partition": "ota_1",
+    "otaState": "valid"
+  },
+  "cases": [
+    {
+      "case": "drumlab",
+      "cpuMean": 19.96,
+      "cpuMax": 20,
+      "renderUsAvg": 1161,
+      "budgetUs": 5804,
+      "heapInternal": 81843,
+      "psramFree": 16644028,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.141
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.drumlab",
+          "cpu": 15.2,
+          "voices": 1,
+          "memFast": 2588,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.131,
+      "complete": true
+    },
+    {
+      "case": "sine",
+      "cpuMean": 9.54,
+      "cpuMax": 9.6,
+      "renderUsAvg": 557,
+      "budgetUs": 5804,
+      "heapInternal": 83291,
+      "psramFree": 16644272,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 1,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.129,
+      "complete": true
+    },
+    {
+      "case": "3xosc",
+      "cpuMean": 14.71,
+      "cpuMax": 14.8,
+      "renderUsAvg": 857,
+      "budgetUs": 5804,
+      "heapInternal": 82731,
+      "psramFree": 16644312,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.142
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.3xosc",
+          "cpu": 9.9,
+          "voices": 1,
+          "memFast": 1580,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 6.098,
+      "complete": true
+    },
+    {
+      "case": "fm6",
+      "cpuMean": 27.77,
+      "cpuMax": 27.8,
+      "renderUsAvg": 1615,
+      "budgetUs": 5804,
+      "heapInternal": 81875,
+      "psramFree": 16644248,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.102
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.fm6",
+          "cpu": 22.9,
+          "voices": 1,
+          "memFast": 2436,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.119,
+      "complete": true
+    },
+    {
+      "case": "acid303",
+      "cpuMean": 25.49,
+      "cpuMax": 25.6,
+      "renderUsAvg": 1482,
+      "budgetUs": 5804,
+      "heapInternal": 83519,
+      "psramFree": 16644032,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.081
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.acid303",
+          "cpu": 20.7,
+          "voices": 1,
+          "memFast": 792,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 6.095,
+      "complete": true
+    },
+    {
+      "case": "macrosynth",
+      "cpuMean": 15.72,
+      "cpuMax": 15.8,
+      "renderUsAvg": 915,
+      "budgetUs": 5804,
+      "heapInternal": 83467,
+      "psramFree": 16576396,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.327
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.macrosynth",
+          "cpu": 10.9,
+          "voices": 2,
+          "memFast": 844,
+          "memLarge": 67984,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.114,
+      "complete": true
+    },
+    {
+      "case": "sampler",
+      "cpuMean": 11.2,
+      "cpuMax": 11.2,
+      "renderUsAvg": 652,
+      "budgetUs": 5804,
+      "heapInternal": 82115,
+      "psramFree": 16554296,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.107
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sampler",
+          "cpu": 6.4,
+          "voices": 1,
+          "memFast": 2196,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.125,
+      "complete": true
+    },
+    {
+      "case": "soundfont",
+      "cpuMean": 6.6,
+      "cpuMax": 6.6,
+      "renderUsAvg": 386,
+      "budgetUs": 5804,
+      "heapInternal": 82191,
+      "psramFree": 16506620,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.119
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 2.1,
+          "voices": 1,
+          "memFast": 2096,
+          "memLarge": 93780,
+          "reports": 0
+        }
+      ],
+      "seconds": 6.112,
+      "complete": true
+    },
+    {
+      "case": "fx.filter",
+      "cpuMean": 14.79,
+      "cpuMax": 14.8,
+      "renderUsAvg": 860,
+      "budgetUs": 5804,
+      "heapInternal": 83123,
+      "psramFree": 16643024,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 2,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 4.3,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.116,
+      "complete": true
+    },
+    {
+      "case": "fx.eq",
+      "cpuMean": 13.85,
+      "cpuMax": 13.9,
+      "renderUsAvg": 807,
+      "budgetUs": 5804,
+      "heapInternal": 82611,
+      "psramFree": 16642752,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.8,
+          "voices": 2,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 3.4,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.123,
+      "complete": true
+    },
+    {
+      "case": "fx.compressor",
+      "cpuMean": 15.86,
+      "cpuMax": 15.9,
+      "renderUsAvg": 922,
+      "budgetUs": 5804,
+      "heapInternal": 83187,
+      "psramFree": 16642256,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 1,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.compressor",
+          "cpu": 5.4,
+          "voices": 0,
+          "memFast": 80,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.131,
+      "complete": true
+    },
+    {
+      "case": "fx.distortion",
+      "cpuMean": 18.9,
+      "cpuMax": 19,
+      "renderUsAvg": 1099,
+      "budgetUs": 5804,
+      "heapInternal": 83155,
+      "psramFree": 16643040,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 2,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.distortion",
+          "cpu": 8.5,
+          "voices": 0,
+          "memFast": 112,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.115,
+      "complete": true
+    },
+    {
+      "case": "fx.utility",
+      "cpuMean": 11.62,
+      "cpuMax": 11.7,
+      "renderUsAvg": 677,
+      "budgetUs": 5804,
+      "heapInternal": 83187,
+      "psramFree": 16642244,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 2,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.utility",
+          "cpu": 1.2,
+          "voices": 0,
+          "memFast": 80,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.097,
+      "complete": true
+    },
+    {
+      "case": "fx.chorus",
+      "cpuMean": 38,
+      "cpuMax": 38,
+      "renderUsAvg": 2209,
+      "budgetUs": 5804,
+      "heapInternal": 83143,
+      "psramFree": 16610232,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.227
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 2,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.chorus",
+          "cpu": 27.6,
+          "voices": 0,
+          "memFast": 124,
+          "memLarge": 32768,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.111,
+      "complete": true
+    },
+    {
+      "case": "fx.flanger",
+      "cpuMean": 24.62,
+      "cpuMax": 24.7,
+      "renderUsAvg": 1433,
+      "budgetUs": 5804,
+      "heapInternal": 83139,
+      "psramFree": 16634780,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 1,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.flanger",
+          "cpu": 14.3,
+          "voices": 0,
+          "memFast": 128,
+          "memLarge": 8192,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.112,
+      "complete": true
+    },
+    {
+      "case": "fx.delay",
+      "cpuMean": 18.56,
+      "cpuMax": 18.6,
+      "renderUsAvg": 1080,
+      "budgetUs": 5804,
+      "heapInternal": 83159,
+      "psramFree": 15935804,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.228
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 1,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.delay",
+          "cpu": 8.1,
+          "voices": 0,
+          "memFast": 108,
+          "memLarge": 705632,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.114,
+      "complete": true
+    },
+    {
+      "case": "fx.reverb",
+      "cpuMean": 33.7,
+      "cpuMax": 33.8,
+      "renderUsAvg": 1958,
+      "budgetUs": 5804,
+      "heapInternal": 82799,
+      "psramFree": 16505828,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.222
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 2,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.reverb",
+          "cpu": 23.1,
+          "voices": 0,
+          "memFast": 468,
+          "memLarge": 137184,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.061,
+      "complete": true
+    },
+    {
+      "case": "fx.limiter",
+      "cpuMean": 13.97,
+      "cpuMax": 14,
+      "renderUsAvg": 813,
+      "budgetUs": 5804,
+      "heapInternal": 81907,
+      "psramFree": 16643176,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.227
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 4.7,
+          "voices": 2,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.limiter",
+          "cpu": 3.5,
+          "voices": 0,
+          "memFast": 1360,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.109,
+      "complete": true
+    },
+    {
+      "case": "4-tracks",
+      "cpuMean": 95.22,
+      "cpuMax": 95.3,
+      "renderUsAvg": 5531,
+      "budgetUs": 5804,
+      "heapInternal": 71111,
+      "psramFree": 15770400,
+      "counterDeltas": {
+        "overruns": 126,
+        "underruns": 0,
+        "cpuGuardDrops": 70,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.drumlab",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 2588,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.3xosc",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 1580,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.fm6",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 2436,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.compressor",
+          "cpu": 3,
+          "voices": 0,
+          "memFast": 80,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 301,
+          "plugin": "org.smhgzll.fx.limiter",
+          "cpu": 3.3,
+          "voices": 0,
+          "memFast": 1360,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 204,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.9,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 205,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.3,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 208,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 209,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 212,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 213,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 216,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 217,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 350,
+          "plugin": "org.smhgzll.fx.delay",
+          "cpu": 0.8,
+          "voices": 0,
+          "memFast": 108,
+          "memLarge": 705632,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 351,
+          "plugin": "org.smhgzll.fx.reverb",
+          "cpu": 21.9,
+          "voices": 0,
+          "memFast": 468,
+          "memLarge": 137184,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.016,
+      "complete": false
+    },
+    {
+      "case": "6-tracks",
+      "cpuMean": 124.41,
+      "cpuMax": 125.8,
+      "renderUsAvg": 7224,
+      "budgetUs": 5804,
+      "heapInternal": 67731,
+      "psramFree": 15687816,
+      "counterDeltas": {
+        "overruns": 946,
+        "underruns": 266,
+        "cpuGuardDrops": 90,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.drumlab",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 2588,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.3xosc",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 1580,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.fm6",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 2436,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.acid303",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 792,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.macrosynth",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 844,
+          "memLarge": 67984,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.compressor",
+          "cpu": 3,
+          "voices": 0,
+          "memFast": 80,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 301,
+          "plugin": "org.smhgzll.fx.limiter",
+          "cpu": 3.3,
+          "voices": 0,
+          "memFast": 1360,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 204,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.9,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 205,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.3,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 208,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 209,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 212,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 5.5,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 213,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 216,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 217,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 220,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 221,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 224,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 225,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 350,
+          "plugin": "org.smhgzll.fx.delay",
+          "cpu": 0.8,
+          "voices": 0,
+          "memFast": 108,
+          "memLarge": 705632,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 351,
+          "plugin": "org.smhgzll.fx.reverb",
+          "cpu": 21.9,
+          "voices": 0,
+          "memFast": 468,
+          "memLarge": 137184,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.044,
+      "complete": false
+    },
+    {
+      "case": "8-tracks",
+      "cpuMean": 109.04,
+      "cpuMax": 132.5,
+      "renderUsAvg": 6332,
+      "budgetUs": 5804,
+      "heapInternal": 66199,
+      "psramFree": 16292168,
+      "counterDeltas": {
+        "overruns": 654,
+        "underruns": 154,
+        "cpuGuardDrops": 90,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.129,
+        0.216,
+        0.196,
+        0.194,
+        0.071,
+        0.316,
+        0.107,
+        0.239
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.drumlab",
+          "cpu": 11.1,
+          "voices": 1,
+          "memFast": 2588,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.sine",
+          "cpu": 1.2,
+          "voices": 1,
+          "memFast": 1020,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.3xosc",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 1580,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.fm6",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 2436,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.acid303",
+          "cpu": 5.3,
+          "voices": 1,
+          "memFast": 792,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.macrosynth",
+          "cpu": 5.8,
+          "voices": 1,
+          "memFast": 844,
+          "memLarge": 67984,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.sampler",
+          "cpu": 3.3,
+          "voices": 1,
+          "memFast": 2196,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 2096,
+          "memLarge": 93780,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 300,
+          "plugin": "org.smhgzll.fx.compressor",
+          "cpu": 4.7,
+          "voices": 0,
+          "memFast": 80,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 301,
+          "plugin": "org.smhgzll.fx.limiter",
+          "cpu": 3.5,
+          "voices": 0,
+          "memFast": 1360,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 204,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 4.2,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 205,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.8,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 208,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 4,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 209,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.6,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 212,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 213,
+          "plugin": "org.smhgzll.fx.eq",
+          "cpu": 7.2,
+          "voices": 0,
+          "memFast": 656,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 216,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.8,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        },
+        {
+          "where": "fx",
+          "id": 220,
+          "plugin": "org.smhgzll.fx.filter",
+          "cpu": 3.9,
+          "voices": 0,
+          "memFast": 144,
+          "memLarge": 0,
+          "reports": 0
+        }
+      ],
+      "seconds": 7.09,
+      "complete": false
+    }
+  ],
+  "restored": true,
+  "after": {
+    "name": "esp32daw",
+    "firmware": "0.1.0",
+    "target": "esp32s3",
+    "proto": 1,
+    "rev": 46,
+    "project": "Untitled",
+    "clients": 2,
+    "playing": 0,
+    "cpu": 104.1,
+    "blocks": 39074,
+    "overruns": 2716,
+    "plugins": 18,
+    "heapInternal": 67543,
+    "heapInternalMin": 16280,
+    "heapInternalLargest": 31744,
+    "psramFree": 15917216,
+    "psramTotal": 16764084,
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 768,
+    "audioLate": 0,
+    "audioWriteUsMax": 42102,
+    "audioBackend": "i2s",
+    "uptimeMs": 232656,
+    "boot": 8,
+    "wsDropped": 81,
+    "wsClients": 2,
+    "audioStackFree": 4252,
+    "partition": "ota_1",
+    "otaState": "valid"
+  }
+}

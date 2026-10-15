@@ -1,0 +1,1911 @@
+# Open303 (https://github.com/RobinSchmidt/Open303, commit 313bf0d9ade7c1dcb6b3a74f5ea1780a29d70074) for
+# esp32-daw-plugin-sdk: double -> float in every compiled file (the ESP32-S3 FPU is single precision;
+# double math is software-emulated there); GlobalFunctions.h: exp2 / log2 / round disabled (they
+# clash with the C++ library's float overloads, which compute the same). rosic_Open303.* unmodified
+# (reference for plugins/acid303). Upstream uses CRLF line endings: apply with
+#   cd <Open303 checkout> && patch -p1 --binary < open303-esp32-daw.patch
+--- a/Source/DSPCode/GlobalDefinitions.h
++++ b/Source/DSPCode/GlobalDefinitions.h
+@@ -57,7 +57,7 @@
+ 
+ // define infinity values:
+ 
+-inline double dummyFunction(double x) { return x; }
++inline float dummyFunction(float x) { return x; }
+ #define INF (1.0/dummyFunction(0.0))
+ #define NEG_INF (-1.0/dummyFunction(0.0))
+ 
+@@ -86,7 +86,7 @@
+ //-------------------------------------------------------------------------------------------------
+ // bit twiddling:
+ 
+-//extract the exponent from a IEEE 754 floating point number (single and double precision):
++//extract the exponent from a IEEE 754 floating point number (single and float precision):
+ #define EXPOFFLT(value) (((*((reinterpret_cast<UINT32 *>(&value)))&0x7FFFFFFF)>>23)-127)
+ #define EXPOFDBL(value) (((*((reinterpret_cast<UINT64 *>(&value)))&0x7FFFFFFFFFFFFFFFULL)>>52)-1023)
+   // ULL indicates an unsigned long long literal constant
+--- a/Source/DSPCode/GlobalFunctions.h
++++ b/Source/DSPCode/GlobalFunctions.h
+@@ -9,11 +9,11 @@
+ rosic namespace to facilitate their global use. */
+ 
+ /** Converts a raw amplitude value/factor to a value in decibels. */
+-INLINE double amp2dB(double amp);
++INLINE float amp2dB(float amp);
+ 
+ /** Converts a raw amplitude value/factor to a value in decibels with a check, if the amplitude is
+ close to zero (to avoid log-of-zero and related errors). */
+-INLINE double amp2dBWithCheck(double amp, double lowAmplitude = 0.000001);
++INLINE float amp2dBWithCheck(float amp, float lowAmplitude = 0.000001);
+ 
+ /** Returns the index of the maximum value in an array of doubles where the array should be of
+ length numValues. */
+@@ -27,35 +27,37 @@
+ 
+ /** Converts a time-stamp given in beats into seconds acording to a tempo measured in beats per
+ minute (bpm). */
+-INLINE double beatsToSeconds(double beat, double bpm);
++INLINE float beatsToSeconds(float beat, float bpm);
+ 
+ /** Converts a value in decibels to a raw amplitude value/factor. */
+-INLINE double dB2amp(double x);
++INLINE float dB2amp(float x);
+ 
+ /** Converts an angle in degrees into radiant. */
+-INLINE double degreeToRadiant(double degrees);
++INLINE float degreeToRadiant(float degrees);
+ 
+ /** Frees the memory associated with the pointer ans sets the poiter itself to NULL */
+ //INLINE void deleteAndNullifyPointer(void *pointer);
+ 
+ /** Returns the Euclidean distance between points at coordinates (x1,y1), (x2,y2). */
+-INLINE double euclideanDistance(double x1, double y1, double x2, double y2);
++INLINE float euclideanDistance(float x1, float y1, float x2, float y2);
+ 
+ /** Calculates the exponential function with base 10. */
+-INLINE double exp10(double x);
++INLINE float exp10(float x);
+ 
+ /** Calculates the exponential function with base 2. */
+-INLINE double exp2(double x);
++#if 0 /* esp32-daw: provided by the C++ library's float overloads (identical results; these clash with them) */
++INLINE float exp2(float x);
++#endif
+ 
+ /** Calculates the factorial of some integer n >= 0. */
+ //INLINE int factorial(int n);
+ 
+ /** Converts a frequency in Hz into a MIDI-note value assuming A4 = 440 Hz. */
+-INLINE double freqToPitch(double freq);
++INLINE float freqToPitch(float freq);
+ 
+ /** Converts a frequency in Hz into a MIDI-note value for tunings different than the
+ default 440 Hz. */
+-INLINE double freqToPitch(double freq, double masterTuneA4);
++INLINE float freqToPitch(float freq, float masterTuneA4);
+ 
+ /** Checks a pointer for nullity and if it is not NULL, it calls delete for the associated object
+ and then sets the pointer to NULL. */
+@@ -66,7 +68,7 @@
+ INLINE float indexToNormalizedValue(int index, int numIndices);
+ 
+ /** Checks, if x is close to some target-value within some tolerance. */
+-INLINE bool isCloseTo(double x, double targetValue, double tolerance);
++INLINE bool isCloseTo(float x, float targetValue, float tolerance);
+ 
+ /** Checks, if x is even. */
+ INLINE bool isEven(int x);
+@@ -78,36 +80,38 @@
+ INLINE bool isPowerOfTwo(unsigned int x);
+ 
+ /** Calculates the logarithm to base 2. */
+-INLINE double log2(double x);
++#if 0 /* esp32-daw: provided by the C++ library's float overloads (identical results; these clash with them) */
++INLINE float log2(float x);
++#endif
+ 
+ /** Calculates logarithm to an arbitrary base b. */
+-INLINE double logB(double x, double b);
++INLINE float logB(float x, float b);
+ 
+ /** Converts a value between inMin and inMax into a value between outMin and outMax where the
+ mapping is linear for the input and the output. Example: y = linToLin(x, 0.0, 1.0, -96.0, 24.0)
+ will map the input x assumed to lie inside 0.0...1.0 to the range between -96.0...24.0. This
+ function is useful to convert between parameter representations between 0.0...1.0 and the
+ clear-text parameters. */
+-INLINE double linToLin(double in, double inMin, double inMax, double outMin, double outMax);
++INLINE float linToLin(float in, float inMin, float inMax, float outMin, float outMax);
+ 
+ /** Converts a value between inMin and inMax into a value between outMin and outMax where the
+ mapping of the output is exponential. Example: y = linToExp(x, 0.0, 1.0, 20.0, 20000.0) will map
+ the input x assumed to lie inside 0.0...1.0 to the range between 20.0...20000.0 where equal
+ differences in the input lead to equal factors in the output. Make sure that the outMin value is
+ greater than zero! */
+-INLINE double linToExp(double in, double inMin, double inMax, double outMin, double outMax);
++INLINE float linToExp(float in, float inMin, float inMax, float outMin, float outMax);
+ 
+ /** Same as linToExp but adds an offset afterwards and compensates for that offset by scaling the
+ offsetted value so as to hit the outMax correctly. */
+-INLINE double linToExpWithOffset(double in, double inMin, double inMax, double outMin,
+-                                 double outMax, double offset = 0.0);
++INLINE float linToExpWithOffset(float in, float inMin, float inMax, float outMin,
++                                 float outMax, float offset = 0.0);
+ 
+ /** The Inverse of "linToExp" */
+-INLINE double expToLin(double in, double inMin, double inMax, double outMin, double outMax);
++INLINE float expToLin(float in, float inMin, float inMax, float outMin, float outMax);
+ 
+ /** The Inverse of "linToExpWithOffset" */
+-INLINE double expToLinWithOffset(double in, double inMin, double inMax, double outMin,
+-                                 double outMax, double offset = 0.0);
++INLINE float expToLinWithOffset(float in, float inMin, float inMax, float outMin,
++                                 float outMax, float offset = 0.0);
+ 
+ /** Returns a power of two which is greater than or equal to the input argument. */
+ template <class T>
+@@ -118,16 +122,16 @@
+ INLINE int normalizedValueToIndex(float normalizedValue, int numIndices);
+ 
+ /** Converts a picth-offset in semitones value into a frequency multiplication factor. */
+-INLINE double pitchOffsetToFreqFactor(double pitchOffset);
++INLINE float pitchOffsetToFreqFactor(float pitchOffset);
+ 
+ /** Converts a MIDI-note value into a frequency in Hz assuming A4 = 440 Hz. */
+-INLINE double pitchToFreq(double pitch);
++INLINE float pitchToFreq(float pitch);
+ 
+ /** Converts a MIDI-note value into a frequency in Hz for arbitrary master-tunings of A4. */
+-INLINE double pitchToFreq(double pitch, double masterTuneA4);
++INLINE float pitchToFreq(float pitch, float masterTuneA4);
+ 
+ /** Converts an angle in radiant into degrees. */
+-INLINE double radiantToDegree(double radiant);
++INLINE float radiantToDegree(float radiant);
+ 
+ /** Generates a random number that is uniformly distributed between min and max (inclusive). The
+ underlying integer pseudo random number generator is a linear congruential with period length of 
+@@ -135,31 +139,33 @@
+ first call to initialize it - otherwise it will use 0 as seed. A negative number (as in the default 
+ argument) will indicate to not initialize the state and just generate a random number based on the 
+ last state (which is the case for a typical call). */
+-INLINE double randomUniform(double min = 0.0, double max = 1.0, int seed = -1);
++INLINE float randomUniform(float min = 0.0, float max = 1.0, int seed = -1);
+ 
+-/** Returns the nearest integer (as double, without typecast). */
+-INLINE double round(double x);
++/** Returns the nearest integer (as float, without typecast). */
++#if 0 /* esp32-daw: provided by the C++ library's float overloads (identical results; these clash with them) */
++INLINE float round(float x);
++#endif
+ 
+ /** Converts a time value in seconds into a time value measured in beats. */
+-INLINE double secondsToBeats(double timeInSeconds, double bpm);
++INLINE float secondsToBeats(float timeInSeconds, float bpm);
+ 
+-/** Returns the sign of x as double. */
+-INLINE double sign(double x);
++/** Returns the sign of x as float. */
++INLINE float sign(float x);
+ 
+ /** Converts a time-stamp given in whole notes into seconds according to a tempo measured in
+ beats per minute (bpm). */
+-INLINE double wholeNotesToSeconds(double noteValue, double bpm);
++INLINE float wholeNotesToSeconds(float noteValue, float bpm);
+ 
+ //=================================================================================================
+ //implementation:
+ 
+-INLINE double amp2dB(double amp)
++INLINE float amp2dB(float amp)
+ {
+   return 8.6858896380650365530225783783321 * log(amp);
+   //return 20*log10(amp); // naive version
+ }
+ 
+-INLINE double amp2dBWithCheck(double amp, double lowAmplitude)
++INLINE float amp2dBWithCheck(float amp, float lowAmplitude)
+ {
+   if( amp >= lowAmplitude )
+     return 8.6858896380650365530225783783321 * log(amp);
+@@ -171,7 +177,7 @@
+ INLINE int arrayMaxIndex(T* theArray, int numValues)
+ {
+   int    maxIndex = 0;
+-  double maxValue = theArray[0];
++  float maxValue = theArray[0];
+   for(int i=0; i<numValues; i++)
+   {
+     if( theArray[i] > maxValue )
+@@ -187,7 +193,7 @@
+ INLINE int arrayMinIndex(T* theArray, int numValues)
+ {
+   int    minIndex = 0;
+-  double minValue = theArray[0];
++  float minValue = theArray[0];
+   for(int i=0; i<numValues; i++)
+   {
+     if( theArray[i] < minValue )
+@@ -199,18 +205,18 @@
+   return minIndex;
+ }
+ 
+-INLINE double beatsToSeconds(double beat, double bpm)
++INLINE float beatsToSeconds(float beat, float bpm)
+ {
+   return (60.0/bpm)*beat;
+ }
+ 
+-INLINE double dB2amp(double dB)
++INLINE float dB2amp(float dB)
+ {
+   return exp(dB * 0.11512925464970228420089957273422);
+   //return pow(10.0, (0.05*dB)); // naive, inefficient version
+ }
+ 
+-INLINE double degreeToRadiant(double degrees)
++INLINE float degreeToRadiant(float degrees)
+ {
+   return (PI/180.0)*degrees;
+ }
+@@ -223,27 +229,29 @@
+ }
+ */
+ 
+-INLINE double euclideanDistance(double x1, double y1, double x2, double y2)
++INLINE float euclideanDistance(float x1, float y1, float x2, float y2)
+ {
+   return sqrt( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) );
+ }
+ 
+-INLINE double exp10(double x)
++INLINE float exp10(float x)
+ {
+   return exp(LN10*x);
+ }
+ 
+-INLINE double exp2(double x)
++#if 0
++INLINE float exp2(float x)
+ {
+   return exp(LN2*x);
+ }
++#endif
+ 
+-INLINE double freqToPitch(double freq)
++INLINE float freqToPitch(float freq)
+ {
+   return 12.0 * log2(freq/440.0) + 69.0;
+ }
+ 
+-INLINE double freqToPitch(double freq, double masterTuneA4)
++INLINE float freqToPitch(float freq, float masterTuneA4)
+ {
+   return 12.0 * log2(freq/masterTuneA4) + 69.0;
+ }
+@@ -264,7 +272,7 @@
+   return (float) (2*index+1) / (float) (2*numIndices);
+ }
+ 
+-INLINE bool isCloseTo(double x, double targetValue, double tolerance)
++INLINE bool isCloseTo(float x, float targetValue, float tolerance)
+ {
+   if( fabs(x-targetValue) <= tolerance )
+     return true;
+@@ -300,20 +308,22 @@
+   return false;
+ }
+ 
+-INLINE double log2(double x)
++#if 0
++INLINE float log2(float x)
+ {
+   return ONE_OVER_LN2*log(x);
+ }
++#endif
+ 
+-INLINE double logB(double x, double b)
++INLINE float logB(float x, float b)
+ {
+   return log(x)/log(b);
+ }
+ 
+-INLINE double linToLin(double in, double inMin, double inMax, double outMin, double outMax)
++INLINE float linToLin(float in, float inMin, float inMax, float outMin, float outMax)
+ {
+   // map input to the range 0.0...1.0:
+-  double tmp = (in-inMin) / (inMax-inMin);
++  float tmp = (in-inMin) / (inMax-inMin);
+ 
+   // map the tmp-value to the range outMin...outMax:
+   tmp *= (outMax-outMin);
+@@ -322,39 +332,39 @@
+   return tmp;
+ }
+ 
+-INLINE double linToExp(double in, double inMin, double inMax, double outMin, double outMax)
++INLINE float linToExp(float in, float inMin, float inMax, float outMin, float outMax)
+ {
+   // map input to the range 0.0...1.0:
+-  double tmp = (in-inMin) / (inMax-inMin);
++  float tmp = (in-inMin) / (inMax-inMin);
+ 
+   // map the tmp-value exponentially to the range outMin...outMax:
+   //tmp = outMin * exp( tmp*(log(outMax)-log(outMin)) );
+   return outMin * exp( tmp*(log(outMax/outMin)) );
+ }
+ 
+-INLINE double linToExpWithOffset(double in, double inMin, double inMax, double outMin,
+-                                 double outMax, double offset)
++INLINE float linToExpWithOffset(float in, float inMin, float inMax, float outMin,
++                                 float outMax, float offset)
+ {
+-  double tmp = linToExp(in, inMin, inMax, outMin, outMax);
++  float tmp = linToExp(in, inMin, inMax, outMin, outMax);
+   tmp += offset;
+   tmp *= outMax/(outMax+offset);
+   return tmp;
+ }
+ 
+-INLINE double expToLin(double in, double inMin, double inMax, double outMin, double outMax)
++INLINE float expToLin(float in, float inMin, float inMax, float outMin, float outMax)
+ {
+-  double tmp = log(in/inMin) / log(inMax/inMin);
++  float tmp = log(in/inMin) / log(inMax/inMin);
+   return outMin + tmp * (outMax-outMin);
+ }
+ 
+-INLINE double expToLinWithOffset(double in, double inMin, double inMax, double outMin,
+-                                 double outMax, double offset)
++INLINE float expToLinWithOffset(float in, float inMin, float inMax, float outMin,
++                                 float outMax, float offset)
+ {
+-  double tmp = in*(inMax+offset)/inMax;
++  float tmp = in*(inMax+offset)/inMax;
+   tmp -= offset;
+   return expToLin(tmp, inMin, inMax, outMin, outMax);
+   /*
+-  double tmp = linToExp(in, inMin, inMax, outMin, outMax);
++  float tmp = linToExp(in, inMin, inMax, outMin, outMax);
+   tmp += offset;
+   tmp *= outMax/(outMax+offset);
+   return tmp;
+@@ -375,30 +385,30 @@
+   return (int) floor(normalizedValue*numIndices);
+ }
+ 
+-INLINE double pitchOffsetToFreqFactor(double pitchOffset)
++INLINE float pitchOffsetToFreqFactor(float pitchOffset)
+ {
+   return exp(0.057762265046662109118102676788181 * pitchOffset);
+   //return pow(2.0, pitchOffset/12.0); // naive, slower but numerically more precise
+ }
+ 
+-INLINE double pitchToFreq(double pitch)
++INLINE float pitchToFreq(float pitch)
+ {
+   return 8.1757989156437073336828122976033 * exp(0.057762265046662109118102676788181*pitch);
+   //return 440.0*( pow(2.0, (pitch-69.0)/12.0) ); // naive, slower but numerically more precise
+ }
+ 
+-INLINE double pitchToFreq(double pitch, double masterTuneA4)
++INLINE float pitchToFreq(float pitch, float masterTuneA4)
+ {
+   return masterTuneA4 * 0.018581361171917516667460937040007
+     * exp(0.057762265046662109118102676788181*pitch);
+ }
+ 
+-INLINE double radiantToDegree(double radiant)
++INLINE float radiantToDegree(float radiant)
+ {
+   return (180.0/PI)*radiant;
+ }
+ 
+-INLINE double randomUniform(double min, double max, int seed)
++INLINE float randomUniform(float min, float max, int seed)
+ {
+   static unsigned long state = 0;
+   if( seed >= 0 )
+@@ -407,20 +417,22 @@
+   return min + (max-min) * ((1.0/4294967296.0) * state); // transform to desired range
+ }
+ 
+-INLINE double round(double x)
++#if 0
++INLINE float round(float x)
+ {
+   if( x-floor(x) >= 0.5 )
+     return ceil(x);
+   else
+     return floor(x);
+ }
++#endif
+ 
+-INLINE double secondsToBeats(double timeInSeconds, double bpm)
++INLINE float secondsToBeats(float timeInSeconds, float bpm)
+ {
+   return timeInSeconds*(bpm/60.0);
+ }
+ 
+-INLINE double sign(double x)
++INLINE float sign(float x)
+ {
+   if(x<0)
+     return -1.0;
+@@ -430,7 +442,7 @@
+     return 0;
+ }
+ 
+-INLINE double wholeNotesToSeconds(double noteValue, double bpm)
++INLINE float wholeNotesToSeconds(float noteValue, float bpm)
+ {
+   return (240.0/bpm)*noteValue;
+ }
+--- a/Source/DSPCode/rosic_AnalogEnvelope.cpp
++++ b/Source/DSPCode/rosic_AnalogEnvelope.cpp
+@@ -43,7 +43,7 @@
+ //-------------------------------------------------------------------------------------------------
+ // parameter settings:
+ 
+-void AnalogEnvelope::setSampleRate(double newSampleRate)
++void AnalogEnvelope::setSampleRate(float newSampleRate)
+ {
+   if( newSampleRate > 0.0 )
+     sampleRate = newSampleRate;
+@@ -57,12 +57,12 @@
+   setRelease(releaseTime);
+ }
+ 
+-void AnalogEnvelope::setAttack(double newAttackTime)
++void AnalogEnvelope::setAttack(float newAttackTime)
+ {
+   if( newAttackTime > 0.0 )
+   {
+     attackTime  = newAttackTime;
+-    double tau  = (sampleRate*0.001*attackTime) * tauScale/timeScale;
++    float tau  = (sampleRate*0.001*attackTime) * tauScale/timeScale;
+     attackCoeff = 1.0 - exp( -1.0 / tau );
+   }
+   else // newAttackTime <= 0
+@@ -73,19 +73,19 @@
+   calculateAccumulatedTimes();
+ }
+ 
+-void AnalogEnvelope::setHold(double newHoldTime)
++void AnalogEnvelope::setHold(float newHoldTime)
+ {
+   if( newHoldTime >= 0 )
+     holdTime = newHoldTime;
+   calculateAccumulatedTimes();
+ }
+ 
+-void AnalogEnvelope::setDecay(double newDecayTime)
++void AnalogEnvelope::setDecay(float newDecayTime)
+ {
+   if( newDecayTime > 0.0 )
+   {
+     decayTime  = newDecayTime;
+-    double tau = (sampleRate*0.001*decayTime) * tauScale/timeScale;
++    float tau = (sampleRate*0.001*decayTime) * tauScale/timeScale;
+     decayCoeff = 1.0 - exp( -1.0 / tau  );
+   }
+   else // newDecayTime <= 0
+@@ -96,12 +96,12 @@
+   calculateAccumulatedTimes();
+ }
+ 
+-void AnalogEnvelope::setRelease(double newReleaseTime)
++void AnalogEnvelope::setRelease(float newReleaseTime)
+ {
+   if( newReleaseTime > 0.0 )
+   {
+     releaseTime  = newReleaseTime;
+-    double tau   = (sampleRate*0.001*releaseTime) * tauScale/timeScale;
++    float tau   = (sampleRate*0.001*releaseTime) * tauScale/timeScale;
+     releaseCoeff = 1.0 - exp( -1.0 / tau  );
+   }
+   else // newReleaseTime <= 0
+@@ -112,7 +112,7 @@
+   calculateAccumulatedTimes();
+ }
+ 
+-void AnalogEnvelope::setTimeScale(double newTimeScale)
++void AnalogEnvelope::setTimeScale(float newTimeScale)
+ {
+   if( newTimeScale > 0 )
+     timeScale = newTimeScale;
+@@ -125,7 +125,7 @@
+   setRelease(releaseTime);
+ }
+ 
+-void AnalogEnvelope::setTauScale(double newTauScale)
++void AnalogEnvelope::setTauScale(float newTauScale)
+ {
+   if( newTauScale > 0 )
+     tauScale = newTauScale;
+@@ -135,7 +135,7 @@
+   setRelease(releaseTime);
+ }
+ 
+-void AnalogEnvelope::setPeakScale(double newPeakScale)
++void AnalogEnvelope::setPeakScale(float newPeakScale)
+ {
+   if( newPeakScale > 0 )
+     peakScale = newPeakScale;
+--- a/Source/DSPCode/rosic_AnalogEnvelope.h
++++ b/Source/DSPCode/rosic_AnalogEnvelope.h
+@@ -39,100 +39,100 @@
+     // parameter settings:
+ 
+     /** sets the sample-rate. */
+-    void setSampleRate(double newSampleRate);  
++    void setSampleRate(float newSampleRate);  
+ 
+     /** Sets the point where the envelope starts (as raw value). */
+-    void setStartLevel(double newStart) { startLevel = newStart; }
++    void setStartLevel(float newStart) { startLevel = newStart; }
+ 
+     /** Sets the point where the envelope starts (in dB). */
+-    void setStartInDecibels(double newStart) { setStartLevel(dB2amp(newStart)); }
++    void setStartInDecibels(float newStart) { setStartLevel(dB2amp(newStart)); }
+ 
+     /** Sets the point where the envelope starts (in semitones). */
+-    void setStartInSemitones(double newStart) { setStartLevel(pitchOffsetToFreqFactor(newStart)); }  
++    void setStartInSemitones(float newStart) { setStartLevel(pitchOffsetToFreqFactor(newStart)); }  
+ 
+     /** Sets the highest point of the envelope (as raw value). */
+-    void setPeakLevel(double newPeak) { peakLevel = newPeak; }
++    void setPeakLevel(float newPeak) { peakLevel = newPeak; }
+ 
+     /** Sets the highest point of the envelope (in dB). */
+-    void setPeakInDecibels(double newPeak) { setPeakLevel(dB2amp(newPeak)); }
++    void setPeakInDecibels(float newPeak) { setPeakLevel(dB2amp(newPeak)); }
+ 
+     /** Sets the highest point of the envelope (in semitones). */
+-    void setPeakInSemitones(double newPeak) { setPeakLevel(pitchOffsetToFreqFactor(newPeak)); }
++    void setPeakInSemitones(float newPeak) { setPeakLevel(pitchOffsetToFreqFactor(newPeak)); }
+ 
+     /** Sets the velocity dependence of the peak level as scaling factor of the peak by notes with 
+     velocity == 127. Notes with velocity == 1 will use the reciprocal value and notes with 
+     velocity == 64 will use the unmodified peak value. */
+-    void setPeakLevelByVel(double newPeakByVel) { peakByVel = newPeakByVel; }
++    void setPeakLevelByVel(float newPeakByVel) { peakByVel = newPeakByVel; }
+ 
+     /** Sets the velocity dependence of the peak level in dB - notes with velocity == 127 will peak 
+     this value louder, notes with velocity == 0 will peak this value more quiet and notes with 
+     velocity == 64 will have an unmodified peak amplitude. */
+-    void setPeakByVelInDecibels(double newPeakByVel) { setPeakLevelByVel(dB2amp(newPeakByVel)); }
++    void setPeakByVelInDecibels(float newPeakByVel) { setPeakLevelByVel(dB2amp(newPeakByVel)); }
+ 
+     /** Sets the velocity dependence of the peak level in semitones .... */
+-    void setPeakByVelInSemitones(double newPeakByVel) 
++    void setPeakByVelInSemitones(float newPeakByVel) 
+     { setPeakLevelByVel(pitchOffsetToFreqFactor(newPeakByVel)); }
+ 
+     /** Sets the sustain level (as raw value). */
+-    void setSustainLevel(double newSustain) { sustainLevel = newSustain; }
++    void setSustainLevel(float newSustain) { sustainLevel = newSustain; }
+ 
+     /** Sets the sustain level (in dB). */
+-    void setSustainInDecibels(double newSustain) { setSustainLevel(dB2amp(newSustain)); }
++    void setSustainInDecibels(float newSustain) { setSustainLevel(dB2amp(newSustain)); }
+ 
+     /** Sets the sustain level (in semitones). */
+-    void setSustainInSemitones(double newSustain) 
++    void setSustainInSemitones(float newSustain) 
+     { setSustainLevel(pitchOffsetToFreqFactor(newSustain)); }
+ 
+     /** Sets the end point of the envelope (as raw value). */
+-    void setEndLevel(double newEnd) { endLevel = newEnd; }
++    void setEndLevel(float newEnd) { endLevel = newEnd; }
+ 
+     /** Sets the end point of the envelope (in dB). */
+-    void setEndInDecibels(double newEnd) { setEndLevel(dB2amp(newEnd)); }
++    void setEndInDecibels(float newEnd) { setEndLevel(dB2amp(newEnd)); }
+ 
+     /** Sets the end point of the envelope (in semitones). */
+-    void setEndInSemitones(double newEnd) { setEndLevel(pitchOffsetToFreqFactor(newEnd)); }
++    void setEndInSemitones(float newEnd) { setEndLevel(pitchOffsetToFreqFactor(newEnd)); }
+ 
+     /** Sets the length of the attack phase (in milliseconds). */
+-    void setAttack(double newAttackTime);    
++    void setAttack(float newAttackTime);    
+ 
+     /** Sets the hold time (in milliseconds). */
+-    void setHold(double newHoldTime);      
++    void setHold(float newHoldTime);      
+ 
+     /** Sets the length of the decay phase (in milliseconds). */
+-    void setDecay(double newDecayTime);     
++    void setDecay(float newDecayTime);     
+  
+     /** Sets the length of the release phase (in milliseconds). */
+-    void setRelease(double newReleaseTime);  
++    void setRelease(float newReleaseTime);  
+ 
+     /** Scales the A,D,H and R times by adjusting the increment. It is 1 if not used - a timescale 
+     of 2 means the envelope is twice as fast, 0.5 means half as fast -> useful for implementing a 
+     key/velocity-tracking feature for the overall length for the envelope. */
+-    void setTimeScale(double newTimeScale); 
++    void setTimeScale(float newTimeScale); 
+ 
+     /** Scales the time constants tau. Can be used to reach other values than 63.2% in the 
+     specified time values */
+-    void setTauScale(double newTauScale);  
++    void setTauScale(float newTauScale);  
+ 
+     /** Scales the peak-value of the envelope - useful for velocity response. */
+-    void setPeakScale(double newPeakScale); 
++    void setPeakScale(float newPeakScale); 
+ 
+     /** Sets the internal state of the RC-filter. */
+-    void setInternalState(double newState) { previousOutput = newState; }
++    void setInternalState(float newState) { previousOutput = newState; }
+ 
+     //---------------------------------------------------------------------------------------------
+     // inquiry:
+ 
+     /** Returns the length of the attack phase (in milliseconds). */
+-    double getAttack() const { return attackTime; }
++    float getAttack() const { return attackTime; }
+ 
+     /** Returns the length of the decay phase (in milliseconds). */
+-    double getDecay() const { return decayTime; }
++    float getDecay() const { return decayTime; }
+ 
+     /** Returns the sustain level (as raw value). */
+-    double getSustain() const { return sustainLevel; }
++    float getSustain() const { return sustainLevel; }
+ 
+     /** Returns the length of the release phase (in milliseconds). */
+-    double getRelease() const { return releaseTime; }
++    float getRelease() const { return releaseTime; }
+ 
+     /** Returns, when currently a note is on (the noteIsOn flag is set). */
+     bool isNoteOn() const { return noteIsOn; }
+@@ -144,7 +144,7 @@
+     // audio processing:
+ 
+     /** Calculates one output sample at a time. */
+-    INLINE double getSample();    
++    INLINE float getSample();    
+ 
+     //---------------------------------------------------------------------------------------------
+     // others:
+@@ -166,22 +166,22 @@
+     void calculateAccumulatedTimes();
+ 
+     // level and time parameters:
+-    double startLevel, peakLevel, sustainLevel, endLevel;  
+-    double attackTime, holdTime, decayTime, releaseTime;    // in seconds
+-    double peakByVel, peakByKey, timeScaleByVel, timeScaleByKey;
++    float startLevel, peakLevel, sustainLevel, endLevel;  
++    float attackTime, holdTime, decayTime, releaseTime;    // in seconds
++    float peakByVel, peakByKey, timeScaleByVel, timeScaleByKey;
+ 
+     // accumulated time values:
+-    double attPlusHld, attPlusHldPlusDec, attPlusHldPlusDecPlusRel;
++    float attPlusHld, attPlusHldPlusDec, attPlusHldPlusDecPlusRel;
+ 
+-    double time;       // time since the last call to to trigger() 
+-    double timeScale;  // scale the time constants in the filters according to
+-    double increment;  // increment for the time variable per sample 
+-    double tauScale;   // scale factor for the time constants of the filters
+-    double peakScale;  // scale factor for the peak-value
+-
+-    double attackCoeff,  decayCoeff, releaseCoeff;   // filter coefficients
+-    double previousOutput;                           // previous output sample
+-    double sampleRate;                               // sample-rate
++    float time;       // time since the last call to to trigger() 
++    float timeScale;  // scale the time constants in the filters according to
++    float increment;  // increment for the time variable per sample 
++    float tauScale;   // scale factor for the time constants of the filters
++    float peakScale;  // scale factor for the peak-value
++
++    float attackCoeff,  decayCoeff, releaseCoeff;   // filter coefficients
++    float previousOutput;                           // previous output sample
++    float sampleRate;                               // sample-rate
+     bool   outputIsZero;                             // indicates if envelope has reached its end
+     bool   noteIsOn;                                 // indicates if note is being held
+ 
+@@ -190,9 +190,9 @@
+   //-----------------------------------------------------------------------------------------------
+   // inlined functions:
+ 
+-  INLINE double AnalogEnvelope::getSample()
++  INLINE float AnalogEnvelope::getSample()
+   {
+-    double out;
++    float out;
+ 
+     // attack or hold phase:
+     if(time <= attPlusHld)   // noteIsOn has not to be checked, because, time is advanced to the 
+--- a/Source/DSPCode/rosic_BiquadFilter.cpp
++++ b/Source/DSPCode/rosic_BiquadFilter.cpp
+@@ -18,7 +18,7 @@
+ //-------------------------------------------------------------------------------------------------
+ // parameter settings:
+ 
+-void BiquadFilter::setSampleRate(double newSampleRate)
++void BiquadFilter::setSampleRate(float newSampleRate)
+ {
+   if( newSampleRate > 0.0 )
+     sampleRate = newSampleRate;
+@@ -31,19 +31,19 @@
+   calcCoeffs();
+ }
+ 
+-void BiquadFilter::setFrequency(double newFrequency)
++void BiquadFilter::setFrequency(float newFrequency)
+ {
+   frequency = newFrequency;
+   calcCoeffs();
+ }
+ 
+-void BiquadFilter::setGain(double newGain)
++void BiquadFilter::setGain(float newGain)
+ {
+   gain = newGain;
+   calcCoeffs();
+ }
+ 
+-void BiquadFilter::setBandwidth(double newBandwidth)
++void BiquadFilter::setBandwidth(float newBandwidth)
+ {
+   bandwidth = newBandwidth;
+   calcCoeffs();
+@@ -54,14 +54,14 @@
+ 
+ void BiquadFilter::calcCoeffs()
+ {
+-  double w = 2*PI*frequency/sampleRate;
+-  double s, c;
++  float w = 2*PI*frequency/sampleRate;
++  float s, c;
+   switch(mode)
+   {
+   case LOWPASS6: 
+     {
+       // formula from dspguide:
+-      double x = exp(-w);
++      float x = exp(-w);
+       a1 = x;
+       a2 = 0.0;
+       b0 = 1.0-x;
+@@ -73,9 +73,9 @@
+     {
+       // formula from Robert Bristow Johnson's biquad cookbook:
+       sinCos(w, &s, &c);
+-      double q     = dB2amp(gain);
+-      double alpha = s/(2.0*q);
+-      double scale = 1.0/(1.0+alpha);
++      float q     = dB2amp(gain);
++      float alpha = s/(2.0*q);
++      float scale = 1.0/(1.0+alpha);
+       a1 = 2.0*c       * scale;
+       a2 = (alpha-1.0) * scale;
+       b1 = (1.0-c)     * scale;
+@@ -86,7 +86,7 @@
+   case HIGHPASS6: 
+     {
+       // formula from dspguide:
+-      double x = exp(-w);
++      float x = exp(-w);
+       a1 = x;
+       a2 = 0.0;
+       b0 = 0.5*(1.0+x);
+@@ -98,9 +98,9 @@
+     {
+       // formula from Robert Bristow Johnson's biquad cookbook:
+       sinCos(w, &s, &c);
+-      double q     = dB2amp(gain);
+-      double alpha = s/(2.0*q);
+-      double scale = 1.0/(1.0+alpha);
++      float q     = dB2amp(gain);
++      float alpha = s/(2.0*q);
++      float scale = 1.0/(1.0+alpha);
+       a1 = 2.0*c       * scale;
+       a2 = (alpha-1.0) * scale;
+       b1 = -(1.0+c)    * scale;
+@@ -112,8 +112,8 @@
+     {
+       // formula from Robert Bristow Johnson's biquad cookbook:      
+       sinCos(w, &s, &c);
+-      double alpha = s * sinh( 0.5*log(2.0) * bandwidth * w / s );
+-      double scale = 1.0/(1.0+alpha);
++      float alpha = s * sinh( 0.5*log(2.0) * bandwidth * w / s );
++      float scale = 1.0/(1.0+alpha);
+       a1 = 2.0*c       * scale;
+       a2 = (alpha-1.0) * scale;
+       b1 = 0.0;
+@@ -125,8 +125,8 @@
+     {
+       // formula from Robert Bristow Johnson's biquad cookbook:
+       sinCos(w, &s, &c);
+-      double alpha = s * sinh( 0.5*log(2.0) * bandwidth * w / s );
+-      double scale = 1.0/(1.0+alpha);
++      float alpha = s * sinh( 0.5*log(2.0) * bandwidth * w / s );
++      float scale = 1.0/(1.0+alpha);
+       a1 = 2.0*c       * scale;
+       a2 = (alpha-1.0) * scale;
+       b0 = 1.0         * scale;
+@@ -138,9 +138,9 @@
+     {
+       // formula from Robert Bristow Johnson's biquad cookbook:
+       sinCos(w, &s, &c);
+-      double alpha = s * sinh( 0.5*log(2.0) * bandwidth * w / s );
+-      double A     = dB2amp(gain);
+-      double scale = 1.0/(1.0+alpha/A);
++      float alpha = s * sinh( 0.5*log(2.0) * bandwidth * w / s );
++      float A     = dB2amp(gain);
++      float scale = 1.0/(1.0+alpha/A);
+       a1 = 2.0*c             * scale;
+       a2 = ((alpha/A) - 1.0) * scale;
+       b0 = (1.0+alpha*A)     * scale;
+@@ -152,10 +152,10 @@
+     {
+       // formula from Robert Bristow Johnson's biquad cookbook:
+       sinCos(w, &s, &c);
+-      double A     = dB2amp(0.5*gain);
+-      double q     = 1.0 / (2.0*sinh( 0.5*log(2.0) * bandwidth ));
+-      double beta  = sqrt(A) / q;
+-      double scale = 1.0 / ( (A+1.0) + (A-1.0)*c + beta*s);
++      float A     = dB2amp(0.5*gain);
++      float q     = 1.0 / (2.0*sinh( 0.5*log(2.0) * bandwidth ));
++      float beta  = sqrt(A) / q;
++      float scale = 1.0 / ( (A+1.0) + (A-1.0)*c + beta*s);
+       a1 = 2.0 *     ( (A-1.0) + (A+1.0)*c          ) * scale;
+       a2 = -         ( (A+1.0) + (A-1.0)*c - beta*s ) * scale;
+       b0 =       A * ( (A+1.0) - (A-1.0)*c + beta*s ) * scale;
+--- a/Source/DSPCode/rosic_BiquadFilter.h
++++ b/Source/DSPCode/rosic_BiquadFilter.h
+@@ -46,19 +46,19 @@
+     // parameter settings:
+ 
+     /** Sets the sample-rate (in Hz) at which the filter runs. */
+-    void setSampleRate(double newSampleRate);
++    void setSampleRate(float newSampleRate);
+ 
+     /** Sets the filter mode as one of the values in enum modes. */
+     void setMode(int newMode);
+ 
+     /** Sets the center frequency in Hz. */
+-    void setFrequency(double newFrequency);
++    void setFrequency(float newFrequency);
+ 
+     /** Sets the boost/cut gain in dB. */
+-    void setGain(double newGain);
++    void setGain(float newGain);
+ 
+     /** Sets the bandwidth in octaves. */
+-    void setBandwidth(double newBandwidth);
++    void setBandwidth(float newBandwidth);
+ 
+     //---------------------------------------------------------------------------------------------
+     // inquiry
+@@ -67,19 +67,19 @@
+     int getMode() const { return mode; }
+ 
+     /** Returns the center frequency in Hz. */
+-    double getFrequency() const { return frequency; }
++    float getFrequency() const { return frequency; }
+ 
+     /** Returns the boost/cut gain in dB. */
+-    double getGain() const { return gain; }
++    float getGain() const { return gain; }
+ 
+     /** Returns the bandwidth in octaves. */
+-    double getBandwidth() const { return bandwidth; }
++    float getBandwidth() const { return bandwidth; }
+ 
+     //---------------------------------------------------------------------------------------------
+     // audio processing:
+ 
+     /** Calculates a single filtered output-sample. */
+-    INLINE double getSample(double in);
++    INLINE float getSample(float in);
+ 
+     //---------------------------------------------------------------------------------------------
+     // others:
+@@ -94,11 +94,11 @@
+     // internal functions:
+     void calcCoeffs();  // calculates filter coefficients from filter parameters
+ 
+-    double b0, b1, b2, a1, a2;
+-    double x1, x2, y1, y2;
++    float b0, b1, b2, a1, a2;
++    float x1, x2, y1, y2;
+ 
+-    double frequency, gain, bandwidth;
+-    double sampleRate;
++    float frequency, gain, bandwidth;
++    float sampleRate;
+     int    mode;
+ 
+   };
+@@ -106,10 +106,10 @@
+   //-----------------------------------------------------------------------------------------------
+   // inlined functions:
+ 
+-  INLINE double BiquadFilter::getSample(double in)
++  INLINE float BiquadFilter::getSample(float in)
+   {
+     // calculate the output sample:
+-    double y = b0*in + b1*x1 + b2*x2 + a1*y1 + a2*y2 + TINY;
++    float y = b0*in + b1*x1 + b2*x2 + a1*y1 + a2*y2 + TINY;
+ 
+     // update the buffer variables:
+     x2 = x1;
+--- a/Source/DSPCode/rosic_DecayEnvelope.cpp
++++ b/Source/DSPCode/rosic_DecayEnvelope.cpp
+@@ -23,7 +23,7 @@
+ //-------------------------------------------------------------------------------------------------
+ // parameter settings:
+ 
+-void DecayEnvelope::setSampleRate(double newSampleRate)
++void DecayEnvelope::setSampleRate(float newSampleRate)
+ {
+   if( newSampleRate > 0.0 )
+   {
+@@ -32,7 +32,7 @@
+   }
+ }
+ 
+-void DecayEnvelope::setDecayTimeConstant(double newTimeConstant)
++void DecayEnvelope::setDecayTimeConstant(float newTimeConstant)
+ {
+   if( newTimeConstant > 0.001 ) // at least 0.001 ms decay
+   {
+@@ -55,7 +55,7 @@
+   y = yInit;
+ }
+ 
+-bool DecayEnvelope::endIsReached(double threshold)
++bool DecayEnvelope::endIsReached(float threshold)
+ {
+   if( y < threshold )
+     return true;
+--- a/Source/DSPCode/rosic_DecayEnvelope.h
++++ b/Source/DSPCode/rosic_DecayEnvelope.h
+@@ -32,11 +32,11 @@
+     // parameter settings:
+ 
+     /** Sets the sample-rate. */
+-    void setSampleRate(double newSampleRate);  
++    void setSampleRate(float newSampleRate);  
+ 
+     /** Sets the time constant for the multiplicative accumulator (which we consider as primarily 
+     responsible for the decaying part) in milliseconds. */
+-    void setDecayTimeConstant(double newTimeConstant);
++    void setDecayTimeConstant(float newTimeConstant);
+ 
+     /** Switches into a mode where the normalization is not made with respect to the peak amplitude 
+     but to the sum of the impulse response - if true, the output will be equivalent to a leaky 
+@@ -47,16 +47,16 @@
+     // inquiry:
+ 
+     /** Returns the length of the decay phase (in milliseconds). */
+-    double getDecayTimeConstant() const { return tau; }
++    float getDecayTimeConstant() const { return tau; }
+ 
+     /** True, if output is below some threshold. */
+-    bool endIsReached(double threshold);  
++    bool endIsReached(float threshold);  
+ 
+     //---------------------------------------------------------------------------------------------
+     // audio processing:
+ 
+     /** Calculates one output sample at a time. */
+-    INLINE double getSample();    
++    INLINE float getSample();    
+ 
+     //---------------------------------------------------------------------------------------------
+     // others:
+@@ -69,11 +69,11 @@
+     /** Calculates the coefficient for multiplicative accumulation. */
+     void calculateCoefficient();
+ 
+-    double c;             // coefficient for multiplicative accumulation
+-    double y;             // previous output
+-    double yInit;         // initial yalue for previous output (= y/c)
+-    double tau;           // time-constant (in milliseconds)
+-    double fs;            // sample-rate
++    float c;             // coefficient for multiplicative accumulation
++    float y;             // previous output
++    float yInit;         // initial yalue for previous output (= y/c)
++    float tau;           // time-constant (in milliseconds)
++    float fs;            // sample-rate
+     bool   normalizeSum;  // flag to indicate that the output should be normalized such that the 
+                           // sum of the impulse response is unity (instead of the peak) - if true
+                           // the output will be equivalent to a leaky integrator's impulse 
+@@ -84,7 +84,7 @@
+   //-----------------------------------------------------------------------------------------------
+   // inlined functions:
+ 
+-  INLINE double DecayEnvelope::getSample()
++  INLINE float DecayEnvelope::getSample()
+   {
+     y *= c;
+     return y;
+--- a/Source/DSPCode/rosic_LeakyIntegrator.cpp
++++ b/Source/DSPCode/rosic_LeakyIntegrator.cpp
+@@ -21,7 +21,7 @@
+ //-------------------------------------------------------------------------------------------------
+ // parameter settings:
+ 
+-void LeakyIntegrator::setSampleRate(double newSampleRate)
++void LeakyIntegrator::setSampleRate(float newSampleRate)
+ {
+   if( newSampleRate > 0.0 )
+   {
+@@ -30,7 +30,7 @@
+   }
+ }
+ 
+-void LeakyIntegrator::setTimeConstant(double newTimeConstant)
++void LeakyIntegrator::setTimeConstant(float newTimeConstant)
+ {
+   if( newTimeConstant >= 0.0 && newTimeConstant != tau )
+   {
+@@ -42,10 +42,10 @@
+ //-------------------------------------------------------------------------------------------------
+ // inquiry:
+ 
+-double LeakyIntegrator::getNormalizer(double tau1, double tau2, double fs)
++float LeakyIntegrator::getNormalizer(float tau1, float tau2, float fs)
+ {
+-  double td = 0.001*tau1;
+-  double ta = 0.001*tau2;
++  float td = 0.001*tau1;
++  float ta = 0.001*tau2;
+ 
+   // catch some special cases:
+   if( ta == 0.0 && td == 0.0 )
+@@ -60,30 +60,30 @@
+   }
+ 
+   // compute the filter coefficients:
+-  double x  = exp( -1.0 / (fs*td)  );
+-  double bd = 1-x;
+-  double ad = -x;
++  float x  = exp( -1.0 / (fs*td)  );
++  float bd = 1-x;
++  float ad = -x;
+   x         = exp( -1.0 / (fs*ta)  );
+-  double ba = 1-x;
+-  double aa = -x;
++  float ba = 1-x;
++  float aa = -x;
+ 
+   // compute the location and height of the peak:
+-  double xp;
++  float xp;
+   if( ta == td )
+   {
+-    double tp  = ta;
+-    double np  = fs*tp;
++    float tp  = ta;
++    float np  = fs*tp;
+     xp         = (np+1.0)*ba*ba*pow(aa, np);
+   }
+   else
+   {
+-    double tp  = log(ta/td) / ( (1.0/td) - (1.0/ta) );
+-    double np  = fs*tp;
+-    double s   = 1.0 / (aa-ad);
+-    double b01 = s * aa*ba*bd;
+-    double b02 = s * ad*ba*bd;
+-    double a01 = s * (ad-aa)*aa;
+-    double a02 = s * (ad-aa)*ad;
++    float tp  = log(ta/td) / ( (1.0/td) - (1.0/ta) );
++    float np  = fs*tp;
++    float s   = 1.0 / (aa-ad);
++    float b01 = s * aa*ba*bd;
++    float b02 = s * ad*ba*bd;
++    float a01 = s * (ad-aa)*aa;
++    float a02 = s * (ad-aa)*ad;
+     xp         = b01*pow(a01, np) - b02*pow(a02, np);
+   }
+ 
+--- a/Source/DSPCode/rosic_LeakyIntegrator.h
++++ b/Source/DSPCode/rosic_LeakyIntegrator.h
+@@ -32,30 +32,30 @@
+     // parameter settings:
+ 
+     /** Sets the sample-rate. */
+-    void setSampleRate(double newSampleRate);    
++    void setSampleRate(float newSampleRate);    
+ 
+     /** Sets the time constant (tau), value is expected in milliseconds. */
+-    void setTimeConstant(double newTimeConstant); 
++    void setTimeConstant(float newTimeConstant); 
+ 
+     /** Sets the internal state of the filter to the passed value. */
+-    void setState(double newState) { y1 = newState; }
++    void setState(float newState) { y1 = newState; }
+ 
+     //---------------------------------------------------------------------------------------------
+     // inquiry:
+ 
+     /** Returns the time constant (tau) in milliseconds. */
+-    double getTimeConstant() const { return tau; }
++    float getTimeConstant() const { return tau; }
+ 
+     /** Returns the normalizer, required to normalize the impulse response of a series connection 
+     of two digital RC-type filters with time constants tau1 and tau2 (in milliseconds) to unity at 
+     the given samplerate. */
+-    static double getNormalizer(double tau1, double tau2, double sampleRate);
++    static float getNormalizer(float tau1, float tau2, float sampleRate);
+ 
+     //---------------------------------------------------------------------------------------------
+     // audio processing:
+ 
+     /** Calculates one sample at a time. */
+-    INLINE double getSample(double in);
++    INLINE float getSample(float in);
+ 
+     //---------------------------------------------------------------------------------------------
+     // others:
+@@ -70,17 +70,17 @@
+     /** Calculates the filter coefficient. */
+     void calculateCoefficient();
+ 
+-    double coeff;        // filter coefficient
+-    double y1;           // previous output sample
+-    double sampleRate;   // the samplerate
+-    double tau;          // time constant in milliseconds
++    float coeff;        // filter coefficient
++    float y1;           // previous output sample
++    float sampleRate;   // the samplerate
++    float tau;          // time constant in milliseconds
+ 
+   };
+ 
+   //-----------------------------------------------------------------------------------------------
+   // inlined functions:
+ 
+-  INLINE double LeakyIntegrator::getSample(double in)
++  INLINE float LeakyIntegrator::getSample(float in)
+   {
+     return y1 = in + coeff*(y1-in);
+   }
+--- a/Source/DSPCode/rosic_NumberManipulations.h
++++ b/Source/DSPCode/rosic_NumberManipulations.h
+@@ -17,7 +17,7 @@
+   this function rounds to the nearest integer using upward rounding when the argument is exactly
+   halfway between two integers (instead of returning the nearest even integer in this case).
+   Argument x must satify (INT_MIN/2)ñ1.0 < x < (INT_MAX/2)+1.0.  */
+-  INLINE int roundToInt(double x)
++  INLINE int roundToInt(float x)
+   {
+ #  if defined _MSC_VER
+     const float round_to_nearest = 0.5f;
+@@ -43,8 +43,8 @@
+     return (i);
+      */
+ #  else
+-    double xFloor = floor(x);
+-    double xFrac  = x-xFloor;
++    float xFloor = floor(x);
++    float xFrac  = x-xFloor;
+     if( xFrac >= 0.5 )
+       return (int) xFloor + 1;
+     else
+@@ -53,7 +53,7 @@
+   }
+ 
+ 
+-  INLINE int floorInt(double x)
++  INLINE int floorInt(float x)
+   {
+ #  if defined _MSC_VER
+     const float round_towards_m_i = -0.5f;
+--- a/Source/DSPCode/rosic_OnePoleFilter.cpp
++++ b/Source/DSPCode/rosic_OnePoleFilter.cpp
+@@ -16,7 +16,7 @@
+ //-------------------------------------------------------------------------------------------------
+ // parameter settings:
+ 
+-void OnePoleFilter::setSampleRate(double newSampleRate)
++void OnePoleFilter::setSampleRate(float newSampleRate)
+ {
+   if( newSampleRate > 0.0 )
+     sampleRate = newSampleRate;
+@@ -32,7 +32,7 @@
+   calcCoeffs();
+ }
+ 
+-void OnePoleFilter::setCutoff(double newCutoff)
++void OnePoleFilter::setCutoff(float newCutoff)
+ {
+   if( (newCutoff>0.0) && (newCutoff<=20000.0) )
+     cutoff = newCutoff;
+@@ -43,7 +43,7 @@
+   return;
+ }
+ 
+-void OnePoleFilter::setShelvingGain(double newGain)
++void OnePoleFilter::setShelvingGain(float newGain)
+ {
+   if( newGain > 0.0 )
+   {
+@@ -54,19 +54,19 @@
+     DEBUG_BREAK; // this is a linear gain factor and must be >= 0.0
+ }
+ 
+-void OnePoleFilter::setShelvingGainInDecibels(double newGain)
++void OnePoleFilter::setShelvingGainInDecibels(float newGain)
+ {
+   setShelvingGain(dB2amp(newGain));
+ }
+ 
+-void OnePoleFilter::setCoefficients(double newB0, double newB1, double newA1)
++void OnePoleFilter::setCoefficients(float newB0, float newB1, float newA1)
+ {
+   b0 = newB0;
+   b1 = newB1;
+   a1 = newA1;
+ }
+ 
+-void OnePoleFilter::setInternalState(double newX1, double newY1)
++void OnePoleFilter::setInternalState(float newX1, float newY1)
+ {
+   x1 = newX1;
+   y1 = newY1;
+@@ -82,7 +82,7 @@
+   case LOWPASS: 
+     {
+       // formula from dspguide:
+-      double x = exp( -2.0 * PI * cutoff * sampleRateRec); 
++      float x = exp( -2.0 * PI * cutoff * sampleRateRec); 
+       b0 = 1-x;
+       b1 = 0.0;
+       a1 = x;
+@@ -91,7 +91,7 @@
+   case HIGHPASS:  
+     {
+       // formula from dspguide:
+-      double x = exp( -2.0 * PI * cutoff * sampleRateRec);
++      float x = exp( -2.0 * PI * cutoff * sampleRateRec);
+       b0 =  0.5*(1+x);
+       b1 = -0.5*(1+x);
+       a1 = x;
+@@ -100,9 +100,9 @@
+   case LOWSHELV:
+     {
+       // formula from DAFX:
+-      double c = 0.5*(shelvingGain-1.0);
+-      double t = tan(PI*cutoff*sampleRateRec);
+-      double a;
++      float c = 0.5*(shelvingGain-1.0);
++      float t = tan(PI*cutoff*sampleRateRec);
++      float a;
+       if( shelvingGain >= 1.0 )
+         a = (t-1.0)/(t+1.0);
+       else
+@@ -116,9 +116,9 @@
+   case HIGHSHELV:
+     {
+       // formula from DAFX:
+-      double c = 0.5*(shelvingGain-1.0);
+-      double t = tan(PI*cutoff*sampleRateRec);
+-      double a;
++      float c = 0.5*(shelvingGain-1.0);
++      float t = tan(PI*cutoff*sampleRateRec);
++      float a;
+       if( shelvingGain >= 1.0 )
+         a = (t-1.0)/(t+1.0);
+       else
+@@ -133,8 +133,8 @@
+   case ALLPASS:  
+     {
+       // formula from DAFX:
+-      double t = tan(PI*cutoff*sampleRateRec);
+-      double x = (t-1.0) / (t+1.0);
++      float t = tan(PI*cutoff*sampleRateRec);
++      float x = (t-1.0) / (t+1.0);
+ 
+       b0 = x;
+       b1 = 1.0;
+--- a/Source/DSPCode/rosic_OnePoleFilter.h
++++ b/Source/DSPCode/rosic_OnePoleFilter.h
+@@ -41,42 +41,42 @@
+     // parameter settings:
+ 
+     /** Sets the sample-rate. */
+-    void setSampleRate(double newSampleRate);
++    void setSampleRate(float newSampleRate);
+ 
+     /** Chooses the filter mode. See the enumeration for available modes. */
+     void setMode(int newMode);
+ 
+     /** Sets the cutoff-frequency for this filter. */
+-    void setCutoff(double newCutoff);
++    void setCutoff(float newCutoff);
+ 
+     /** This will set the time constant 'tau' for the case, when lowpass mode is chosen. This is 
+     the time, it takes for the impulse response to die away to 1/e = 0.368... or equivalently, the
+     time it takes for the step response to raise to 1-1/e = 0.632... */
+-    void setLowpassTimeConstant(double newTimeConstant) { setCutoff(1.0/(2*PI*newTimeConstant)); }
++    void setLowpassTimeConstant(float newTimeConstant) { setCutoff(1.0/(2*PI*newTimeConstant)); }
+ 
+     /** Sets the gain factor for the shelving modes (this is not in decibels). */
+-    void setShelvingGain(double newGain);
++    void setShelvingGain(float newGain);
+ 
+     /** Sets the gain for the shelving modes in decibels. */
+-    void setShelvingGainInDecibels(double newGain);
++    void setShelvingGainInDecibels(float newGain);
+ 
+     /** Sets the filter coefficients manually. */
+-    void setCoefficients(double newB0, double newB1, double newA1);
++    void setCoefficients(float newB0, float newB1, float newA1);
+ 
+     /** Sets up the internal state variables for both channels. */
+-    void setInternalState(double newX1, double newY1);
++    void setInternalState(float newX1, float newY1);
+ 
+     //---------------------------------------------------------------------------------------------
+     // inquiry
+ 
+     /** Returns the cutoff-frequency. */
+-    double getCutoff() const { return cutoff; }
++    float getCutoff() const { return cutoff; }
+ 
+     //---------------------------------------------------------------------------------------------
+     // audio processing:
+ 
+     /** Calculates a single filtered output-sample. */
+-    INLINE double getSample(double in);
++    INLINE float getSample(float in);
+ 
+     //---------------------------------------------------------------------------------------------
+     // others:
+@@ -89,20 +89,20 @@
+   protected:
+ 
+     // buffering:
+-    double x1, y1;
++    float x1, y1;
+ 
+     // filter coefficients:
+-    double b0; // feedforward coeffs
+-    double b1;
+-    double a1; // feedback coeff
++    float b0; // feedforward coeffs
++    float b1;
++    float a1; // feedback coeff
+ 
+     // filter parameters:
+-    double cutoff;
+-    double shelvingGain;
++    float cutoff;
++    float shelvingGain;
+     int    mode;  
+ 
+-    double sampleRate; 
+-    double sampleRateRec;  // reciprocal of the sampleRate
++    float sampleRate; 
++    float sampleRateRec;  // reciprocal of the sampleRate
+ 
+     // internal functions:
+     void calcCoeffs();  // calculates filter coefficients from filter parameters
+@@ -112,7 +112,7 @@
+   //-----------------------------------------------------------------------------------------------
+   // inlined functions:
+ 
+-  INLINE double OnePoleFilter::getSample(double in)
++  INLINE float OnePoleFilter::getSample(float in)
+   {
+     // calculate the output sample:
+     y1 = b0*in + b1*x1 + a1*y1 + TINY;
+--- a/Source/DSPCode/rosic_RealFunctions.h
++++ b/Source/DSPCode/rosic_RealFunctions.h
+@@ -13,55 +13,55 @@
+ {
+ 
+   /** Inverse hyperbolic sine. */
+-  INLINE double asinh(double x);
++  INLINE float asinh(float x);
+ 
+   /** Returns -1.0 if x is below low, 0.0 if x is between low and high and 1.0 if x is above high. */
+-  INLINE double belowOrAbove(double x, double low, double high);
++  INLINE float belowOrAbove(float x, float low, float high);
+ 
+   /** Clips x into the range min...max. */
+   template <class T>
+   INLINE T clip(T x, T min, T max);
+ 
+   /** Evaluates the quartic polynomial y = a4*x^4 + a3*x^3 + a2*x^2 + a1*x + a0 at x. */
+-  INLINE double evaluateQuartic(double x, double a0, double a1, double a2, double a3, double a4);
++  INLINE float evaluateQuartic(float x, float a0, float a1, float a2, float a3, float a4);
+ 
+   /** foldover at the specified value */
+-  INLINE double foldOver(double x, double min, double max);
++  INLINE float foldOver(float x, float min, float max);
+ 
+   /** Computes an integer power of x by successively multiplying x with itself. */
+-  INLINE double integerPower(double x, int exponent);
++  INLINE float integerPower(float x, int exponent);
+ 
+   /** Generates a pseudo-random number between min and max. */
+-  INLINE double random(double min=0.0, double max=1.0);
++  INLINE float random(float min=0.0, float max=1.0);
+ 
+   /** Generates a 2*pi periodic saw wave. */
+-  INLINE double sawWave(double x);
++  INLINE float sawWave(float x);
+ 
+   /** Calculates sine and cosine of x - this is more efficient than calling sin(x) and
+   cos(x) seperately. */
+-  INLINE void sinCos(double x, double* sinResult, double* cosResult);
++  INLINE void sinCos(float x, float* sinResult, float* cosResult);
+ 
+   /** Calculates a parabolic approximation of the sine and cosine of x. */
+-  INLINE void sinCosApprox(double x, double* sinResult, double* cosResult);
++  INLINE void sinCosApprox(float x, float* sinResult, float* cosResult);
+ 
+   /** Generates a 2*pi periodic square wave. */
+-  INLINE double sqrWave(double x);
++  INLINE float sqrWave(float x);
+ 
+   /** Rational approximation of the hyperbolic tangent. */
+-  INLINE double tanhApprox(double x);
++  INLINE float tanhApprox(float x);
+ 
+   /** Generates a 2*pi periodic triangle wave. */
+-  INLINE double triWave(double x);
++  INLINE float triWave(float x);
+ 
+   //===============================================================================================
+   // implementation:
+ 
+-  INLINE double asinh(double x)
++  INLINE float asinh(float x)
+   {
+     return log(x + sqrt(x*x+1) );
+   }
+ 
+-  INLINE double belowOrAbove(double x, double low, double high)
++  INLINE float belowOrAbove(float x, float low, float high)
+   {
+     if( x < low )
+       return -1.0;
+@@ -81,13 +81,13 @@
+     else return x;
+   }
+ 
+-  INLINE double evaluateQuartic(double x, double a0, double a1, double a2, double a3, double a4)
++  INLINE float evaluateQuartic(float x, float a0, float a1, float a2, float a3, float a4)
+   {
+-    double x2 = x*x;
++    float x2 = x*x;
+     return x*(a3*x2+a1) + x2*(a4*x2+a2) + a0;
+   }
+ 
+-  INLINE double foldOver(double x, double min, double max)
++  INLINE float foldOver(float x, float min, float max)
+   {
+     if( x > max )
+       return max - (x-max);
+@@ -96,36 +96,36 @@
+     else return x;
+   }
+ 
+-  INLINE double integerPower(double x, int exponent)
++  INLINE float integerPower(float x, int exponent)
+   {
+-    double accu = 1.0;
++    float accu = 1.0;
+     for(int i=0; i<exponent; i++)
+       accu *= x;
+     return accu;
+   }
+ 
+-  INLINE double random(double min, double max)
++  INLINE float random(float min, float max)
+   {
+-    double tmp = (1.0/RAND_MAX) * rand() ;  // between 0...1
++    float tmp = (1.0/RAND_MAX) * rand() ;  // between 0...1
+     return linToLin(tmp, 0.0, 1.0, min, max);
+   }
+ 
+-  INLINE double sawWave(double x)
++  INLINE float sawWave(float x)
+   {
+-    double tmp = fmod(x, 2*PI);
++    float tmp = fmod(x, 2*PI);
+     if( tmp < PI )
+       return tmp/PI;
+     else
+       return (tmp/PI)-2.0;
+   }
+ 
+-  INLINE void sinCos(double x, double* sinResult, double* cosResult)
++  INLINE void sinCos(float x, float* sinResult, float* cosResult)
+   {
+     #ifdef __GNUC__  // \todo assembly-version causes compiler errors on gcc
+       *sinResult = sin(x);
+       *cosResult = cos(x);
+     #else
+-      double s, c;     // do we need these intermediate variables?
++      float s, c;     // do we need these intermediate variables?
+       __asm fld x
+       __asm fsincos
+       __asm fstp c
+@@ -135,9 +135,9 @@
+     #endif
+   }
+ 
+-  INLINE void sinCosApprox(double x, double* sinResult, double* cosResult)
++  INLINE void sinCosApprox(float x, float* sinResult, float* cosResult)
+   {
+-    static const double c = 0.70710678118654752440;
++    static const float c = 0.70710678118654752440;
+ 
+     // restrict input x to the range 0.0...2*PI:
+     while( x > 2.0*PI )
+@@ -147,57 +147,57 @@
+ 
+     if( x < PI/2 )
+     {
+-      double tmp1 = x;
+-      double tmp2 = (2/PI) * tmp1 - 0.5;
+-      double tmp3 = (2-4*c)*tmp2*tmp2 + c;
++      float tmp1 = x;
++      float tmp2 = (2/PI) * tmp1 - 0.5;
++      float tmp3 = (2-4*c)*tmp2*tmp2 + c;
+       *sinResult  = tmp3 + tmp2;
+       *cosResult  = tmp3 - tmp2;
+     }
+     else if( x < PI )
+     {
+-      double tmp1 = (x-PI/2);
+-      double tmp2 = 0.5 - (2/PI) * tmp1;
+-      double tmp3 = (2-4*c)*tmp2*tmp2 + c;
++      float tmp1 = (x-PI/2);
++      float tmp2 = 0.5 - (2/PI) * tmp1;
++      float tmp3 = (2-4*c)*tmp2*tmp2 + c;
+       *sinResult  = tmp2 + tmp3;
+       *cosResult  = tmp2 - tmp3;
+     }
+     else if( x < 1.5*PI )
+     {
+-      double tmp1 = (x-PI);
+-      double tmp2 = (2/PI) * tmp1 - 0.5;
+-      double tmp3 = (4*c-2)*tmp2*tmp2 - c;
++      float tmp1 = (x-PI);
++      float tmp2 = (2/PI) * tmp1 - 0.5;
++      float tmp3 = (4*c-2)*tmp2*tmp2 - c;
+       *sinResult  = tmp3 - tmp2;
+       *cosResult  = tmp3 + tmp2;
+     }
+     else
+     {
+-      double tmp1 = (x-1.5*PI);
+-      double tmp2 = (2/PI) * tmp1 - 0.5;
+-      double tmp3 = (2-4*c)*tmp2*tmp2 + c;
++      float tmp1 = (x-1.5*PI);
++      float tmp2 = (2/PI) * tmp1 - 0.5;
++      float tmp3 = (2-4*c)*tmp2*tmp2 + c;
+       *sinResult  = tmp2 - tmp3;
+       *cosResult  = tmp2 + tmp3;
+     }
+   }
+ 
+-  INLINE double sqrWave(double x)
++  INLINE float sqrWave(float x)
+   {
+-    double tmp = fmod(x, 2*PI);
++    float tmp = fmod(x, 2*PI);
+     if( tmp < PI )
+       return 1.0;
+     else
+       return -1.0;
+   }
+ 
+-  INLINE double tanhApprox(double x)
++  INLINE float tanhApprox(float x)
+   {
+-    double a = fabs(2*x);
+-    double b = 24+a*(12+a*(6+a));
++    float a = fabs(2*x);
++    float b = 24+a*(12+a*(6+a));
+     return 2*(x*b)/(a*b+48);
+   }
+ 
+-  INLINE double triWave(double x)
++  INLINE float triWave(float x)
+   {
+-    double tmp = fmod(x, 2*PI);
++    float tmp = fmod(x, 2*PI);
+     if( tmp < 0.5*PI )
+       return tmp/(0.5*PI);
+     else if( tmp < 1.5*PI )
+--- a/Source/DSPCode/rosic_TeeBeeFilter.cpp
++++ b/Source/DSPCode/rosic_TeeBeeFilter.cpp
+@@ -32,7 +32,7 @@
+ //-------------------------------------------------------------------------------------------------
+ // parameter settings:
+ 
+-void TeeBeeFilter::setSampleRate(double newSampleRate)
++void TeeBeeFilter::setSampleRate(float newSampleRate)
+ {
+   if( newSampleRate > 0.0 )
+     sampleRate = newSampleRate;
+@@ -41,7 +41,7 @@
+   calculateCoefficientsExact();
+ }
+ 
+-void TeeBeeFilter::setDrive(double newDrive)
++void TeeBeeFilter::setDrive(float newDrive)
+ {
+   drive       = newDrive;
+   driveFactor = dB2amp(drive);
+--- a/Source/DSPCode/rosic_TeeBeeFilter.h
++++ b/Source/DSPCode/rosic_TeeBeeFilter.h
+@@ -63,48 +63,48 @@
+     // parameter settings:
+ 
+     /** Sets the sample-rate for this filter. */
+-    void setSampleRate(double newSampleRate);
++    void setSampleRate(float newSampleRate);
+ 
+     /** Sets the cutoff frequency for this filter - the actual coefficient calculation may be 
+     supressed by passing 'false' as second parameter, in this case, it should be triggered
+     manually later by calling calculateCoefficients. */
+-    INLINE void setCutoff(double newCutoff, bool updateCoefficients = true);
++    INLINE void setCutoff(float newCutoff, bool updateCoefficients = true);
+ 
+     /** Sets the resonance in percent where 100% is self oscillation. */
+-    INLINE void setResonance(double newResonance, bool updateCoefficients = true);
++    INLINE void setResonance(float newResonance, bool updateCoefficients = true);
+ 
+     /** Sets the input drive in decibels. */
+-    void setDrive(double newDrive);
++    void setDrive(float newDrive);
+ 
+     /** Sets the mode of the filter, @see: modes */
+     void setMode(int newMode);
+ 
+     /** Sets the cutoff frequency for the highpass filter in the feedback path. */
+-    void setFeedbackHighpassCutoff(double newCutoff) { feedbackHighpass.setCutoff(newCutoff); }
++    void setFeedbackHighpassCutoff(float newCutoff) { feedbackHighpass.setCutoff(newCutoff); }
+ 
+     //---------------------------------------------------------------------------------------------
+     // inquiry:
+ 
+     /** Returns the cutoff frequency of this filter. */
+-    double getCutoff() const { return cutoff; }
++    float getCutoff() const { return cutoff; }
+ 
+     /** Returns the resonance parameter of this filter. */
+-    double getResonance() const { return 100.0 * resonanceRaw; }
++    float getResonance() const { return 100.0 * resonanceRaw; }
+ 
+     /** Returns the drive parameter in decibels. */
+-    double getDrive() const { return drive; }
++    float getDrive() const { return drive; }
+ 
+     /** Returns the slected filter mode. */
+     int getMode() const { return mode; }
+ 
+     /** Returns the cutoff frequency for the highpass filter in the feedback path. */
+-    double getFeedbackHighpassCutoff() const { return feedbackHighpass.getCutoff(); }
++    float getFeedbackHighpassCutoff() const { return feedbackHighpass.getCutoff(); }
+ 
+     //---------------------------------------------------------------------------------------------
+     // audio processing:
+ 
+     /** Calculates one output sample at a time. */
+-    INLINE double getSample(double in);
++    INLINE float getSample(float in);
+ 
+     //---------------------------------------------------------------------------------------------
+     // others:
+@@ -117,7 +117,7 @@
+     INLINE void calculateCoefficientsApprox4();
+ 
+     /** Implements the waveshaping nonlinearity between the stages. */
+-    INLINE double shape(double x);
++    INLINE float shape(float x);
+ 
+     /** Resets the internal state variables. */
+     void reset();
+@@ -126,18 +126,18 @@
+ 
+   protected:
+ 
+-    double b0, a1;              // coefficients for the first order sections
+-    double y1, y2, y3, y4;      // output signals of the 4 filter stages 
+-    double c0, c1, c2, c3, c4;  // coefficients for combining various ouput stages
+-    double k;                   // feedback factor in the loop
+-    double g;                   // output gain
+-    double driveFactor;         // filter drive as raw factor
+-    double cutoff;              // cutoff frequency
+-    double drive;               // filter drive in decibels
+-    double resonanceRaw;        // resonance parameter (normalized to 0...1)
+-    double resonanceSkewed;     // mapped resonance parameter to make it behave more musical
+-    double sampleRate;          // the sample rate in Hz
+-    double twoPiOverSampleRate; // 2*PI/sampleRate
++    float b0, a1;              // coefficients for the first order sections
++    float y1, y2, y3, y4;      // output signals of the 4 filter stages 
++    float c0, c1, c2, c3, c4;  // coefficients for combining various ouput stages
++    float k;                   // feedback factor in the loop
++    float g;                   // output gain
++    float driveFactor;         // filter drive as raw factor
++    float cutoff;              // cutoff frequency
++    float drive;               // filter drive in decibels
++    float resonanceRaw;        // resonance parameter (normalized to 0...1)
++    float resonanceSkewed;     // mapped resonance parameter to make it behave more musical
++    float sampleRate;          // the sample rate in Hz
++    float twoPiOverSampleRate; // 2*PI/sampleRate
+     int    mode;                // the selected filter-mode
+ 
+     OnePoleFilter feedbackHighpass;
+@@ -147,7 +147,7 @@
+   //-----------------------------------------------------------------------------------------------
+   // inlined functions:
+ 
+-  INLINE void TeeBeeFilter::setCutoff(double newCutoff, bool updateCoefficients)
++  INLINE void TeeBeeFilter::setCutoff(float newCutoff, bool updateCoefficients)
+   {
+     if( newCutoff != cutoff )
+     {
+@@ -163,7 +163,7 @@
+     }
+   }
+ 
+-  INLINE void TeeBeeFilter::setResonance(double newResonance, bool updateCoefficients)
++  INLINE void TeeBeeFilter::setResonance(float newResonance, bool updateCoefficients)
+   {
+     resonanceRaw    = 0.01 * newResonance;
+     resonanceSkewed = (1.0-exp(-3.0*resonanceRaw)) / (1.0-exp(-3.0));
+@@ -174,18 +174,18 @@
+   INLINE void TeeBeeFilter::calculateCoefficientsExact()
+   {
+     // calculate intermediate variables:
+-    double wc = twoPiOverSampleRate * cutoff;
+-    double s, c;
++    float wc = twoPiOverSampleRate * cutoff;
++    float s, c;
+     sinCos(wc, &s, &c);             // c = cos(wc); s = sin(wc);
+-    double t  = tan(0.25*(wc-PI));
+-    double r  = resonanceSkewed;
++    float t  = tan(0.25*(wc-PI));
++    float r  = resonanceSkewed;
+ 
+     // calculate filter a1-coefficient tuned such the resonance frequency is just right:
+-    double a1_fullRes = t / (s-c*t);
++    float a1_fullRes = t / (s-c*t);
+ 
+     // calculate filter a1-coefficient as if there were no resonance:
+-    double x        = exp(-wc);
+-    double a1_noRes = -x;
++    float x        = exp(-wc);
++    float a1_noRes = -x;
+ 
+     // use a weighted sum between the resonance-tuned and no-resonance coefficient:
+     a1 = r*a1_fullRes + (1.0-r)*a1_noRes;
+@@ -196,7 +196,7 @@
+ 
+     // calculate feedback factor by dividing the resonance parameter by the magnitude at the
+     // resonant frequency:
+-    double gsq = b0*b0 / (1.0 + a1*a1 + 2.0*a1*c);
++    float gsq = b0*b0 / (1.0 + a1*a1 + 2.0*a1*c);
+     k          = r / (gsq*gsq);
+ 
+     if( mode == TB_303 )
+@@ -206,27 +206,27 @@
+   INLINE void TeeBeeFilter::calculateCoefficientsApprox4()
+   {
+     // calculate intermediate variables:
+-    double wc  = twoPiOverSampleRate * cutoff;
+-    double wc2 = wc*wc;
+-    double r   = resonanceSkewed;
+-    double tmp;
++    float wc  = twoPiOverSampleRate * cutoff;
++    float wc2 = wc*wc;
++    float r   = resonanceSkewed;
++    float tmp;
+ 
+     // compute the filter coefficient via a 12th order polynomial approximation (polynomial 
+     // evaluation is done with a Horner-rule alike scheme with nested quadratic factors in the hope
+     // for potentially better parallelization compared to Horner's rule as is):
+-    const double pa12 = -1.341281325101042e-02;
+-    const double pa11 =  8.168739417977708e-02;
+-    const double pa10 = -2.365036766021623e-01;
+-    const double pa09 =  4.439739664918068e-01;
+-    const double pa08 = -6.297350825423579e-01;
+-    const double pa07 =  7.529691648678890e-01;
+-    const double pa06 = -8.249882473764324e-01;
+-    const double pa05 =  8.736418933533319e-01;
+-    const double pa04 = -9.164580250284832e-01;
+-    const double pa03 =  9.583192455599817e-01;
+-    const double pa02 = -9.999994950291231e-01;
+-    const double pa01 =  9.999999927726119e-01;
+-    const double pa00 = -9.999999999857464e-01;
++    const float pa12 = -1.341281325101042e-02;
++    const float pa11 =  8.168739417977708e-02;
++    const float pa10 = -2.365036766021623e-01;
++    const float pa09 =  4.439739664918068e-01;
++    const float pa08 = -6.297350825423579e-01;
++    const float pa07 =  7.529691648678890e-01;
++    const float pa06 = -8.249882473764324e-01;
++    const float pa05 =  8.736418933533319e-01;
++    const float pa04 = -9.164580250284832e-01;
++    const float pa03 =  9.583192455599817e-01;
++    const float pa02 = -9.999994950291231e-01;
++    const float pa01 =  9.999999927726119e-01;
++    const float pa00 = -9.999999999857464e-01;
+     tmp  = wc2*pa12 + pa11*wc + pa10;
+     tmp  = wc2*tmp  + pa09*wc + pa08;
+     tmp  = wc2*tmp  + pa07*wc + pa06;
+@@ -237,15 +237,15 @@
+ 
+     // compute the scale factor for the resonance parameter (the factor to obtain k from r) via an
+     // 8th order polynomial approximation:
+-    const double pr8 = -4.554677015609929e-05;
+-    const double pr7 = -2.022131730719448e-05;
+-    const double pr6 =  2.784706718370008e-03;
+-    const double pr5 =  2.079921151733780e-03;
+-    const double pr4 = -8.333236384240325e-02;
+-    const double pr3 = -1.666668203490468e-01;
+-    const double pr2 =  1.000000012124230e+00;
+-    const double pr1 =  3.999999999650040e+00;
+-    const double pr0 =  4.000000000000113e+00;
++    const float pr8 = -4.554677015609929e-05;
++    const float pr7 = -2.022131730719448e-05;
++    const float pr6 =  2.784706718370008e-03;
++    const float pr5 =  2.079921151733780e-03;
++    const float pr4 = -8.333236384240325e-02;
++    const float pr3 = -1.666668203490468e-01;
++    const float pr2 =  1.000000012124230e+00;
++    const float pr1 =  3.999999999650040e+00;
++    const float pr0 =  4.000000000000113e+00;
+     tmp  = wc2*pr8 + pr7*wc + pr6;
+     tmp  = wc2*tmp + pr5*wc + pr4;
+     tmp  = wc2*tmp + pr3*wc + pr2;
+@@ -255,7 +255,7 @@
+ 
+     if( mode == TB_303 )
+     {
+-      double fx = wc * ONE_OVER_SQRT2/(2*PI); 
++      float fx = wc * ONE_OVER_SQRT2/(2*PI); 
+       b0 = (0.00045522346 + 6.1922189 * fx) / (1.0 + 12.358354 * fx + 4.4156345 * (fx * fx)); 
+       k  = fx*(fx*(fx*(fx*(fx*(fx+7198.6997)-5837.7917)-476.47308)+614.95611)+213.87126)+16.998792; 
+       g  = k * 0.058823529411764705882352941176471; // 17 reciprocal 
+@@ -265,21 +265,21 @@
+     }
+   }
+ 
+-  INLINE double TeeBeeFilter::shape(double x)
++  INLINE float TeeBeeFilter::shape(float x)
+   {
+     // return tanhApprox(x); // \todo: find some more suitable nonlinearity here
+     //return x; // test
+ 
+-    const double r6 = 1.0/6.0;
++    const float r6 = 1.0/6.0;
+     x = clip(x, -SQRT2, SQRT2);
+     return x - r6*x*x*x;
+ 
+     //return clip(x, -1.0, 1.0);
+   }
+ 
+-  INLINE double TeeBeeFilter::getSample(double in)
++  INLINE float TeeBeeFilter::getSample(float in)
+   {
+-    double y0;
++    float y0;
+ 
+     if( mode == TB_303 )
+     {
+@@ -296,7 +296,7 @@
+     }
+ 
+     // apply drive and feedback to obtain the filter's input signal:
+-    //double y0 = inputFilter.getSample(0.125*driveFactor*in) - feedbackHighpass.getSample(k*y4);
++    //float y0 = inputFilter.getSample(0.125*driveFactor*in) - feedbackHighpass.getSample(k*y4);
+     y0 = 0.125*driveFactor*in - feedbackHighpass.getSample(k*y4);  
+ 
+     /*

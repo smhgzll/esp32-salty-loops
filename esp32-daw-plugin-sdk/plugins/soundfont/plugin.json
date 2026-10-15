@@ -1,0 +1,39 @@
+{
+  "name": "soundfont",
+  "id": "org.smhgzll.soundfont",
+  "entry": "daw_plugin_entry_soundfont",
+  "licenseFiles": [
+    "LICENSE.TinySoundFont"
+  ],
+  "provenance": [
+    {
+      "component": "soundfont",
+      "origin": "original work (ABI adapter, host allocator, event mapping, parameters)",
+      "author": "smhgzll",
+      "license": "MIT"
+    },
+    {
+      "component": "TinySoundFont",
+      "origin": "https://github.com/schellingb/TinySoundFont",
+      "commit": "853a0a171759f1ddba0de1442133a75912bbeffa",
+      "files": [
+        "tsf.h"
+      ],
+      "license": "MIT",
+      "modifications": "third_party/patches/tinysoundfont-esp32-daw.patch: the voice render loop in single precision (integer position + float fraction, float pitch ratio with powf once per 64 samples, float low-pass); optional borrowed PCM16 sample pool and direct split stereo output; sample runs without per-sample end tests and a cached envelope step (bit-identical output); a note finding no free voice takes the oldest one when none is in its release"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "TinySoundFont",
+      "version": "853a0a1",
+      "license": "MIT"
+    }
+  ],
+  "ui": {
+    "editor": "generic",
+    "color": "#9a7bff",
+    "icon": "piano"
+  },
+  "doubleMath": "TinySoundFont at note-on (pitch ratio, filter Q: about 20 operations per voice) and twice per voice per block (playback position saved / restored); the per-sample loop is single precision"
+}

@@ -1,0 +1,39 @@
+{
+  "name": "tracker",
+  "id": "org.smhgzll.tracker",
+  "entry": "daw_plugin_entry_tracker",
+  "licenseFiles": [
+    "LICENSE.libxmp"
+  ],
+  "provenance": [
+    {
+      "component": "tracker",
+      "origin": "original work (ABI adapter, note chase and tempo following, row map and seeking glue, C library shim, same-boundary tick-tail prefetch to spread render work, two-core mixing through the host parallel service)",
+      "author": "smhgzll",
+      "license": "MIT"
+    },
+    {
+      "component": "libxmp (lite player: MOD, XM, S3M, IT)",
+      "origin": "https://github.com/libxmp/libxmp",
+      "commit": "5d4f6aa2c7dcdf8e9cd8129fe579d45b36a302da",
+      "files": [
+        "the libxmp-lite file set of tag libxmp-4.7.4: include/xmp.h, src/*.c / *.h and src/loaders/{common,itsex,sample,xm_load,mod_load,s3m_load,it_load}.c / *.h"
+      ],
+      "license": "MIT",
+      "modifications": "third_party/patches/libxmp-esp32-daw.patch: a per-row hook in the scan (the plugin's row map for seeking, instead of playing the song silently), a carried fraction of a sample in the tick length (ticks average their exact length: a song stays on a DAW's beat grid), and deferred mixing (a tick is mixed in parts as the blocks need them instead of all in one block). xmp_shim.h (force-included) redirects the C library calls to the host allocator and local stubs; exact per-channel pitch/filter and per-voice step caches, plus an interior-span mixer bound check avoiding unnecessary double division (same PCM); a bounded per-player pitch cache shared between voices, with ordinary pitches computed at control-thread load time using the original target libm; virtual.c allocates the small mixer voice array through the host FAST memory class, with the DAW preserving its internal reserve and falling back to LARGE; a mixer part split into two jobs by sample (two cores, a second tick buffer, deferred voice resets: the same PCM); the per-part position arithmetic read from the double bits, step values once per tick, a shorter 8-bit kernel and pointer addressing (same PCM); the player skips the frame info period / position, divides no zero / unswept instrument vibrato and caches the ProTracker period range (same PCM)"
+    }
+  ],
+  "dependencies": [
+    {
+      "name": "libxmp",
+      "version": "4.7.4",
+      "license": "MIT"
+    }
+  ],
+  "ui": {
+    "editor": "generic",
+    "color": "#4cc9e0",
+    "icon": "wave"
+  },
+  "doubleMath": "libxmp retains double-precision pitch / position arithmetic for compatibility. Pure pitch, filter and voice-step calculations are reused while all inputs match; interior sample spans avoid divide/ceil; per-part positions are read from the double bits. Remaining double math runs at tick / mixer-part boundaries (a subtraction and an addition per voice and part), never per sample."
+}

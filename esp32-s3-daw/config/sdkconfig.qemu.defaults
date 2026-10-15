@@ -1,0 +1,11 @@
+# QEMU profile: null audio backend paced by the clock, OpenCores Ethernet instead of Wi-Fi, the
+# boot self-test. PSRAM in QUAD mode: Espressif QEMU 9.2.2 crashes on octal PSRAM data accesses
+# (KNOWN_ISSUES KI-3). Same 16 MB and memory map; only the MSPI line mode differs from hardware.
+CONFIG_DAW_QEMU_BUILD=y
+CONFIG_SPIRAM_MODE_QUAD=y
+CONFIG_ETH_USE_OPENETH=y
+CONFIG_ETH_OPENETH_DMA_RX_BUFFER_NUM=16
+CONFIG_ETH_OPENETH_DMA_TX_BUFFER_NUM=4
+CONFIG_DAW_MDNS=n
+CONFIG_DAW_ADMIN_PASSWORD="qemu-test-password"
+CONFIG_APP_PROJECT_VER="0.1.0+qemu"

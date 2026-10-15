@@ -1,0 +1,9 @@
+{
+  "name": "fm6",
+  "id": "org.smhgzll.fm6",
+  "entry": "daw_plugin_entry_fm6",
+  "licenseFiles": [],
+  "provenance": [{"component": "fm6", "origin": "original work; six-operator phase modulation with routing after the Yamaha DX7's 32 algorithm diagrams (no DX7 ROM, tables or third-party code)", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic", "color": "#5fb3ff", "icon": "wave"}
+}

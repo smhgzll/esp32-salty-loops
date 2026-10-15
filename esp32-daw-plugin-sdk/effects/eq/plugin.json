@@ -1,0 +1,9 @@
+{
+  "name": "fx_eq",
+  "id": "org.smhgzll.fx.eq",
+  "entry": "daw_plugin_entry_fx_eq",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.eq", "origin": "original work; RBJ Audio EQ Cookbook biquads", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

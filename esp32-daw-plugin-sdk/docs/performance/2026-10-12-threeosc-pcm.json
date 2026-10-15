@@ -1,0 +1,87 @@
+{
+  "referenceSdkCommit": "3ca80c6",
+  "cases": 1572,
+  "stereoFrames": 21675784,
+  "coverage": {
+    "waveformCombinations": 125,
+    "filterModes": 4,
+    "sampleRates": [
+      32000,
+      44100,
+      48000
+    ],
+    "factoryPresets": 6,
+    "hostBlockPattern": [
+      1,
+      7,
+      31,
+      255,
+      16,
+      3,
+      512,
+      19,
+      256
+    ],
+    "features": [
+      "event offsets",
+      "slide",
+      "voice stealing",
+      "release tails",
+      "parameter events",
+      "stereo pan",
+      "multiple noise oscillators"
+    ]
+  },
+  "native": {
+    "floatSamplesBitIdentical": true
+  },
+  "xtensaArithmeticCompiledOnHost": {
+    "maxAbsoluteError": 1.78813934e-07,
+    "maxErrorPcm24Units": 1.5,
+    "errorToSignalDb": -139.54,
+    "realBoardTiming": false
+  },
+  "nativeE1m1": {
+    "seconds": 100,
+    "wavByteIdentical": true,
+    "wavSha256": "75cf489be844d4a9525582a97c03acb45a2442507b38390cc613b2cfa806b06f"
+  },
+  "memory": {
+    "iramBeforeBytes": 6304,
+    "iramPackagedBytesBeforeRelaxation": 6191,
+    "voiceKernelStackFrameBytes": 384,
+    "instanceNativeBytes": 1752,
+    "instanceXtensaBytes": 1744
+  },
+  "hardwarePerformance": {
+    "fullSeconds": 180,
+    "fullCpuMean": 72.94044943820225,
+    "fullGuardSkips": 406,
+    "fullOverruns": 146,
+    "fullUnderruns": 0,
+    "lightSeconds": 180,
+    "lightCpuMean": 66.94550561797752,
+    "lightGuardSkips": 172,
+    "lightOverruns": 1,
+    "lightUnderruns": 0,
+    "qualityRetained": "Full",
+    "report": "../../../esp32-s3-daw/docs/PERFORMANCE.md",
+    "controlledAB": false
+  },
+  "tests": {
+    "dspChecks": 350,
+    "pluginChecks": 1137,
+    "validators": 19,
+    "dawHost": "PASS",
+    "webUnitChecks": 21,
+    "networkChecks": 50,
+    "midiChecks": 6,
+    "qemu": "PASS",
+    "qemuCrossTargetRender": "MATCH",
+    "qemuOtaRollback": "PASS on the initial oscillator candidate; final image deployed and self-confirmed on hardware"
+  },
+  "rejectedGlobalContraction": {
+    "maxAbsoluteError": 0.00157527626,
+    "errorToSignalDb": -75.74
+  }
+}

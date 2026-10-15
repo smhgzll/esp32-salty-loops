@@ -1,0 +1,40 @@
+{
+  "url": "http://<device-address>/",
+  "seconds": 30.0,
+  "browserTaskPercent": 4.53,
+  "jsHeapBefore": 4809596,
+  "jsHeapAfter": 3754620,
+  "domNodesBefore": 607,
+  "domNodesAfter": 584,
+  "initial": {
+    "created": 2,
+    "disconnected": 0,
+    "active": 2,
+    "callbacks": 2,
+    "raf": 76,
+    "canvasClears": 74
+  },
+  "measured": {
+    "created": 2,
+    "disconnected": 0,
+    "active": 2,
+    "callbacks": 2,
+    "raf": 967,
+    "canvasClears": 975
+  },
+  "afterEditorToggles": {
+    "created": 18,
+    "disconnected": 16,
+    "active": 2,
+    "callbacks": 26,
+    "raf": 1029,
+    "canvasClears": 1061
+  },
+  "observerLeak": false,
+  "closeMouseAndTouch": true,
+  "errors": [],
+  "assets": [
+    "http://<device-address>/assets/index-C7jeIvWR.js"
+  ],
+  "_publicationNote": "Local network addresses have been redacted; numerical performance measurements are unchanged."
+}

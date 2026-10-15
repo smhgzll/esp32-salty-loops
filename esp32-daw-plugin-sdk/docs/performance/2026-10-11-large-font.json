@@ -1,0 +1,34 @@
+{
+  "reference": {
+    "plugin": "org.smhgzll.soundfont",
+    "voices": 4,
+    "blocks": 690,
+    "avgBlockUs": 9.258,
+    "maxBlockUs": 57.521,
+    "hostRealtimePercent": 0.1595,
+    "target": "host",
+    "peak": 0.876556,
+    "rms": 0.312513,
+    "memFast": 2112,
+    "memLarge": 534616,
+    "rtViolations": 0
+  },
+  "optimized": {
+    "plugin": "org.smhgzll.soundfont",
+    "voices": 4,
+    "blocks": 690,
+    "avgBlockUs": 8.653,
+    "maxBlockUs": 51.471,
+    "hostRealtimePercent": 0.1491,
+    "target": "host",
+    "peak": 0.876556,
+    "rms": 0.312513,
+    "memFast": 5448,
+    "memLarge": 400,
+    "rtViolations": 0
+  },
+  "fontBytes": 264864,
+  "samplesCompared": 352800,
+  "maxPcm24Difference": 2,
+  "rmsFullscaleDifference": 4.419578576892097e-08
+}

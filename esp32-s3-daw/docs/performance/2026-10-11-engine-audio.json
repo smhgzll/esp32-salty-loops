@@ -1,0 +1,38 @@
+[
+  {
+    "case": "4-tracks",
+    "identical": true
+  },
+  {
+    "case": "4-tracks-shared",
+    "identical": true
+  },
+  {
+    "case": "4-tracks-live",
+    "identical": true
+  },
+  {
+    "case": "6-tracks",
+    "identical": true
+  },
+  {
+    "case": "6-tracks-shared",
+    "identical": true
+  },
+  {
+    "case": "6-tracks-live",
+    "identical": true
+  },
+  {
+    "case": "8-tracks",
+    "identical": true
+  },
+  {
+    "case": "8-tracks-shared",
+    "identical": true
+  },
+  {
+    "case": "8-tracks-live",
+    "identical": true
+  }
+]

@@ -1,0 +1,4 @@
+## IDF Component Manager manifest: mDNS (http://<hostname>.local/) on hardware builds
+dependencies:
+  idf: ">=5.5"
+  espressif/mdns: "^1.4.0"

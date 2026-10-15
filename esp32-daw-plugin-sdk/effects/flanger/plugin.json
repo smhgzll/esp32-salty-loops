@@ -1,0 +1,9 @@
+{
+  "name": "fx_flanger",
+  "id": "org.smhgzll.fx.flanger",
+  "entry": "daw_plugin_entry_fx_flanger",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.flanger", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

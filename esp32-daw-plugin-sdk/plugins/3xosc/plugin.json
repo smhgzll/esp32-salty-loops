@@ -1,0 +1,9 @@
+{
+  "name": "3xosc",
+  "id": "org.smhgzll.3xosc",
+  "entry": "daw_plugin_entry_3xosc",
+  "licenseFiles": [],
+  "provenance": [{"component": "3xosc", "origin": "original work (concept: three-oscillator subtractive synth)", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic", "color": "#ff9a3c", "icon": "wave-saw"}
+}

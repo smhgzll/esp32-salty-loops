@@ -1,0 +1,9 @@
+{
+  "name": "sine",
+  "id": "org.smhgzll.sine",
+  "entry": "daw_plugin_entry_sine",
+  "licenseFiles": [],
+  "provenance": [{"component": "sine", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic", "color": "#5fb3ff", "icon": "wave-sine"}
+}

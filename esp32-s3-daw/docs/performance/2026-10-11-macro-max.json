@@ -1,0 +1,249 @@
+{
+  "before": {
+    "name": "esp32daw",
+    "firmware": "0.1.0",
+    "target": "esp32s3",
+    "proto": 1,
+    "rev": 280,
+    "project": "Untitled",
+    "clients": 1,
+    "playing": 0,
+    "cpu": 9,
+    "blocks": 227512,
+    "overruns": 4561,
+    "plugins": 18,
+    "heapInternal": 78011,
+    "heapInternalMin": 18176,
+    "heapInternalLargest": 31744,
+    "psramFree": 15908024,
+    "psramTotal": 16764084,
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 1589,
+    "audioLate": 0,
+    "audioWriteUsMax": 39225,
+    "audioBackend": "i2s",
+    "uptimeMs": 1331148,
+    "boot": 13,
+    "wsDropped": 479,
+    "wsClients": 1,
+    "audioStackFree": 4216,
+    "partition": "ota_0",
+    "otaState": "valid"
+  },
+  "cases": [
+    {
+      "case": "macrosynth-model-24-voices-4",
+      "cpuMean": 57.66,
+      "cpuMax": 57.7,
+      "renderUsAvg": 3348,
+      "budgetUs": 5804,
+      "heapInternal": 95739,
+      "psramFree": 16560208,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "startupCounterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        0.73
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.macrosynth",
+          "cpu": 52.9,
+          "voices": 4,
+          "memFast": 844,
+          "memLarge": 67984,
+          "reports": 88,
+          "cpuMean": 52.92,
+          "cpuMax": 53,
+          "voicesMax": 4,
+          "pluginId": "org.smhgzll.macrosynth"
+        }
+      ],
+      "seconds": 8.119,
+      "expectedPlugins": 1,
+      "loadedPlugins": 1,
+      "complete": true
+    },
+    {
+      "case": "macrosynth-model-38-voices-4",
+      "cpuMean": 48.1,
+      "cpuMax": 48.2,
+      "renderUsAvg": 2795,
+      "budgetUs": 5804,
+      "heapInternal": 95739,
+      "psramFree": 16560960,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "startupCounterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        1.004
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.macrosynth",
+          "cpu": 43.4,
+          "voices": 4,
+          "memFast": 844,
+          "memLarge": 67984,
+          "reports": 88,
+          "cpuMean": 43.4,
+          "cpuMax": 43.4,
+          "voicesMax": 4,
+          "pluginId": "org.smhgzll.macrosynth"
+        }
+      ],
+      "seconds": 8.126,
+      "expectedPlugins": 1,
+      "loadedPlugins": 1,
+      "complete": true
+    },
+    {
+      "case": "macrosynth-model-10-voices-4",
+      "cpuMean": 47.21,
+      "cpuMax": 47.3,
+      "renderUsAvg": 2743,
+      "budgetUs": 5804,
+      "heapInternal": 95739,
+      "psramFree": 16560968,
+      "counterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "startupCounterDeltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "fxFailures": 0,
+        "cmdOverflow": 0,
+        "retireOverflow": 0,
+        "audioLate": 0
+      },
+      "channelPeaks": [
+        1.362
+      ],
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 1,
+          "plugin": "org.smhgzll.macrosynth",
+          "cpu": 42.5,
+          "voices": 4,
+          "memFast": 844,
+          "memLarge": 67984,
+          "reports": 88,
+          "cpuMean": 42.54,
+          "cpuMax": 42.6,
+          "voicesMax": 4,
+          "pluginId": "org.smhgzll.macrosynth"
+        }
+      ],
+      "seconds": 8.141,
+      "expectedPlugins": 1,
+      "loadedPlugins": 1,
+      "complete": true
+    }
+  ],
+  "restored": true,
+  "after": {
+    "name": "esp32daw",
+    "firmware": "0.1.0",
+    "target": "esp32s3",
+    "proto": 1,
+    "rev": 288,
+    "project": "Untitled",
+    "clients": 2,
+    "playing": 0,
+    "cpu": 47.9,
+    "blocks": 234699,
+    "overruns": 4586,
+    "plugins": 18,
+    "heapInternal": 77891,
+    "heapInternalMin": 18176,
+    "heapInternalLargest": 31744,
+    "psramFree": 15904620,
+    "psramTotal": 16764084,
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 1608,
+    "audioLate": 0,
+    "audioWriteUsMax": 39225,
+    "audioBackend": "i2s",
+    "uptimeMs": 1373417,
+    "boot": 13,
+    "wsDropped": 494,
+    "wsClients": 2,
+    "audioStackFree": 4136,
+    "partition": "ota_0",
+    "otaState": "valid"
+  },
+  "sampleRate": 44100,
+  "imageSha256": "95bf9a40af0da765193dad5a946141a2d6087eb968f84f64b9cacfae0234bfc6"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "example_tremolo",
+  "id": "org.smhgzll.example.tremolo",
+  "entry": "daw_plugin_entry_example_tremolo",
+  "licenseFiles": [],
+  "provenance": [{"component": "example tremolo", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

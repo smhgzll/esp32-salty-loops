@@ -1,0 +1,439 @@
+# TinySoundFont 853a0a171759f1ddba0de1442133a75912bbeffa; float voice loop, borrowed PCM16, split output, sample runs without per-sample end tests, cached envelope steps, oldest-voice stealing.
+# Apply with patch -p1 --binary (upstream CRLF).
+--- a/tsf.h
++++ b/tsf.h
+@@ -327,10 +327,17 @@
+ 
+ #define TSF_FourCCEquals(value1, value2) (value1[0] == value2[0] && value1[1] == value2[1] && value1[2] == value2[2] && value1[3] == value2[3])
+ 
++#ifdef TSF_SHORT_SAMPLES
++typedef short tsf_sample;
++#else
++typedef float tsf_sample;
++#endif
++
+ struct tsf
+ {
+ 	struct tsf_preset* presets;
+-	float* fontSamples;
++	tsf_sample* fontSamples;
++	int samplesOwned;
+ 	struct tsf_voice* voices;
+ 	struct tsf_channels* channels;
+ 
+@@ -419,8 +426,8 @@
+ 
+ struct tsf_riffchunk { tsf_fourcc id; tsf_u32 size; };
+ struct tsf_envelope { float delay, attack, hold, decay, sustain, release, keynumToHold, keynumToDecay; };
+-struct tsf_voice_envelope { unsigned char segment, segmentIsExponential : 1, isAmpEnv : 1; short midiVelocity; float level, slope; int samplesUntilNextSegment; struct tsf_envelope parameters; };
+-struct tsf_voice_lowpass { double QInv, a0, a1, b1, b2, z1, z2; TSF_BOOL active; };
++struct tsf_voice_envelope { unsigned char segment, segmentIsExponential : 1, isAmpEnv : 1; short midiVelocity; float level, slope; int samplesUntilNextSegment; struct tsf_envelope parameters; float powSlope, powValue; int powSamples; }; /* esp32-daw: pow* cache the exponential step */
++struct tsf_voice_lowpass { float QInv, a0, a1, b1, b2, z1, z2; TSF_BOOL active; }; /* esp32-daw: float (was double) */
+ struct tsf_voice_lfo { int samplesUntil; float level, delta; };
+ 
+ struct tsf_region
+@@ -972,8 +979,9 @@
+ }
+ #endif
+ 
+-static int tsf_load_samples(void** pRawBuffer, float** pFloatBuffer, unsigned int* pSmplCount, struct tsf_riffchunk *chunkSmpl, struct tsf_stream* stream)
++static int tsf_load_samples(void** pRawBuffer, tsf_sample** pFloatBuffer, unsigned int* pSmplCount, struct tsf_riffchunk *chunkSmpl, struct tsf_stream* stream, int* owned)
+ {
++	*owned = 1;
+ 	#ifdef STB_VORBIS_INCLUDE_STB_VORBIS_H
+ 	// With OGG Vorbis support we cannot pre-allocate the memory for tsf_decode_sf3_samples
+ 	tsf_u32 resNum, resMax; float* oldres;
+@@ -990,6 +998,21 @@
+ 	*pSmplCount = resNum;
+ 	return (*pFloatBuffer ? 1 : 0);
+ 	#else
++	#ifdef TSF_SHORT_SAMPLES
++	struct tsf_stream_memory* m = (struct tsf_stream_memory*)stream->data;
++	(void)pRawBuffer;
++	*pSmplCount = chunkSmpl->size / sizeof(short);
++	if (stream->read == (int(*)(void*,void*,unsigned int))&tsf_stream_memory_read &&
++	    chunkSmpl->size <= m->total - m->pos && ((size_t)(m->buffer + m->pos) & 1) == 0)
++	{
++		// The ABI resource remains alive until the font closes: borrow its aligned PCM16.
++		*pFloatBuffer = (short*)(m->buffer + m->pos);
++		*owned = 0;
++		return stream->skip(stream->data, chunkSmpl->size);
++	}
++	*pFloatBuffer = (short*)TSF_MALLOC(chunkSmpl->size);
++	return *pFloatBuffer && stream->read(stream->data, *pFloatBuffer, chunkSmpl->size) == (int)chunkSmpl->size;
++	#else
+ 	// Inline convert the samples from short to float
+ 	float *res, *out; const short *in;
+ 	(void)pRawBuffer;
+@@ -1000,6 +1023,7 @@
+ 		*(--out) = (float)(*(--in) / 32767.0);
+ 	return 1;
+ 	#endif
++	#endif
+ }
+ 
+ static int tsf_voice_envelope_release_samples(struct tsf_voice_envelope* e, float outSampleRate)
+@@ -1115,6 +1139,7 @@
+ static void tsf_voice_envelope_setup(struct tsf_voice_envelope* e, struct tsf_envelope* new_parameters, int midiNoteNumber, short midiVelocity, TSF_BOOL isAmpEnv, float outSampleRate)
+ {
+ 	e->parameters = *new_parameters;
++	e->powSamples = 0; /* esp32-daw */
+ 	if (e->parameters.keynumToHold)
+ 	{
+ 		e->parameters.hold += e->parameters.keynumToHold * (60.0f - midiNoteNumber);
+@@ -1134,7 +1159,13 @@
+ {
+ 	if (e->slope)
+ 	{
+-		if (e->segmentIsExponential) e->level *= TSF_POWF(e->slope, (float)numSamples);
++		if (e->segmentIsExponential)
++		{
++			/* esp32-daw: powf once per segment and block length (the same value), not every block */
++			if (e->powSamples != numSamples || e->powSlope != e->slope)
++				e->powValue = TSF_POWF(e->slope, (float)numSamples), e->powSlope = e->slope, e->powSamples = numSamples;
++			e->level *= e->powValue;
++		}
+ 		else e->level += (e->slope * numSamples);
+ 	}
+ 	if ((e->samplesUntilNextSegment -= numSamples) <= 0)
+@@ -1144,17 +1175,18 @@
+ static void tsf_voice_lowpass_setup(struct tsf_voice_lowpass* e, float Fc)
+ {
+ 	// Lowpass filter from http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/
+-	double K = TSF_TAN(TSF_PI * Fc), KK = K * K;
+-	double norm = 1 / (1 + K * e->QInv + KK);
++	// esp32-daw: single precision (the ESP32-S3 FPU has no double); runs every 64 samples when modulated
++	float K = tanf((float)TSF_PI * Fc), KK = K * K;
++	float norm = 1 / (1 + K * e->QInv + KK);
+ 	e->a0 = KK * norm;
+ 	e->a1 = 2 * e->a0;
+ 	e->b1 = 2 * (KK - 1) * norm;
+ 	e->b2 = (1 - K * e->QInv + KK) * norm;
+ }
+ 
+-static float tsf_voice_lowpass_process(struct tsf_voice_lowpass* e, double In)
++static float tsf_voice_lowpass_process(struct tsf_voice_lowpass* e, float In)
+ {
+-	double Out = In * e->a0 + e->z1; e->z1 = In * e->a1 + e->z2 - e->b1 * Out; e->z2 = In * e->a0 - e->b2 * Out; return (float)Out;
++	float Out = In * e->a0 + e->z1; e->z1 = In * e->a1 + e->z2 - e->b1 * Out; e->z2 = In * e->a0 - e->b2 * Out; return (float)Out;
+ }
+ 
+ static void tsf_voice_lfo_setup(struct tsf_voice_lfo* e, float delay, int freqCents, float outSampleRate)
+@@ -1217,38 +1249,45 @@
+ 	v->pitchOutputFactor = v->region->sample_rate / (tsf_timecents2Secsd(v->region->pitch_keycenter * 100.0) * outSampleRate);
+ }
+ 
+-static void tsf_voice_render(tsf* f, struct tsf_voice* v, float* outputBuffer, int numSamples)
++/* esp32-daw: the voice loop in single precision. The position is an integer sample index plus a
++ * float fraction (a float index would lose its fraction after 2^16 samples of the font's sample
++ * buffer); the pitch ratio is float, computed with powf once per 64-sample block; the low-pass is
++ * float. The double members of tsf_voice are converted once per call. */
++static void tsf_voice_render(tsf* f, struct tsf_voice* v, float* outputBuffer, int numSamples, float* outputRight)
+ {
+ 	struct tsf_region* region = v->region;
+-	float* input = f->fontSamples;
++	tsf_sample* input = f->fontSamples;
+ 	float* outL = outputBuffer;
+-	float* outR = (f->outputmode == TSF_STEREO_UNWEAVED ? outL + numSamples : TSF_NULL);
++	float* outR = (outputRight ? outputRight : (f->outputmode == TSF_STEREO_UNWEAVED ? outL + numSamples : TSF_NULL));
+ 
+ 	// Cache some values, to give them at least some chance of ending up in registers.
+ 	TSF_BOOL updateModEnv = (region->modEnvToPitch || region->modEnvToFilterFc);
+ 	TSF_BOOL updateModLFO = (v->modlfo.delta && (region->modLfoToPitch || region->modLfoToFilterFc || region->modLfoToVolume));
+ 	TSF_BOOL updateVibLFO = (v->viblfo.delta && (region->vibLfoToPitch));
+ 	TSF_BOOL isLooping    = (v->loopStart < v->loopEnd);
+-	unsigned int tmpLoopStart = v->loopStart, tmpLoopEnd = v->loopEnd;
+-	double tmpSampleEndDbl = (double)region->end, tmpLoopEndDbl = (double)tmpLoopEnd + 1.0;
+-	double tmpSourceSamplePosition = v->sourceSamplePosition;
++	unsigned int tmpLoopStart = v->loopStart, tmpLoopEnd = v->loopEnd, tmpLoopLen = tmpLoopEnd - tmpLoopStart + 1;
++	unsigned int tmpSampleEnd = region->end;
++	unsigned int tmpPos = (unsigned int)v->sourceSamplePosition;
++	float tmpFrac = (float)(v->sourceSamplePosition - (double)tmpPos);
++	float pitchInputTimecents = (float)v->pitchInputTimecents, pitchOutputFactor = (float)v->pitchOutputFactor;
+ 	struct tsf_voice_lowpass tmpLowpass = v->lowpass;
+ 
+ 	TSF_BOOL dynamicLowpass = (region->modLfoToFilterFc || region->modEnvToFilterFc);
+ 	float tmpSampleRate = f->outSampleRate, tmpInitialFilterFc, tmpModLfoToFilterFc, tmpModEnvToFilterFc;
+ 
+ 	TSF_BOOL dynamicPitchRatio = (region->modLfoToPitch || region->modEnvToPitch || region->vibLfoToPitch);
+-	double pitchRatio;
++	float pitchRatio;
+ 	float tmpModLfoToPitch, tmpVibLfoToPitch, tmpModEnvToPitch;
+ 
+ 	TSF_BOOL dynamicGain = (region->modLfoToVolume != 0);
++	TSF_BOOL fastStereo = (outR != TSF_NULL && f->outputmode == TSF_STEREO_UNWEAVED); /* esp32-daw */
+ 	float noteGain = 0, tmpModLfoToVolume;
+ 
+ 	if (dynamicLowpass) tmpInitialFilterFc = (float)region->initialFilterFc, tmpModLfoToFilterFc = (float)region->modLfoToFilterFc, tmpModEnvToFilterFc = (float)region->modEnvToFilterFc;
+ 	else tmpInitialFilterFc = 0, tmpModLfoToFilterFc = 0, tmpModEnvToFilterFc = 0;
+ 
+ 	if (dynamicPitchRatio) pitchRatio = 0, tmpModLfoToPitch = (float)region->modLfoToPitch, tmpVibLfoToPitch = (float)region->vibLfoToPitch, tmpModEnvToPitch = (float)region->modEnvToPitch;
+-	else pitchRatio = tsf_timecents2Secsd(v->pitchInputTimecents) * v->pitchOutputFactor, tmpModLfoToPitch = 0, tmpVibLfoToPitch = 0, tmpModEnvToPitch = 0;
++	else pitchRatio = tsf_timecents2Secsf(pitchInputTimecents) * pitchOutputFactor, tmpModLfoToPitch = 0, tmpVibLfoToPitch = 0, tmpModEnvToPitch = 0;
+ 
+ 	if (dynamicGain) tmpModLfoToVolume = (float)region->modLfoToVolume * 0.1f;
+ 	else noteGain = tsf_decibelsToGain(v->noteGainDB), tmpModLfoToVolume = 0;
+@@ -1268,7 +1307,7 @@
+ 		}
+ 
+ 		if (dynamicPitchRatio)
+-			pitchRatio = tsf_timecents2Secsd(v->pitchInputTimecents + (v->modlfo.level * tmpModLfoToPitch + v->viblfo.level * tmpVibLfoToPitch + v->modenv.level * tmpModEnvToPitch)) * v->pitchOutputFactor;
++			pitchRatio = tsf_timecents2Secsf(pitchInputTimecents + (v->modlfo.level * tmpModLfoToPitch + v->viblfo.level * tmpVibLfoToPitch + v->modenv.level * tmpModEnvToPitch)) * pitchOutputFactor;
+ 
+ 		if (dynamicGain)
+ 			noteGain = tsf_decibelsToGain(v->noteGainDB + (v->modlfo.level * tmpModLfoToVolume));
+@@ -1283,78 +1322,108 @@
+ 		if (updateModLFO) tsf_voice_lfo_process(&v->modlfo, blockSamples);
+ 		if (updateVibLFO) tsf_voice_lfo_process(&v->viblfo, blockSamples);
+ 
+-		switch (f->outputmode)
++		gainLeft = gainMono * v->panFactorLeft, gainRight = gainMono * v->panFactorRight;
++		while (blockSamples > 0 && tmpPos < tmpSampleEnd)
+ 		{
+-			case TSF_STEREO_INTERLEAVED:
+-				gainLeft = gainMono * v->panFactorLeft, gainRight = gainMono * v->panFactorRight;
+-				while (blockSamples-- && tmpSourceSamplePosition < tmpSampleEndDbl)
+-				{
+-					unsigned int pos = (unsigned int)tmpSourceSamplePosition, nextPos = (pos >= tmpLoopEnd && isLooping ? tmpLoopStart : pos + 1);
+-
+-					// Simple linear interpolation.
+-					float alpha = (float)(tmpSourceSamplePosition - pos), val = (input[pos] * (1.0f - alpha) + input[nextPos] * alpha);
+-
+-					// Low-pass filter.
+-					if (tmpLowpass.active) val = tsf_voice_lowpass_process(&tmpLowpass, val);
+-
+-					*outL++ += val * gainLeft;
+-					*outL++ += val * gainRight;
+-
+-					// Next sample.
+-					tmpSourceSamplePosition += pitchRatio;
+-					if (tmpSourceSamplePosition >= tmpLoopEndDbl && isLooping) tmpSourceSamplePosition -= (tmpLoopEnd - tmpLoopStart + 1.0);
+-				}
+-				break;
+-
+-			case TSF_STEREO_UNWEAVED:
+-				gainLeft = gainMono * v->panFactorLeft, gainRight = gainMono * v->panFactorRight;
+-				while (blockSamples-- && tmpSourceSamplePosition < tmpSampleEndDbl)
++			#ifdef TSF_SHORT_SAMPLES
++			/* esp32-daw: a run of samples that can reach neither the loop end nor the sample end
++			 * (the position moves by at most n * pitchRatio, plus the fraction and rounding: kept
++			 * 4 samples away) runs the arithmetic below without its per-sample end and loop tests
++			 * and output-mode switch, so the output is identical. The samples next to a loop wrap
++			 * or the sample end take the general path below, one at a time. */
++			if (fastStereo && pitchRatio >= 0.0f && pitchRatio < 4096.0f)
++			{
++				unsigned int limit = (isLooping && tmpLoopEnd < tmpSampleEnd ? tmpLoopEnd : tmpSampleEnd);
++				if (limit > tmpPos + 4)
+ 				{
+-					unsigned int pos = (unsigned int)tmpSourceSamplePosition, nextPos = (pos >= tmpLoopEnd && isLooping ? tmpLoopStart : pos + 1);
+-
+-					// Simple linear interpolation.
+-					float alpha = (float)(tmpSourceSamplePosition - pos), val = (input[pos] * (1.0f - alpha) + input[nextPos] * alpha);
+-
+-					// Low-pass filter.
+-					if (tmpLowpass.active) val = tsf_voice_lowpass_process(&tmpLowpass, val);
+-
+-					*outL++ += val * gainLeft;
+-					*outR++ += val * gainRight;
+-
+-					// Next sample.
+-					tmpSourceSamplePosition += pitchRatio;
+-					if (tmpSourceSamplePosition >= tmpLoopEndDbl && isLooping) tmpSourceSamplePosition -= (tmpLoopEnd - tmpLoopStart + 1.0);
++					unsigned int room = limit - tmpPos;
++					float span = (float)(room < (1u << 24) ? room : (1u << 24)) - 4.0f;
++					const tsf_sample* in = input;
++					int n = blockSamples, i;
++					if ((float)n * pitchRatio >= span) n = (int)(span / pitchRatio);
++					if (n > 0)
++					{
++						if (tmpLowpass.active)
++						{
++							float a0 = tmpLowpass.a0, a1 = tmpLowpass.a1, b1 = tmpLowpass.b1, b2 = tmpLowpass.b2, z1 = tmpLowpass.z1, z2 = tmpLowpass.z2;
++							for (i = 0; i < n; i++)
++							{
++								float a = in[tmpPos] * (1.0f / 32767.0f), b = in[tmpPos + 1] * (1.0f / 32767.0f);
++								float val = a + (b - a) * tmpFrac;
++								float out = val * a0 + z1;
++								unsigned int whole;
++								z1 = val * a1 + z2 - b1 * out;
++								z2 = val * a0 - b2 * out;
++								outL[i] += out * gainLeft;
++								outR[i] += out * gainRight;
++								tmpFrac += pitchRatio;
++								whole = (unsigned int)tmpFrac;
++								tmpFrac -= (float)whole;
++								tmpPos += whole;
++							}
++							tmpLowpass.z1 = z1, tmpLowpass.z2 = z2;
++						}
++						else
++						{
++							for (i = 0; i < n; i++)
++							{
++								float a = in[tmpPos] * (1.0f / 32767.0f), b = in[tmpPos + 1] * (1.0f / 32767.0f);
++								float val = a + (b - a) * tmpFrac;
++								unsigned int whole;
++								outL[i] += val * gainLeft;
++								outR[i] += val * gainRight;
++								tmpFrac += pitchRatio;
++								whole = (unsigned int)tmpFrac;
++								tmpFrac -= (float)whole;
++								tmpPos += whole;
++							}
++						}
++						outL += n, outR += n;
++						blockSamples -= n;
++						continue;
++					}
+ 				}
+-				break;
+-
+-			case TSF_MONO:
+-				while (blockSamples-- && tmpSourceSamplePosition < tmpSampleEndDbl)
+-				{
+-					unsigned int pos = (unsigned int)tmpSourceSamplePosition, nextPos = (pos >= tmpLoopEnd && isLooping ? tmpLoopStart : pos + 1);
+-
+-					// Simple linear interpolation.
+-					float alpha = (float)(tmpSourceSamplePosition - pos), val = (input[pos] * (1.0f - alpha) + input[nextPos] * alpha);
++			}
++			#endif
++			blockSamples--;
++			unsigned int nextPos = (tmpPos >= tmpLoopEnd && isLooping ? tmpLoopStart : tmpPos + 1);
++
++			// Simple linear interpolation.
++			#ifdef TSF_SHORT_SAMPLES
++			float a = input[tmpPos] * (1.0f / 32767.0f), b = input[nextPos] * (1.0f / 32767.0f);
++			float val = a + (b - a) * tmpFrac;
++			#else
++			float val = input[tmpPos] + (input[nextPos] - input[tmpPos]) * tmpFrac;
++			#endif
+ 
+-					// Low-pass filter.
+-					if (tmpLowpass.active) val = tsf_voice_lowpass_process(&tmpLowpass, val);
++			// Low-pass filter.
++			if (tmpLowpass.active) val = tsf_voice_lowpass_process(&tmpLowpass, val);
+ 
+-					*outL++ += val * gainMono;
++			switch (f->outputmode)
++			{
++				case TSF_STEREO_INTERLEAVED: *outL++ += val * gainLeft; *outL++ += val * gainRight; break;
++				case TSF_STEREO_UNWEAVED: *outL++ += val * gainLeft; *outR++ += val * gainRight; break;
++				default: *outL++ += val * gainMono; break;
++			}
+ 
+-					// Next sample.
+-					tmpSourceSamplePosition += pitchRatio;
+-					if (tmpSourceSamplePosition >= tmpLoopEndDbl && isLooping) tmpSourceSamplePosition -= (tmpLoopEnd - tmpLoopStart + 1.0);
+-				}
+-				break;
++			// Next sample.
++			tmpFrac += pitchRatio;
++			{
++				unsigned int whole = (unsigned int)tmpFrac;
++				tmpFrac -= (float)whole;
++				tmpPos += whole;
++			}
++			if (tmpPos > tmpLoopEnd && isLooping) tmpPos = tmpLoopStart + (tmpPos - tmpLoopStart) % tmpLoopLen;
+ 		}
+ 
+-		if (tmpSourceSamplePosition >= tmpSampleEndDbl || v->ampenv.segment == TSF_SEGMENT_DONE)
++		if (tmpPos >= tmpSampleEnd || v->ampenv.segment == TSF_SEGMENT_DONE)
+ 		{
+ 			tsf_voice_kill(v);
+ 			return;
+ 		}
+ 	}
+ 
+-	v->sourceSamplePosition = tmpSourceSamplePosition;
++	v->sourceSamplePosition = (double)tmpPos + (double)tmpFrac;
+ 	if (tmpLowpass.active || dynamicLowpass) v->lowpass = tmpLowpass;
+ }
+ 
+@@ -1365,7 +1434,8 @@
+ 	struct tsf_riffchunk chunkList;
+ 	struct tsf_hydra hydra;
+ 	void* rawBuffer = TSF_NULL;
+-	float* floatBuffer = TSF_NULL;
++	tsf_sample* floatBuffer = TSF_NULL;
++	int samplesOwned = 1;
+ 	tsf_u32 smplCount = 0;
+ 
+ 	if (!tsf_riffchunk_read(TSF_NULL, &chunkHead, stream) || !TSF_FourCCEquals(chunkHead.id, "sfbk"))
+@@ -1414,7 +1484,7 @@
+ 						#endif
+ 					) && !rawBuffer && !floatBuffer && chunk.size >= sizeof(short))
+ 				{
+-					if (!tsf_load_samples(&rawBuffer, &floatBuffer, &smplCount, &chunk, stream)) goto out_of_memory;
++					if (!tsf_load_samples(&rawBuffer, &floatBuffer, &smplCount, &chunk, stream, &samplesOwned)) goto out_of_memory;
+ 				}
+ 				else stream->skip(stream->data, chunk.size);
+ 			}
+@@ -1439,6 +1509,7 @@
+ 		if (!res || !tsf_load_presets(res, &hydra, smplCount)) goto out_of_memory;
+ 		res->outSampleRate = 44100.0f;
+ 		res->fontSamples = floatBuffer;
++		res->samplesOwned = samplesOwned;
+ 		floatBuffer = TSF_NULL; // don't free below
+ 	}
+ 	if (0)
+@@ -1451,7 +1522,7 @@
+ 	TSF_FREE(hydra.phdrs); TSF_FREE(hydra.pbags); TSF_FREE(hydra.pmods);
+ 	TSF_FREE(hydra.pgens); TSF_FREE(hydra.insts); TSF_FREE(hydra.ibags);
+ 	TSF_FREE(hydra.imods); TSF_FREE(hydra.igens); TSF_FREE(hydra.shdrs);
+-	TSF_FREE(rawBuffer);   TSF_FREE(floatBuffer);
++	TSF_FREE(rawBuffer);   if (samplesOwned) TSF_FREE(floatBuffer);
+ 	return res;
+ }
+ 
+@@ -1483,7 +1554,7 @@
+ 		struct tsf_preset *preset = f->presets, *presetEnd = preset + f->presetNum;
+ 		for (; preset != presetEnd; preset++) TSF_FREE(preset->regions);
+ 		TSF_FREE(f->presets);
+-		TSF_FREE(f->fontSamples);
++		if (f->samplesOwned) TSF_FREE(f->fontSamples);
+ 		TSF_FREE(f->refCount);
+ 	}
+ 	TSF_FREE(f->channels);
+@@ -1595,6 +1666,14 @@
+ 					}
+ 				}
+ 				if (!voice)
++				{
++					/* esp32-daw: no voice is in its release: take the one playing longest (an earlier note's),
++					 * so that a new note is never dropped. Never a voice of this note (age 0). */
++					unsigned int age = 0;
++					for (v = f->voices; v != vEnd; v++)
++						if (voicePlayIndex - v->playIndex > age) { age = voicePlayIndex - v->playIndex; voice = v; }
++				}
++				if (!voice)
+ 					continue;
+ 				tsf_voice_kill(voice);
+ 			}
+@@ -1645,7 +1724,7 @@
+ 		// Setup lowpass filter.
+ 		lowpassFc = (region->initialFilterFc <= 13500 ? tsf_cents2Hertz((float)region->initialFilterFc) / f->outSampleRate : 1.0f);
+ 		lowpassFilterQDB = region->initialFilterQ / 10.0f;
+-		voice->lowpass.QInv = 1.0 / TSF_POW(10.0, (lowpassFilterQDB / 20.0));
++		voice->lowpass.QInv = (float)(1.0 / TSF_POW(10.0, (lowpassFilterQDB / 20.0)));
+ 		voice->lowpass.z1 = voice->lowpass.z2 = 0;
+ 		voice->lowpass.active = (lowpassFc < 0.499f);
+ 		if (voice->lowpass.active) tsf_voice_lowpass_setup(&voice->lowpass, lowpassFc);
+@@ -1741,7 +1820,17 @@
+ 	if (!flag_mixing) TSF_MEMSET(buffer, 0, (f->outputmode == TSF_MONO ? 1 : 2) * sizeof(float) * samples);
+ 	for (; v != vEnd; v++)
+ 		if (v->playingPreset != -1)
+-			tsf_voice_render(f, v, buffer, samples);
++			tsf_voice_render(f, v, buffer, samples, TSF_NULL);
++}
++
++// esp32-daw: render directly into separate host channel buffers (no FAST scratch/copy).
++static void tsf_render_float_split(tsf* f, float* left, float* right, int samples)
++{
++	struct tsf_voice *v = f->voices, *end = v + f->voiceNum;
++	TSF_MEMSET(left, 0, samples * sizeof(float));
++	TSF_MEMSET(right, 0, samples * sizeof(float));
++	for (; v != end; v++)
++		if (v->playingPreset != -1) tsf_voice_render(f, v, left, samples, right);
+ }
+ 
+ static void tsf_channel_setup_voice(tsf* f, struct tsf_voice* v)

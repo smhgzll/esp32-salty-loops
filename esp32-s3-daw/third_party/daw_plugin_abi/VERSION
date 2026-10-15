@@ -1,0 +1,5 @@
+# Copy of esp32-daw-plugin-sdk/include (the plugin ABI headers, MIT), the only SDK files the DAW
+# uses. scripts/import-plugins.sh checks that every imported package's ABI major equals
+# DAW_PLUGIN_API_MAJOR here and its minor is not newer. Update with scripts/sync-plugin-abi.sh.
+sdk_commit=3ca80c6-dirty
+abi=1.4

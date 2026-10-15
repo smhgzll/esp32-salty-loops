@@ -1,0 +1,9 @@
+{
+  "name": "fx_compressor",
+  "id": "org.smhgzll.fx.compressor",
+  "entry": "daw_plugin_entry_fx_compressor",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.compressor", "origin": "original work; soft-knee gain computer after Giannoulis, Massberg & Reiss (JAES 2012)", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

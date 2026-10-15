@@ -1,0 +1,9 @@
+{
+  "name": "fx_delay",
+  "id": "org.smhgzll.fx.delay",
+  "entry": "daw_plugin_entry_fx_delay",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.delay", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

@@ -1,0 +1,1054 @@
+--- a/src/scan.c
++++ b/src/scan.c
+@@ -50,6 +50,12 @@
+ #define VBLANK_TIME_THRESHOLD	480000.0 /* 8 minutes */
+ 
+ 
++/* esp32-daw: called for every row the main sequence's scan visits, with the row's start time (ms,
++ * tempo factor 1) and the speed, tempo and global volume in effect before its events: the
++ * Tracker plugin's row map for seeking. Set only by the control thread around a scan. */
++void (*libxmp_daw_row_hook)(void *arg, int ord, int row, double time, int speed, int bpm, int gvl);
++void *libxmp_daw_row_hook_arg;
++
+ static double scan_module(struct context_data *ctx, int ep, int chain)
+ {
+     struct player_data *p = &ctx->p;
+@@ -292,6 +298,12 @@
+ 		goto end_module;
+ 	    }
+ 
++	    if (chain == 0 && libxmp_daw_row_hook) {
++		libxmp_daw_row_hook(libxmp_daw_row_hook_arg, ord, row,
++			time + m->time_factor * (frame_count + row_count * speed) * base_time / bpm,
++			speed, bpm, gvl);
++	    }
++
+ 	    pdelay = 0;
+ 
+ 	    for (chn = 0; chn < mod->chn; chn++) {
+--- a/src/common.h
++++ b/src/common.h
+@@ -594,7 +594,14 @@
+ 	int num;
+ };
+ 
++/* esp32-daw: exact note/bend period values shared by a player's channels / NNA voices. */
++struct daw_period_cache {
++	double period;
++	int note, bend, valid;
++};
++
+ struct player_data {
++	struct daw_period_cache daw_periods[256];
+ 	int ord;
+ 	int pos;
+ 	int row;
+@@ -670,6 +677,12 @@
+ 	int dtleft;		/* anticlick control, left channel */
+ 	int bidir_adjust;	/* adjustment for IT bidirectional loops */
+ 	double pbase;		/* period base */
++	double tick_carry;	/* esp32-daw: fraction of a frame carried to the next tick */
++	int deferred;		/* esp32-daw: the caller mixes ticks in parts */
++	int mixed;		/* esp32-daw: frames of the current tick mixed so far */
++	int32 *buf32b;		/* esp32-daw: the second core's tick buffer (NULL: one core) */
++	int b_pending;		/* esp32-daw: buf32b holds frames not yet added to buf32 */
++	int split_valid;	/* esp32-daw: this tick's two jobs hold for its next part */
+ };
+ 
+ struct rng_state {
+--- a/src/mixer.c
++++ b/src/mixer.c
+@@ -194,7 +194,19 @@
+ 	}
+ }
+ 
+-static void set_sample_end(struct context_data *ctx, int voc, int end)
++/* esp32-daw: a voice reset changes the player's voice counters, shared by both cores' jobs: a
++ * job (not NULL) records it for libxmp_mixer_part_join, after which nothing reads the voice */
++static void reset_voice(struct context_data *ctx, struct libxmp_mix_job *job, int voc, int mute)
++{
++	if (job == NULL) {
++		libxmp_virt_resetvoice(ctx, voc, mute);
++		return;
++	}
++	job->reset[job->nreset] = voc;
++	job->reset_mute[job->nreset++] = mute;
++}
++
++static void set_sample_end(struct context_data *ctx, struct libxmp_mix_job *job, int voc, int end)
+ {
+ 	struct player_data *p = &ctx->p;
+ 	struct module_data *m = &ctx->m;
+@@ -210,7 +222,7 @@
+ 		SET_NOTE(NOTE_SAMPLE_END);
+ 		vi->fidx &= ~FLAG_ACTIVE;
+ 		if (HAS_QUIRK(QUIRK_RSTCHN)) {
+-			libxmp_virt_resetvoice(ctx, voc, 0);
++			reset_voice(ctx, job, voc, 0);
+ 		}
+ 	} else {
+ 		RESET_NOTE(NOTE_SAMPLE_END);
+@@ -456,6 +468,20 @@
+ 	s->ticksize = libxmp_mixer_get_ticksize(s->freq,
+ 		m->time_factor * p->time_factor_relative, m->rrate, p->bpm);
+ 
++	/* esp32-daw: carry the fraction of a frame from tick to tick, so ticks
++	 * average their exact length (a song stays on a DAW's beat grid) */
++	if (s->ticksize > (1 << ANTICLICK_SHIFT)) {
++		double exact = (double)s->freq * m->time_factor *
++			p->time_factor_relative * m->rrate / p->bpm / 1000 +
++			s->tick_carry;
++		if (exact >= s->ticksize && exact < s->ticksize + 2.0) {
++			s->ticksize = (int)exact;
++			s->tick_carry = exact - s->ticksize;
++		} else {
++			s->tick_carry = 0.0;
++		}
++	}
++
+ 	/* Protect the mixer from broken values caused by xmp_set_tempo_factor. */
+ 	if (s->ticksize < 0 || s->ticksize > (s->total_size / 2)) {
+ 		s->ticksize = s->total_size / 2;
+@@ -466,12 +492,25 @@
+ 		bytelen *= 2;
+ 	}
+ 	memset(s->buf32, 0, bytelen);
++
++	s->split_valid = 0;	/* esp32-daw: new voices */
++
++	/* esp32-daw: the last tick was left before its end (a seek): clear what it left */
++	if (s->b_pending) {
++		memset(s->buf32b, 0, s->total_size * sizeof(int32));
++		s->b_pending = 0;
++	}
+ }
+ 
+ /* Fill the output buffer calling one of the handlers. The buffer contains
+  * sound for one tick (a PAL frame or 1/50s for standard vblank-timed mods)
+  */
+-void libxmp_mixer_softmixer(struct context_data *ctx)
++/* esp32-daw: mix frames [off, off + count) of the current tick (all of it: 0, ticksize). The
++ * volume ramps continue from part to part (ramp_left / ramp_dl / ramp_dr), discharges reach
++ * to the tick's end, and a voice's previous volume is set when the tick is complete.
++ * job NULL: every voice into buf32; else the job's voices into its buffer (base). */
++static void softmixer_voices(struct context_data *ctx, struct libxmp_mix_job *job,
++			     int32 *base, int off, int count)
+ {
+ 	struct player_data *p = &ctx->p;
+ 	struct mixer_data *s = &ctx->s;
+@@ -483,11 +522,12 @@
+ 	struct loop_data loop_data;
+ 	double step, step_dir;
+ 	int samples, size;
+-	int vol, vol_l, vol_r, voc, usmp;
++	int vol, vol_l, vol_r, voc, usmp, i, istep_dir;
+ 	int prev_l, prev_r = 0;
+ 	int32 *buf_pos;
+ 	MIXER_FP  mix_fn;
+ 	const MIXER_FP *mixerset;
++	const int tail = s->ticksize - (off + count);	/* frames of the tick after this part */
+ 
+ 	switch (s->interp) {
+ 	case XMP_INTERP_NEAREST:
+@@ -519,19 +559,21 @@
+ 	/* OpenMPT Bidi-Loops.it: "In Impulse Tracker's software
+ 	 * mixer, ping-pong loops are shortened by one sample."
+ 	 */
+-	s->bidir_adjust = IS_PLAYER_MODE_IT() ? 1 : 0;
++	if (job == NULL) {	/* jobs: set by libxmp_mixer_part_split */
++		s->bidir_adjust = IS_PLAYER_MODE_IT() ? 1 : 0;
++	}
+ #endif
+ 
+-	libxmp_mixer_prepare(ctx);
+-
+-	for (voc = 0; voc < p->virt.maxvoc; voc++) {
++	for (i = 0; i < (job ? job->nvoc : p->virt.maxvoc); i++) {
+ 		int c5spd, rampsize, delta_l, delta_r;
++		int ended = 0;
+ 
++		voc = job ? job->voc[i] : i;
+ 		vi = &p->virt.voice_array[voc];
+ 
+ 		if (vi->flags & ANTICLICK) {
+ 			if (s->interp > XMP_INTERP_NEAREST) {
+-				do_anticlick(ctx, voc, NULL, 0);
++				do_anticlick(ctx, voc, base, s->ticksize);	/* from the tick's start */
+ 			}
+ 			vi->flags &= ~ANTICLICK;
+ 		}
+@@ -541,18 +583,20 @@
+ 		}
+ 
+ 		if (vi->period < 1) {
+-			libxmp_virt_resetvoice(ctx, voc, 1);
++			reset_voice(ctx, job, voc, 1);
+ 			continue;
+ 		}
+ 
+ 		/* Negative positions can be left over from some
+ 		 * loop edge cases. These can be safely clamped. */
+-		if (vi->pos < 0.0)
++		if (libxmp_pos_lt0(vi->pos))
+ 			vi->pos = 0.0;
+ 
+-		vi->pos0 = vi->pos;
++		if (off == 0) {
++			vi->pos0 = vi->pos;
++		}
+ 
+-		buf_pos = s->buf32;
++		buf_pos = base + ((~s->format & XMP_FORMAT_MONO) ? 2 * off : off);
+ 		vol = vi->vol;
+ 
+ 		/* Mix volume (S3M and IT) */
+@@ -581,22 +625,40 @@
+ 			get_current_sample(ctx, vi, &xxs, &xtra, &c5spd);
+ 		}
+ 
+-		step = C4_PERIOD * c5spd / s->freq / vi->period;
++		/* esp32-daw: once per tick, as libxmp keeps it for the tick (parts reuse it) */
++		if (off == 0 && (vi->step_period != vi->period || vi->step_rate != s->freq || vi->step_c5spd != c5spd)) {
++			step = C4_PERIOD * c5spd / s->freq / vi->period;
++			vi->tick_step = step;
++			/* what every part asked of the step: computed once for the tick */
++			vi->tick_step_ok = !(step < 0.001 || step > (double)SHRT_MAX);
++			vi->tick_istep = vi->tick_step_ok ? (int)(step * (1 << SMIX_SHIFT)) : 0;
++			vi->step_period = vi->period;
++			vi->step_rate = s->freq;
++			vi->step_c5spd = c5spd;
++		} else {
++			step = vi->tick_step;
++		}
+ 
+ 		/* Don't allow <=0, otherwise m5v-nwlf.it crashes
+ 		 * Extremely high values that can cause undefined float/int
+ 		 * conversion are also possible for c5spd modules. */
+-		if (step < 0.001 || step > (double)SHRT_MAX) {
++		if (!vi->tick_step_ok) {	/* esp32-daw: step < 0.001 || step > SHRT_MAX */
+ 			continue;
+ 		}
+ 
+ 		init_sample_wraparound(s, &loop_data, vi, xxs);
+ 
+-		rampsize = s->ticksize >> ANTICLICK_SHIFT;
+-		delta_l = (vol_l - vi->old_vl) / rampsize;
+-		delta_r = (vol_r - vi->old_vr) / rampsize;
++		if (off == 0) {
++			rampsize = s->ticksize >> ANTICLICK_SHIFT;
++			delta_l = (vol_l - vi->old_vl) / rampsize;
++			delta_r = (vol_r - vi->old_vr) / rampsize;
++		} else {
++			rampsize = vi->ramp_left;
++			delta_l = vi->ramp_dl;
++			delta_r = vi->ramp_dr;
++		}
+ 
+-		for (size = usmp = s->ticksize; size > 0; ) {
++		for (size = usmp = count; size > 0; ) {
+ 			int split_noloop = 0;
+ 
+ 			if (p->xc_data[vi->chn].split) {
+@@ -604,21 +666,29 @@
+ 			}
+ 
+ 			/* How many samples we can write before the loop break
+-			 * or sample end... */
++			 * or sample end... (esp32-daw: a span that fits in
++			 * whole takes all frames without a division; a part's
++			 * usual 256 frames scale the step exactly) */
+ 			if (~vi->flags & VOICE_REVERSE) {
+-				if (vi->pos >= vi->end) {
++				if (libxmp_pos_ge(vi->pos, vi->end)) {
+ 					samples = 0;
+ 					if (--usmp <= 0)
+ 						break;
+ 				} else {
+-					double c = ceil(((double)vi->end - vi->pos) / step);
+-					/* ...inside the tick boundaries */
+-					if (c > size) {
+-						c = size;
++					const double distance = (double)vi->end - vi->pos;
++					if (libxmp_pos_dge(distance, size == 256 ? libxmp_times256(step) : step * size)) {
++						samples = size;
++					} else {
++						double c = ceil(distance / step);
++						/* ...inside the tick boundaries */
++						if (c > size) {
++							c = size;
++						}
++						samples = c;
+ 					}
+-					samples = c;
+ 				}
+ 				step_dir = step;
++				istep_dir = vi->tick_istep;
+ 			} else {
+ 				/* Reverse */
+ 				if (vi->pos <= vi->start) {
+@@ -626,13 +696,19 @@
+ 					if (--usmp <= 0)
+ 						break;
+ 				} else {
+-					double c = ceil((vi->pos - (double)vi->start) / step);
+-					if (c > size) {
+-						c = size;
++					const double distance = vi->pos - (double)vi->start;
++					if (libxmp_pos_dge(distance, size == 256 ? libxmp_times256(step) : step * size)) {
++						samples = size;
++					} else {
++						double c = ceil(distance / step);
++						if (c > size) {
++							c = size;
++						}
++						samples = c;
+ 					}
+-					samples = c;
+ 				}
+ 				step_dir = -step;
++				istep_dir = -vi->tick_istep;
+ 			}
+ 
+ 			if (vi->vol) {
+@@ -683,7 +759,7 @@
+ 
+ 					if (mix_fn != NULL) {
+ 						mix_fn(vi, buf_pos, samples,
+-							vol_l >> 8, vol_r >> 8, step_dir * (1 << SMIX_SHIFT), rsize, delta_l, delta_r);
++							vol_l >> 8, vol_r >> 8, istep_dir, rsize, delta_l, delta_r);
+ 					}
+ 
+ 					buf_pos += mix_size;
+@@ -700,17 +776,22 @@
+ 				}
+ 			}
+ 
+-			vi->pos += step_dir * samples;
++			if (samples == 256) {	/* esp32-daw: step_dir * 256, exactly */
++				vi->pos += istep_dir < 0 ? -libxmp_times256(step) : libxmp_times256(step);
++			} else {
++				vi->pos += step_dir * samples;
++			}
+ 			size -= samples;
+ 
+ 			/* One-shot samples do not loop. */
+ 			if ((!has_active_loop(ctx, vi, xxs) || split_noloop) &&
+ 			    !(vi->flags & SAMPLE_QUEUED)) {
+ 				if (size > 0) {
+-					do_anticlick(ctx, voc, buf_pos, size);
+-					set_sample_end(ctx, voc, 1);
++					do_anticlick(ctx, voc, buf_pos, size + tail);
++					set_sample_end(ctx, job, voc, 1);
+ 					/* Next sample should ramp. */
+ 					vol_l = vol_r = 0;
++					ended = 1;
+ 				}
+ 				size = 0;
+ 				continue;
+@@ -720,11 +801,11 @@
+ 			 * tick is complete. This is particularly important
+ 			 * for reverse loops to avoid position clamping. */
+ 			if (size > 0 ||
+-			    ((~vi->flags & VOICE_REVERSE) && vi->pos >= vi->end) ||
++			    ((~vi->flags & VOICE_REVERSE) && libxmp_pos_ge(vi->pos, vi->end)) ||
+ 			     ((vi->flags & VOICE_REVERSE) && vi->pos <= vi->start)) {
+ 				if (vi->flags & SAMPLE_QUEUED) {
+ 					/* Protracker sample swap */
+-					do_anticlick(ctx, voc, buf_pos, size);
++					do_anticlick(ctx, voc, buf_pos, size + tail);
+ 					if (vi->queued.smp < 0 ||
+ 					    (!has_active_loop(ctx, vi, xxs) &&
+ 					     !(mod->xxs[vi->queued.smp].flg & XMP_SAMPLE_LOOP))) {
+@@ -736,9 +817,10 @@
+ 						 */
+ 						vi->flags &= ~SAMPLE_QUEUED;
+ 						vi->flags |= SAMPLE_PAUSED;
+-						set_sample_end(ctx, voc, 1);
++						set_sample_end(ctx, job, voc, 1);
+ 						/* Next sample should ramp. */
+ 						vol_l = vol_r = 0;
++						ended = 1;
+ 						size = 0;
+ 						continue;
+ 					}
+@@ -757,9 +839,30 @@
+ 		}
+ 
+ 		reset_sample_wraparound(&loop_data);
+-		vi->old_vl = vol_l;
+-		vi->old_vr = vol_r;
++		vi->ramp_left = rampsize;
++		vi->ramp_dl = delta_l;
++		vi->ramp_dr = delta_r;
++		if (ended || tail <= 0) {
++			vi->old_vl = vol_l;
++			vi->old_vr = vol_r;
++		}
+ 	}
++}
++
++void libxmp_mixer_softmixer(struct context_data *ctx)
++{
++	struct mixer_data *s = &ctx->s;
++	int size;
++
++	libxmp_mixer_prepare(ctx);
++
++	/* esp32-daw: the caller mixes this tick in parts (libxmp_mixer_softmixer_part) */
++	if (s->deferred) {
++		s->mixed = 0;
++		return;
++	}
++
++	softmixer_voices(ctx, NULL, s->buf32, 0, s->ticksize);
+ 
+ 	/* Render final frame */
+ 
+@@ -786,6 +889,195 @@
+ 	s->dtright = s->dtleft = 0;
+ }
+ 
++/* esp32-daw: the part's frames from the second core's buffer added into buf32, leaving them zero
++ * (that buffer also holds discharges reaching into later parts of the tick) */
++static void end_part(struct mixer_data *s, int off, int count)
++{
++	if (s->b_pending) {
++		const int chn = (~s->format & XMP_FORMAT_MONO) ? 2 : 1;
++		int32 *a = s->buf32 + chn * off, *b = s->buf32b + chn * off;
++		int n = chn * count;
++
++		/* modulo 2^32 like the mixers' own sums: the order of the voices cannot matter */
++		for (; n > 0; n--, a++, b++) {
++			*a = (int32)((uint32)*a + (uint32)*b);
++			*b = 0;
++		}
++	}
++	s->mixed = off + count;
++	if (s->mixed >= s->ticksize) {
++		s->b_pending = 0;
++	}
++}
++
++/* esp32-daw: with s->deferred set, mix the next `count` frames of the current tick into buf32
++ * (no downmix); returns the frames mixed */
++int libxmp_mixer_softmixer_part(struct context_data *ctx, int count)
++{
++	struct mixer_data *s = &ctx->s;
++
++	if (count > s->ticksize - s->mixed) {
++		count = s->ticksize - s->mixed;
++	}
++	if (count <= 0) {
++		return 0;
++	}
++	softmixer_voices(ctx, NULL, s->buf32, s->mixed, count);
++	end_part(s, s->mixed, count);
++	s->split_valid = 0;	/* its voice resets were not the jobs' */
++	return count;
++}
++
++/* esp32-daw: the next part of the tick (as libxmp_mixer_softmixer_part) as two jobs for two cores:
++ * job 0 into buf32, job 1 into buf32b. A loop's wraparound writes into its sample while a voice
++ * mixes (init_sample_wraparound), so all voices of one sample go to the same job; the groups are
++ * spread by their estimated work, heaviest first. Returns the part's frames, or 0 (nothing
++ * changed): mix it on one core, because it is small (work below min_work: frames x 4 per mono
++ * voice), has a single group, or swaps a sample during the mix (ProTracker).
++ * The jobs are made at a tick's first part and serve its later parts: voices only start at a
++ * tick's start (the player), and the ones a part resets (libxmp_mixer_part_join) only leave. */
++int libxmp_mixer_part_split(struct context_data *ctx, int count, int min_work,
++			    struct libxmp_mix_split *x)
++{
++	struct player_data *p = &ctx->p;
++	struct mixer_data *s = &ctx->s;
++	struct module_data *m = &ctx->m;
++	struct libxmp_mix_job *a = &x->job[0], *b = &x->job[1];
++	int ng = 0, total = 0, wa = 0, wb = 0, voc, g, i, j;
++
++	if (count > s->ticksize - s->mixed) {
++		count = s->ticksize - s->mixed;
++	}
++	if (count <= 0 || s->buf32b == NULL || p->virt.maxvoc > SMIX_NUMVOC) {
++		return 0;
++	}
++	if (s->mixed > 0 && s->split_valid) {
++		goto jobs;
++	}
++	s->split_valid = 0;
++	for (voc = 0; voc < p->virt.maxvoc; voc++) {
++		struct mixer_voice *vi = &p->virt.voice_array[voc];
++		int w = 1;
++
++		x->group[voc] = 0xff;
++		if (vi->chn < 0 && (~vi->flags & ANTICLICK)) {
++			continue;
++		}
++		if (vi->flags & SAMPLE_QUEUED) {
++			return 0;
++		}
++		if (vi->chn >= 0 && vi->vol) {
++			w = (vi->fidx & FLAG_STEREO) ? 6 : 4;
++			if (vi->fidx & FLAG_FILTER) {
++				w *= 2;
++			}
++		}
++		for (g = 0; g < ng && x->key[g] != vi->sptr; g++);
++		if (g == ng) {
++			x->key[g] = vi->sptr;
++			x->weight[g] = 0;
++			x->force_a[g] = 0;
++			ng++;
++		}
++		x->weight[g] += w;
++		/* a discharge from the tick's start after its first part: into buf32 itself, as the
++		 * frames before this part are not added from buf32b again */
++		if (s->mixed > 0 && (vi->flags & ANTICLICK)) {
++			x->force_a[g] = 1;
++		}
++		x->group[voc] = g;
++		total += w;
++	}
++	if (ng < 2) {
++		return 0;
++	}
++	for (i = 0; i < ng; i++) {
++		for (j = i; j > 0 && x->weight[x->order[j - 1]] < x->weight[i]; j--) {
++			x->order[j] = x->order[j - 1];
++		}
++		x->order[j] = i;
++	}
++	for (g = 0; g < ng; g++) {
++		if (x->force_a[g]) {
++			x->bin[g] = 0;
++			wa += x->weight[g];
++		}
++	}
++	for (i = 0; i < ng; i++) {
++		g = x->order[i];
++		if (x->force_a[g]) {
++			continue;
++		}
++		x->bin[g] = wa <= wb ? 0 : 1;
++		*(wa <= wb ? &wa : &wb) += x->weight[g];
++	}
++	if (wb == 0) {
++		return 0;
++	}
++	a->ctx = b->ctx = ctx;
++	a->base = s->buf32;
++	b->base = s->buf32b;
++	a->nvoc = b->nvoc = 0;
++	for (voc = 0; voc < p->virt.maxvoc; voc++) {
++		if (x->group[voc] != 0xff) {
++			struct libxmp_mix_job *job = x->bin[x->group[voc]] ? b : a;
++			job->voc[job->nvoc++] = voc;
++		}
++	}
++	x->total = total;
++	s->split_valid = 1;
++    jobs:
++	if (x->total * count < min_work) {
++		return 0;
++	}
++	a->off = b->off = s->mixed;
++	a->count = b->count = count;
++	a->nreset = b->nreset = 0;
++#ifndef LIBXMP_CORE_DISABLE_IT
++	s->bidir_adjust = IS_PLAYER_MODE_IT() ? 1 : 0;
++#endif
++	return count;
++}
++
++/* esp32-daw: one job of libxmp_mixer_part_split (on either core) */
++void libxmp_mixer_job_run(void *arg)
++{
++	struct libxmp_mix_job *job = (struct libxmp_mix_job *)arg;
++
++	softmixer_voices(job->ctx, job, job->base, job->off, job->count);
++}
++
++/* esp32-daw: after both jobs: their voice resets (in voice order, as one core makes them), the
++ * second buffer's frames of the part into buf32 */
++void libxmp_mixer_part_join(struct context_data *ctx, struct libxmp_mix_split *x)
++{
++	struct libxmp_mix_job *a = &x->job[0], *b = &x->job[1];
++	int i = 0, j = 0;
++
++	while (i < a->nreset || j < b->nreset) {
++		if (j >= b->nreset || (i < a->nreset && a->reset[i] < b->reset[j])) {
++			libxmp_virt_resetvoice(ctx, a->reset[i], a->reset_mute[i]);
++			i++;
++		} else {
++			libxmp_virt_resetvoice(ctx, b->reset[j], b->reset_mute[j]);
++			j++;
++		}
++	}
++	/* A muting reset starts an anticlick discharge from the tick's start in the voice's next
++	 * part (do_anticlick): into buf32, so the voice moves to job 0. It reads no sample again. */
++	for (j = 0; j < b->nreset; j++) {
++		if (b->reset_mute[j]) {
++			for (i = 0; i < b->nvoc && b->voc[i] != b->reset[j]; i++);
++			if (i < b->nvoc) {
++				b->voc[i] = b->voc[--b->nvoc];
++				a->voc[a->nvoc++] = b->reset[j];
++			}
++		}
++	}
++	ctx->s.b_pending = 1;
++	end_part(&ctx->s, a->off, a->count);
++}
++
+ void libxmp_mixer_voicepos(struct context_data *ctx, int voc, double pos, int ac)
+ {
+ 	struct player_data *p = &ctx->p;
+@@ -875,7 +1167,7 @@
+ 		vi->fidx |= FLAG_STEREOOUT;
+ 	}
+ 
+-	set_sample_end(ctx, voc, 0);
++	set_sample_end(ctx, NULL, voc, 0);
+ 
+ 	/*mixer_setvol(ctx, voc, 0);*/
+ 
+@@ -1110,6 +1402,9 @@
+ 
+ 	free(s->buffer);
+ 	free(s->buf32);
++	free(s->buf32b);	/* esp32-daw */
+ 	s->buf32 = NULL;
++	s->buf32b = NULL;
++	s->b_pending = 0;
+ 	s->buffer = NULL;
+ }
+--- a/src/mixer.h
++++ b/src/mixer.h
+@@ -23,6 +23,7 @@
+ #define PAN_SURROUND 0x8000
+ 	int pan;		/* */
+ 	int vol;		/* */
++	int tick_istep;		/* esp32-daw: (int)(tick_step * (1 << SMIX_SHIFT)), the mixers' step */
+ 	double period;		/* current period */
+ 	double pos;		/* position in sample */
+ 	int pos0;		/* position in sample before mixing */
+@@ -35,6 +36,13 @@
+ 	int key;		/* key for DCA note check */
+ 	int old_vl;		/* previous volume, left channel */
+ 	int old_vr;		/* previous volume, right channel */
++	int ramp_left;		/* esp32-daw: volume ramp frames left in this tick */
++	int ramp_dl;		/* esp32-daw: volume ramp steps */
++	int ramp_dr;
++	int tick_step_ok;	/* esp32-daw: 0.001 <= tick_step <= SHRT_MAX */
++	double tick_step;	/* esp32-daw: the voice's step for this tick */
++	double step_period;	/* esp32-daw: step cache inputs, unchanged across steady ticks */
++	int step_rate, step_c5spd;
+ 	int sleft;		/* last left sample output, in 32bit */
+ 	int sright;		/* last right sample output, in 32bit */
+ #define VOICE_RELEASE	(1 << 0)
+@@ -69,6 +77,115 @@
+ #endif
+ };
+ 
++/* esp32-daw: the mixer's per-part position arithmetic without double operations (software on the
++ * ESP32-S3), read from the bits of the IEEE 754 double: each gives exactly what the expression it
++ * replaces gives. Non-finite or huge values take that expression itself. */
++union libxmp_dbits {
++	double d;
++	uint64 u;
++};
++
++/* (int)pos, and *frac = (1 << SMIX_SHIFT) * (pos - (int)pos) truncated: exact for |pos| < 2^31 */
++static inline int libxmp_pos_split(double pos, int *frac)
++{
++	union libxmp_dbits v;
++	int e, ip, fp;
++	uint64 f;
++
++	v.d = pos;
++	e = (int)((v.u >> 52) & 0x7ff) - 1023;
++	if (e < -SMIX_SHIFT) {		/* |pos| < 2^-16: zero, subnormal */
++		*frac = 0;
++		return 0;
++	}
++	if (e > 30) {			/* |pos| >= 2^31, Inf, NaN */
++		*frac = (1 << SMIX_SHIFT) * (pos - (int)pos);
++		return (int)pos;
++	}
++	/* floor(|pos| * 2^16): the significand shifted to 16 bits below the point */
++	f = ((v.u & (((uint64)1 << 52) - 1)) | ((uint64)1 << 52)) >> (52 - SMIX_SHIFT - e);
++	ip = (int)(f >> SMIX_SHIFT);
++	fp = (int)(f & SMIX_MASK);
++	if (v.u >> 63) {		/* both truncate towards zero */
++		ip = -ip;
++		fp = -fp;
++	}
++	*frac = fp;
++	return ip;
++}
++
++/* pos >= n */
++static inline int libxmp_pos_ge(double pos, int n)
++{
++	union libxmp_dbits v;
++	int e;
++
++	v.d = pos;
++	e = (int)((v.u >> 52) & 0x7ff) - 1023;
++	if ((v.u >> 63) || n < 0 || e > 30) {	/* negative, huge, Inf, NaN */
++		return pos >= n;
++	}
++	/* pos >= n <=> floor(pos) >= n, for pos >= 0 and an integer n */
++	return (e < 0 ? 0 : (int)((((v.u & (((uint64)1 << 52) - 1)) | ((uint64)1 << 52)) >> (52 - e)))) >= n;
++}
++
++/* pos < 0.0 */
++static inline int libxmp_pos_lt0(double pos)
++{
++	union libxmp_dbits v;
++
++	v.d = pos;
++	/* negative, not -0.0, not NaN */
++	return (v.u >> 63) && (v.u << 1) != 0 && (v.u << 1) <= ((uint64)0x7ff << 53);
++}
++
++/* a >= b for finite a > 0 and b > 0 (the bit patterns order like the values); a non-finite a
++ * compares as a double */
++static inline int libxmp_pos_dge(double a, double b)
++{
++	union libxmp_dbits va, vb;
++
++	va.d = a;
++	vb.d = b;
++	if (((va.u >> 52) & 0x7ff) == 0x7ff) {
++		return a >= b;
++	}
++	return va.u >= vb.u;
++}
++
++/* x * 256 for a normal x well inside the exponent range (a step: 0.001 .. SHRT_MAX): exact */
++static inline double libxmp_times256(double x)
++{
++	union libxmp_dbits v;
++
++	v.d = x;
++	v.u += (uint64)8 << 52;
++	return v.d;
++}
++
++/* esp32-daw: one of the two halves of a part mixed on two cores. A job mixes its voices (ascending)
++ * into its own tick buffer; the voice resets that touch the player's shared counters wait for
++ * libxmp_mixer_part_join. */
++struct libxmp_mix_job {
++	struct context_data *ctx;
++	int32 *base;		/* the job's tick buffer (frame 0 of the tick) */
++	int off, count;		/* the part's frames */
++	int nvoc, nreset;
++	unsigned char voc[SMIX_NUMVOC];
++	unsigned char reset[SMIX_NUMVOC];
++	unsigned char reset_mute[SMIX_NUMVOC];
++};
++
++/* esp32-daw: the two jobs of a part and the scratch of their split (no stack on the audio task) */
++struct libxmp_mix_split {
++	struct libxmp_mix_job job[2];
++	void *key[SMIX_NUMVOC];		/* a group's sample data */
++	int weight[SMIX_NUMVOC];	/* a group's estimated work */
++	unsigned char order[SMIX_NUMVOC], bin[SMIX_NUMVOC], force_a[SMIX_NUMVOC];
++	unsigned char group[SMIX_NUMVOC];	/* a voice's group, 0xff: nothing to mix */
++	int total;			/* the estimated work of a frame (all voices) */
++};
++
+ LIBXMP_BEGIN_DECLS
+ 
+ int	libxmp_mixer_on		(struct context_data *, int, int, int);
+@@ -78,6 +195,10 @@
+ void    libxmp_mixer_setpan	(struct context_data *, int, int);
+ int	libxmp_mixer_numvoices	(struct context_data *, int);
+ void	libxmp_mixer_softmixer	(struct context_data *);
++int	libxmp_mixer_softmixer_part	(struct context_data *, int);	/* esp32-daw */
++int	libxmp_mixer_part_split	(struct context_data *, int, int, struct libxmp_mix_split *);	/* esp32-daw */
++void	libxmp_mixer_job_run	(void *);	/* esp32-daw */
++void	libxmp_mixer_part_join	(struct context_data *, struct libxmp_mix_split *);	/* esp32-daw */
+ void	libxmp_mixer_reset	(struct context_data *);
+ void	libxmp_mixer_setpatch	(struct context_data *, int, int, int);
+ void	libxmp_mixer_queuepatch	(struct context_data *, int, int);
+--- a/src/mix_all.c
++++ b/src/mix_all.c
+@@ -38,22 +38,25 @@
+  * and number of channels.
+  */
+ #define NEAREST_8BIT(smp_in, off) do { \
+-    (smp_in) = XMP_ASL(sptr[pos + (off)], 8); \
++    (smp_in) = XMP_ASL(sptr[(off)], 8); \
+ } while (0)
+ 
+ #define NEAREST_16BIT(smp_in, off) do { \
+-    (smp_in) = sptr[pos + (off)]; \
++    (smp_in) = sptr[(off)]; \
+ } while (0)
+ 
++/* esp32-daw: the same value as libxmp's (a << 8) + (((frac >> 1) * ((b - a) << 8)) >> 15) for the
++ * 8-bit samples a, b: the product cannot overflow, so the << 8 cancels into the shift, one
++ * instruction fewer per frame */
+ #define LINEAR_8BIT(smp_in, off) do { \
+-    smp_l1 = XMP_ASL(sptr[pos + (off)], 8); \
+-    smp_dt = XMP_ASL(sptr[pos + (off) + chn], 8) - smp_l1; \
+-    (smp_in) = smp_l1 + (((frac >> 1) * smp_dt) >> (SMIX_SHIFT - 1)); \
++    smp_l1 = sptr[(off)]; \
++    smp_dt = sptr[(off) + chn] - smp_l1; \
++    (smp_in) = XMP_ASL(smp_l1, 8) + (((frac >> 1) * smp_dt) >> (SMIX_SHIFT - 9)); \
+ } while (0)
+ 
+ #define LINEAR_16BIT(smp_in, off) do { \
+-    smp_l1 = sptr[pos + (off)]; \
+-    smp_dt = sptr[pos + (off) + chn] - smp_l1; \
++    smp_l1 = sptr[(off)]; \
++    smp_dt = sptr[(off) + chn] - smp_l1; \
+     (smp_in) = smp_l1 + (((frac >> 1) * smp_dt) >> (SMIX_SHIFT - 1)); \
+ } while (0)
+ 
+@@ -73,27 +76,31 @@
+ 
+ #define SPLINE_8BIT(smp_in, off) do { \
+     int f = frac >> 6; \
+-    (smp_in) = (cubic_spline_lut0[f] * sptr[pos + (off) - chn] + \
+-                cubic_spline_lut1[f] * sptr[pos + (off)   ] + \
+-                cubic_spline_lut3[f] * sptr[pos + (off) + (chn << 1)] + \
+-                cubic_spline_lut2[f] * sptr[pos + (off) + chn]) >> (SPLINE_SHIFT - 8); \
++    (smp_in) = (cubic_spline_lut0[f] * sptr[(off) - chn] + \
++                cubic_spline_lut1[f] * sptr[(off)   ] + \
++                cubic_spline_lut3[f] * sptr[(off) + (chn << 1)] + \
++                cubic_spline_lut2[f] * sptr[(off) + chn]) >> (SPLINE_SHIFT - 8); \
+ } while (0)
+ 
+ #define SPLINE_16BIT(smp_in, off) do { \
+     int f = frac >> 6; \
+-    (smp_in) = (cubic_spline_lut0[f] * sptr[pos + (off) - chn] + \
+-                cubic_spline_lut1[f] * sptr[pos + (off)   ] + \
+-                cubic_spline_lut3[f] * sptr[pos + (off) + (chn << 1)] + \
+-                cubic_spline_lut2[f] * sptr[pos + (off) + chn]) >> SPLINE_SHIFT; \
++    (smp_in) = (cubic_spline_lut0[f] * sptr[(off) - chn] + \
++                cubic_spline_lut1[f] * sptr[(off)   ] + \
++                cubic_spline_lut3[f] * sptr[(off) + (chn << 1)] + \
++                cubic_spline_lut2[f] * sptr[(off) + chn]) >> SPLINE_SHIFT; \
+ } while (0)
+ 
+-#define LOOP_AC for (; count > ramp; count--)
++/* esp32-daw: count - ramp frames, counted down in their own variable, as LOOP counts count: the
++ * compiler then makes both zero-overhead loops (Xtensa) */
++#define LOOP_AC for (int n_ac = count - ramp, set_ac = (count = n_ac > 0 ? ramp : count); n_ac > 0; n_ac--)
+ 
+ #define LOOP for (; count; count--)
+ 
++/* esp32-daw: sptr points at the current frame (libxmp indexes it with pos): the same samples, one
++ * address computation fewer per frame */
+ #define UPDATE_POS() do { \
+     frac += step; \
+-    pos += (frac >> SMIX_SHIFT) * (chn); \
++    sptr += (frac >> SMIX_SHIFT) * (chn); \
+     frac &= SMIX_MASK; \
+ } while (0)
+ 
+@@ -172,15 +179,16 @@
+  */
+ #define NEAREST_ROUND() do { \
+     frac += (1 << (SMIX_SHIFT - 1)); \
+-    pos += (frac >> SMIX_SHIFT) * (chn); \
++    sptr += (frac >> SMIX_SHIFT) * (chn); \
+     frac &= SMIX_MASK; \
+ } while (0)
+ 
++/* esp32-daw: libxmp_pos_split gives (int)vi->pos and the fraction of the original expressions,
++ * (1 << SMIX_SHIFT) * (vi->pos - (int)vi->pos), without double arithmetic (mixer.h) */
+ #define VAR_NORM(x) \
+     REGISTER int smpl; \
+-    x *sptr = (x *)vi->sptr; \
+-    int pos = ((int)vi->pos) * chn; \
+-    int frac = (1 << SMIX_SHIFT) * (vi->pos - (int)vi->pos)
++    int frac; \
++    x *sptr = (x *)vi->sptr + libxmp_pos_split(vi->pos, &frac) * chn
+ 
+ #define VAR_MONO(x) \
+     const int chn = 1; \
+--- a/src/player.c
++++ b/src/player.c
+@@ -1172,8 +1172,19 @@
+ #endif
+ 
+ 	/* Instrument vibrato */
+-	vibrato = 1.0 * libxmp_lfo_get(ctx, &xc->insvib.lfo, 1) /
+-				(4096 * (1 + xc->insvib.sweep));
++	{
++		/* esp32-daw: no instrument vibrato (0 / x) or no sweep (a
++		 * division by 4096, exact as a multiplication) without a
++		 * double division (software on the ESP32-S3) */
++		const int v = libxmp_lfo_get(ctx, &xc->insvib.lfo, 1);
++		if (v == 0 && xc->insvib.sweep >= 0) {
++			vibrato = 0.0;
++		} else if (xc->insvib.sweep == 0) {
++			vibrato = v * (1.0 / 4096);
++		} else {
++			vibrato = 1.0 * v / (4096 * (1 + xc->insvib.sweep));
++		}
++	}
+ 	libxmp_lfo_update(&xc->insvib.lfo);
+ 	if (xc->insvib.sweep > 1) {
+ 		xc->insvib.sweep -= 2;
+@@ -1220,7 +1231,17 @@
+ 
+ 	/* Pitch bend */
+ 
+-	linear_bend = libxmp_period_to_bend(ctx, period + vibrato, xc->note, xc->per_adj);
++	if (!xc->daw_cache.source_valid || xc->daw_cache.source_period != period + vibrato ||
++	    xc->daw_cache.source_note != xc->note || xc->daw_cache.source_adj != xc->per_adj ||
++	    xc->daw_cache.source_type != m->period_type) {
++		xc->daw_cache.source_period = period + vibrato;
++		xc->daw_cache.source_note = xc->note;
++		xc->daw_cache.source_adj = xc->per_adj;
++		xc->daw_cache.source_type = m->period_type;
++		xc->daw_cache.source_bend = libxmp_period_to_bend(ctx, period + vibrato, xc->note, xc->per_adj);
++		xc->daw_cache.source_valid = 1;
++	}
++	linear_bend = xc->daw_cache.source_bend;
+ 
+ 	if (TEST_NOTE(NOTE_GLISSANDO) && TEST(TONEPORTA)) {
+ 		if (linear_bend > 0) {
+@@ -1274,7 +1295,21 @@
+ 	linear_bend += libxmp_extras_get_linear_bend(ctx, xc);
+ #endif
+ 
+-	final_period = libxmp_note_to_period_mix(xc->note, linear_bend);
++	if (!xc->daw_cache.valid || xc->daw_cache.note != xc->note || xc->daw_cache.bend != linear_bend) {
++		const uint32 b = (uint32)linear_bend;
++		struct daw_period_cache *cached = &p->daw_periods[((uint32)xc->note + b * 33u + (b >> 8)) & 255u];
++		if (!cached->valid || cached->note != xc->note || cached->bend != linear_bend) {
++			cached->note = xc->note;
++			cached->bend = linear_bend;
++			cached->period = libxmp_note_to_period_mix(xc->note, linear_bend);
++			cached->valid = 1;
++		}
++		xc->daw_cache.note = xc->note;
++		xc->daw_cache.bend = linear_bend;
++		xc->daw_cache.final_period = cached->period;
++		xc->daw_cache.valid = 1;
++	}
++	final_period = xc->daw_cache.final_period;
+ 
+ 	/* From OpenMPT PeriodLimit.s3m:
+ 	 * "ScreamTracker 3 limits the final output period to be at least 64,
+@@ -1296,15 +1331,9 @@
+ 
+ 	/* For xmp_get_frame_info() */
+ 	xc->info_pitchbend = linear_bend >> 7;
+-	xc->info_period = MIN(final_period * 4096, INT_MAX);
+-
+-	if (IS_PERIOD_MODRNG()) {
+-		const double min_period = libxmp_note_to_period(ctx, MAX_NOTE_MOD, xc->finetune, 0) * 4096;
+-		const double max_period = libxmp_note_to_period(ctx, MIN_NOTE_MOD, xc->finetune, 0) * 4096;
+-		CLAMP(xc->info_period, min_period, max_period);
+-	} else if (xc->info_period < (1 << 12)) {
+-		xc->info_period = (1 << 12);
+-	}
++	/* esp32-daw: the frame info's period is not computed (the plugin
++	 * never reads it): a double multiplication and conversion per
++	 * channel and tick, and two period conversions for MOD */
+ 
+ 
+ #ifndef LIBXMP_CORE_DISABLE_IT
+@@ -1334,7 +1363,18 @@
+ 	 * See OpenMPT filter-reset.it, filter-reset-carry.it */
+ 	if (cutoff < 0xfe || resonance > 0 || xc->filter.can_disable) {
+ 		int a0, b0, b1;
+-		libxmp_filter_setup(s->freq, cutoff, resonance, &a0, &b0, &b1);
++		if (!xc->daw_cache.filter_valid || xc->daw_cache.filter_rate != s->freq ||
++		    xc->daw_cache.cutoff != cutoff || xc->daw_cache.resonance != resonance) {
++			libxmp_filter_setup(s->freq, cutoff, resonance,
++				&xc->daw_cache.a0, &xc->daw_cache.b0, &xc->daw_cache.b1);
++			xc->daw_cache.filter_rate = s->freq;
++			xc->daw_cache.cutoff = cutoff;
++			xc->daw_cache.resonance = resonance;
++			xc->daw_cache.filter_valid = 1;
++		}
++		a0 = xc->daw_cache.a0;
++		b0 = xc->daw_cache.b0;
++		b1 = xc->daw_cache.b1;
+ 		libxmp_virt_seteffect(ctx, chn, DSP_EFFECT_FILTER_A0, a0);
+ 		libxmp_virt_seteffect(ctx, chn, DSP_EFFECT_FILTER_B0, b0);
+ 		libxmp_virt_seteffect(ctx, chn, DSP_EFFECT_FILTER_B1, b1);
+@@ -1561,9 +1601,17 @@
+ 		CLAMP(xc->period, MIN_PERIOD_L, MAX_PERIOD_L);
+ 		break;
+ 	case PERIOD_MODRNG: {
+-		const double min_period = libxmp_note_to_period(ctx, MAX_NOTE_MOD, xc->finetune, 0);
+-		const double max_period = libxmp_note_to_period(ctx, MIN_NOTE_MOD, xc->finetune, 0);
+-		CLAMP(xc->period, min_period, max_period);
++		/* esp32-daw: the range is a pure function of the finetune (and the
++		 * period type): two pow() per channel and tick, now when it changes */
++		if (!xc->daw_cache.modrng_valid || xc->daw_cache.modrng_finetune != xc->finetune ||
++		    xc->daw_cache.modrng_type != m->period_type) {
++			xc->daw_cache.modrng_min = libxmp_note_to_period(ctx, MAX_NOTE_MOD, xc->finetune, 0);
++			xc->daw_cache.modrng_max = libxmp_note_to_period(ctx, MIN_NOTE_MOD, xc->finetune, 0);
++			xc->daw_cache.modrng_finetune = xc->finetune;
++			xc->daw_cache.modrng_type = m->period_type;
++			xc->daw_cache.modrng_valid = 1;
++		}
++		CLAMP(xc->period, xc->daw_cache.modrng_min, xc->daw_cache.modrng_max);
+ 		}
+ 		break;
+ 	}
+@@ -1706,7 +1754,7 @@
+ 		SET_NOTE(NOTE_ENV_RELEASE);
+ 	}
+ 
+-	xc->info_position = libxmp_virt_getvoicepos(ctx, chn);
++	/* esp32-daw: nor the frame info's position (a double conversion) */
+ }
+ 
+ /*
+@@ -1969,6 +2017,16 @@
+ 	if (ctx->state > XMP_STATE_LOADED)
+ 		xmp_end_player(opaque);
+ 
++	/* esp32-daw: loading is off the audio thread. Warm ordinary unbent pitches so even
++	 * simultaneous new notes need no pow() in their first audio tick. Values use the
++	 * original function, without tables generated by a different platform's libm. */
++	for (i = 0; i < 128; i++) {
++		p->daw_periods[i].note = i;
++		p->daw_periods[i].bend = 0;
++		p->daw_periods[i].period = libxmp_note_to_period_mix(i, 0);
++		p->daw_periods[i].valid = 1;
++	}
++
+ 	if (libxmp_mixer_on(ctx, rate, format, m->c4rate) < 0)
+ 		return -XMP_ERROR_INTERNAL;
+ 
+--- a/src/player.h
++++ b/src/player.h
+@@ -94,6 +94,16 @@
+ 	int key;		/* Key number */
+ 	double period;		/* Amiga or linear period */
+ 	double per_adj;		/* MED period/pitch adjustment factor hack */
++	/* esp32-daw: memoize pure pitch / filter calculations. A copied NNA channel can
++	 * reuse these values too; zeroed channels start with all cache-valid flags clear. */
++	struct {
++		double source_period, source_adj, final_period;
++		int source_note, source_type, source_bend, source_valid;
++		int note, bend, valid;
++		int filter_rate, cutoff, resonance, a0, b0, b1, filter_valid;
++		double modrng_min, modrng_max;	/* the Amiga range at modrng_finetune */
++		int modrng_finetune, modrng_type, modrng_valid;
++	} daw_cache;
+ 	int finetune;		/* Guess what */
+ 	int ins;		/* Instrument number */
+ 	int old_ins;		/* Last instrument */
+--- a/src/virtual.c
++++ b/src/virtual.c
+@@ -116,7 +116,9 @@
+ 
+ 	p->virt.maxvoc = libxmp_mixer_numvoices(ctx, num);
+ 
+-	p->virt.voice_array = (struct mixer_voice *) calloc(p->virt.maxvoc,
++	/* esp32-daw: the small, frequently read mixer state belongs in FAST RAM.
++	 * The host can fall back to LARGE when FAST would eat its internal reserve. */
++	p->virt.voice_array = (struct mixer_voice *) dawxmp_calloc_fast(p->virt.maxvoc,
+ 						sizeof(struct mixer_voice));
+ 	if (p->virt.voice_array == NULL)
+ 		goto err;

@@ -1,0 +1,9 @@
+{
+  "name": "fx_distortion",
+  "id": "org.smhgzll.fx.distortion",
+  "entry": "daw_plugin_entry_fx_distortion",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.distortion", "origin": "original work; first-order ADAA after Parker, Zavalishin & Le Bivic (DAFx 2016)", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

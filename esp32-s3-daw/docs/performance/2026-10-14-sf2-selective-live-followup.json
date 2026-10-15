@@ -1,0 +1,5940 @@
+{
+  "before": {
+    "name": "esp32daw",
+    "firmware": "0.1.0",
+    "target": "esp32s3",
+    "proto": 1,
+    "rev": 18,
+    "project": "Saragossa Band - Dance With The Saragossa Band Nr 8 Medley",
+    "clients": 1,
+    "playing": 2,
+    "cpu": 3.9,
+    "blocks": 97464,
+    "overruns": 2,
+    "plugins": 18,
+    "heapInternal": 75139,
+    "heapInternalMin": 31876,
+    "heapInternalLargest": 31744,
+    "psramFree": 13468604,
+    "psramLargest": 7995392,
+    "psramTotal": 16764084,
+    "resetReason": 3,
+    "lastCrash": {
+      "task": "daw_ctl",
+      "reason": "abort() was called at PC 0x4200fd51 on core 0",
+      "elfSha256": "de5c19a32",
+      "pc": 1077425985,
+      "backtrace": [
+        1077425985,
+        1077425933,
+        1077459730,
+        1107361105,
+        1107511721,
+        1107512470,
+        1107482169,
+        1107482790,
+        1107484134,
+        1107484273,
+        1107487552,
+        1107459805,
+        1107466413,
+        1107358590,
+        1077429481
+      ]
+    },
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 0,
+    "audioLate": 0,
+    "audioWriteUsMax": 27578,
+    "audioBackend": "i2s",
+    "uptimeMs": 570733,
+    "boot": 81,
+    "wsDropped": 0,
+    "wsClients": 1,
+    "audioStackFree": 4000,
+    "parallelInstruments": true,
+    "dspStackFree": 4648,
+    "partition": "ota_1",
+    "otaState": "valid"
+  },
+  "after": {
+    "name": "esp32daw",
+    "firmware": "0.1.0",
+    "target": "esp32s3",
+    "proto": 1,
+    "rev": 18,
+    "project": "Saragossa Band - Dance With The Saragossa Band Nr 8 Medley",
+    "clients": 1,
+    "playing": 2,
+    "cpu": 4,
+    "blocks": 101477,
+    "overruns": 2,
+    "plugins": 18,
+    "heapInternal": 75139,
+    "heapInternalMin": 31876,
+    "heapInternalLargest": 31744,
+    "psramFree": 13468592,
+    "psramLargest": 7995392,
+    "psramTotal": 16764084,
+    "resetReason": 3,
+    "lastCrash": {
+      "task": "daw_ctl",
+      "reason": "abort() was called at PC 0x4200fd51 on core 0",
+      "elfSha256": "de5c19a32",
+      "pc": 1077425985,
+      "backtrace": [
+        1077425985,
+        1077425933,
+        1077459730,
+        1107361105,
+        1107511721,
+        1107512470,
+        1107482169,
+        1107482790,
+        1107484134,
+        1107484273,
+        1107487552,
+        1107459805,
+        1107466413,
+        1107358590,
+        1077429481
+      ]
+    },
+    "cpuMHz": 240,
+    "cpuClockSupport": {
+      "240": true,
+      "280": false,
+      "300": false,
+      "320": false
+    },
+    "underruns": 0,
+    "audioLate": 0,
+    "audioWriteUsMax": 27578,
+    "audioBackend": "i2s",
+    "uptimeMs": 594023,
+    "boot": 81,
+    "wsDropped": 0,
+    "wsClients": 1,
+    "audioStackFree": 4000,
+    "parallelInstruments": true,
+    "dspStackFree": 4648,
+    "partition": "ota_1",
+    "otaState": "valid"
+  },
+  "rows": [
+    {
+      "t": "diag",
+      "cpu": 4.7,
+      "renderUsAvg": 273,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 8.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 97958,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13011112,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 573599,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 5.3,
+      "renderUsAvg": 313,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 98131,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 574604,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 98305,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 575613,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 233,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 98478,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462024,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 576615,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 98650,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 577615,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 235,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 98822,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 578616,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 236,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 98995,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13461492,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 579618,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 233,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 99170,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 580634,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 99343,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462024,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 581636,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 233,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.5,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 99515,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 582636,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 99687,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 583637,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 235,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 99860,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462024,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 584639,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 233,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 100035,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 585654,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 235,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 100207,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462012,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 586656,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 3.9,
+      "renderUsAvg": 230,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.4,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 100380,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 587656,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 100552,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 588657,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 100725,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462012,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 589659,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 236,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 100900,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 590674,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 101072,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13461492,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 591676,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 233,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.4,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 101244,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 592676,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    },
+    {
+      "t": "diag",
+      "cpu": 4,
+      "renderUsAvg": 234,
+      "renderUsMax": 6034,
+      "budgetUs": 5804,
+      "overruns": 2,
+      "eventDrops": 0,
+      "noteDrops": 0,
+      "cpuGuardDrops": 0,
+      "load": 4.3,
+      "workerWait": 0,
+      "workerBusy": 0,
+      "nanResets": 0,
+      "fxFailures": 0,
+      "cmdOverflow": 0,
+      "retireOverflow": 0,
+      "voices": 0,
+      "blocks": 101417,
+      "backlog": 0,
+      "fileBufferBytes": 1533018,
+      "fileSpareBytes": 0,
+      "plugins": [
+        {
+          "where": "channel",
+          "id": 2,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 3,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 4,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 5,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 6,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 7,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 8,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 9,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        },
+        {
+          "where": "channel",
+          "id": 10,
+          "plugin": "org.smhgzll.soundfont",
+          "cpu": 0,
+          "voices": 0,
+          "memFast": 48,
+          "memLarge": 30800,
+          "reports": 0
+        }
+      ],
+      "heapInternal": 75271,
+      "heapInternalMin": 31876,
+      "heapInternalLargest": 31744,
+      "psramFree": 13462772,
+      "psramLargest": 7995392,
+      "psramTotal": 16764084,
+      "resetReason": 3,
+      "lastCrash": {
+        "task": "daw_ctl",
+        "reason": "abort() was called at PC 0x4200fd51 on core 0",
+        "elfSha256": "de5c19a32",
+        "pc": 1077425985,
+        "backtrace": [
+          1077425985,
+          1077425933,
+          1077459730,
+          1107361105,
+          1107511721,
+          1107512470,
+          1107482169,
+          1107482790,
+          1107484134,
+          1107484273,
+          1107487552,
+          1107459805,
+          1107466413,
+          1107358590,
+          1077429481
+        ]
+      },
+      "cpuMHz": 240,
+      "cpuClockSupport": {
+        "240": true,
+        "280": false,
+        "300": false,
+        "320": false
+      },
+      "underruns": 0,
+      "audioLate": 0,
+      "audioWriteUsMax": 27578,
+      "audioBackend": "i2s",
+      "uptimeMs": 593677,
+      "boot": 81,
+      "wsDropped": 0,
+      "wsClients": 2,
+      "audioStackFree": 4000,
+      "parallelInstruments": true,
+      "dspStackFree": 4648,
+      "partition": "ota_1",
+      "otaState": "valid"
+    }
+  ],
+  "transport": [
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4.7,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 5.3,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 3.9,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    },
+    {
+      "play": 2,
+      "mode": "song",
+      "tick": 673460,
+      "cpu": 4,
+      "voices": 0
+    }
+  ],
+  "observationSeconds": 20,
+  "mutationsSent": 0,
+  "scope": "Read-only follow-up: user changed mixer and paused near song end; the 20-second window itself was paused, not a playback benchmark."
+}

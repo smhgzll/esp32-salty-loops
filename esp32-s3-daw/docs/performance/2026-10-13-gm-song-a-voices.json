@@ -1,0 +1,91 @@
+{
+ "notes": "song A, boot 63: Voices as the import gives them without reduction (8-24). 60 s Song mode from the start; one-second figures from the diag frames; QEMU not involved.",
+ "secs": 60.0,
+ "cpuMean": 35.3,
+ "cpuMax": 44.9,
+ "renderUsMax": 4092,
+ "budgetUs": 5804,
+ "deltas": {
+  "overruns": 0,
+  "cpuGuardDrops": 0,
+  "underruns": 0,
+  "audioLate": 0,
+  "eventDrops": 0,
+  "noteDrops": 0,
+  "fxFailures": 0,
+  "nanResets": 0
+ },
+ "voicesMax": 41,
+ "instances": 9,
+ "heapInternal": 75659,
+ "heapInternalMin": 27248,
+ "psramFree": 6842364,
+ "workerBusy": 26.5,
+ "boot": 63,
+ "partition": "ota_1",
+ "plugins": {
+  "channel2 soundfont": {
+   "cpuMean": 2.3,
+   "cpuMax": 3.7,
+   "voicesMax": 2,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel3 soundfont": {
+   "cpuMean": 16.1,
+   "cpuMax": 20.1,
+   "voicesMax": 16,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel4 soundfont": {
+   "cpuMean": 1.4,
+   "cpuMax": 3.2,
+   "voicesMax": 3,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel5 soundfont": {
+   "cpuMean": 7.5,
+   "cpuMax": 11.6,
+   "voicesMax": 8,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel6 soundfont": {
+   "cpuMean": 0.4,
+   "cpuMax": 8.7,
+   "voicesMax": 6,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel7 soundfont": {
+   "cpuMean": 0.0,
+   "cpuMax": 0,
+   "voicesMax": 0,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel8 soundfont": {
+   "cpuMean": 10.7,
+   "cpuMax": 14,
+   "voicesMax": 11,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel9 soundfont": {
+   "cpuMean": 0.7,
+   "cpuMax": 2.8,
+   "voicesMax": 1,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel10 soundfont": {
+   "cpuMean": 3.2,
+   "cpuMax": 11.7,
+   "voicesMax": 6,
+   "memFast": 48,
+   "memLarge": 358104
+  }
+ }
+}

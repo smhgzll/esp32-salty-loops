@@ -1,0 +1,133 @@
+{
+ "notes": "GM pop song B (15 TimGM6mb parts incl. six drum tracks, 4,953 notes), boot 65, imported through the board UI. 60 s Song mode from the start; one-second figures from the diag frames; QEMU not involved.",
+ "secs": 60.0,
+ "cpuMean": 32.8,
+ "cpuMax": 40.8,
+ "renderUsMax": 4287,
+ "budgetUs": 5804,
+ "deltas": {
+  "overruns": 0,
+  "cpuGuardDrops": 0,
+  "underruns": 0,
+  "audioLate": 0,
+  "eventDrops": 0,
+  "noteDrops": 0,
+  "fxFailures": 0,
+  "nanResets": 0
+ },
+ "voicesMax": 36,
+ "instances": 15,
+ "heapInternal": 75391,
+ "heapInternalMin": 14284,
+ "psramFree": 4603240,
+ "workerBusy": 7.9,
+ "boot": 65,
+ "partition": "ota_1",
+ "plugins": {
+  "channel2 soundfont": {
+   "cpuMean": 6.0,
+   "cpuMax": 11.1,
+   "voicesMax": 11,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel3 soundfont": {
+   "cpuMean": 11.1,
+   "cpuMax": 12.3,
+   "voicesMax": 8,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel4 soundfont": {
+   "cpuMean": 0.4,
+   "cpuMax": 2.6,
+   "voicesMax": 0,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel5 soundfont": {
+   "cpuMean": 0.6,
+   "cpuMax": 2.2,
+   "voicesMax": 1,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel6 soundfont": {
+   "cpuMean": 0.0,
+   "cpuMax": 0,
+   "voicesMax": 0,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel7 soundfont": {
+   "cpuMean": 11.7,
+   "cpuMax": 22.1,
+   "voicesMax": 14,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel8 soundfont": {
+   "cpuMean": 1.6,
+   "cpuMax": 6.7,
+   "voicesMax": 4,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel9 soundfont": {
+   "cpuMean": 0.0,
+   "cpuMax": 0,
+   "voicesMax": 0,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel10 soundfont": {
+   "cpuMean": 0.1,
+   "cpuMax": 2,
+   "voicesMax": 1,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel11 soundfont": {
+   "cpuMean": 0.1,
+   "cpuMax": 0.7,
+   "voicesMax": 2,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel12 soundfont": {
+   "cpuMean": 0.6,
+   "cpuMax": 14.2,
+   "voicesMax": 8,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel13 soundfont": {
+   "cpuMean": 0.3,
+   "cpuMax": 0.3,
+   "voicesMax": 1,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel14 soundfont": {
+   "cpuMean": 1.1,
+   "cpuMax": 1.9,
+   "voicesMax": 1,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel15 soundfont": {
+   "cpuMean": 0.5,
+   "cpuMax": 3.8,
+   "voicesMax": 3,
+   "memFast": 48,
+   "memLarge": 358104
+  },
+  "channel16 soundfont": {
+   "cpuMean": 0.7,
+   "cpuMax": 1.1,
+   "voicesMax": 1,
+   "memFast": 48,
+   "memLarge": 358104
+  }
+ }
+}

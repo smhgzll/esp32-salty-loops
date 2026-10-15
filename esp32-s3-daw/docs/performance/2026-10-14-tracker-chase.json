@@ -1,0 +1,54 @@
+{
+  "cases": {
+    "xm-21ch-5m03": {
+      "seeks": [
+        {
+          "tick": 307200,
+          "firstSoundS": 0.0,
+          "peak": 0.63
+        },
+        {
+          "tick": 76800,
+          "firstSoundS": 0.0,
+          "peak": 0.555
+        }
+      ],
+      "deltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "audioLate": 0
+      },
+      "cpu": 20.1
+    },
+    "mod-4ch-4m53": {
+      "seeks": [
+        {
+          "tick": 384000,
+          "firstSoundS": 0.0,
+          "peak": 0.487
+        },
+        {
+          "tick": 11520,
+          "firstSoundS": 0.0,
+          "peak": 0.325
+        }
+      ],
+      "deltas": {
+        "overruns": 0,
+        "underruns": 0,
+        "cpuGuardDrops": 0,
+        "noteDrops": 0,
+        "eventDrops": 0,
+        "nanResets": 0,
+        "audioLate": 0
+      },
+      "cpu": 10.1
+    }
+  },
+  "restored": true,
+  "note": "seek into the song, play, seek again while playing: seconds to the first status frame with channel level > 0.01, error counter deltas"
+}

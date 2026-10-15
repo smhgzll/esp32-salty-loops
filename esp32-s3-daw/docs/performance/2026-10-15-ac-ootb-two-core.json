@@ -1,0 +1,1314 @@
+{
+ "date": "2026-10-15",
+ "song": "ac-ootb.it (Out of The Blue), the user project as found: one Tracker channel, all 50 song channels, linear interpolation, song tempo 252",
+ "hardware": {
+  "target": "ESP32-S3",
+  "cpuMHz": 240,
+  "sampleRate": 44100,
+  "blockFrames": 256,
+  "i2sDma": "4 x 256 frames"
+ },
+ "method": "12 s board windows of the user project, transport chased to 180 s (the earlier reports window) and to the heaviest sections found on the host (150 s, 268 s: 90-120 of 128 voices). CPU: mean / max of the one-second diagnostics after the first; counter deltas from /api/status around each window. Project never replaced; transport and reverb state restored after every run (projectRestored). No QEMU.",
+ "voiceAnalysis": "host scan of the whole song: 61 audible voices on average, 127 at most; no filtered voice; 14 distinct samples per tick; 8-bit mono samples are ~95 % of the mixed frames. Sample-grouped two-way split: critical path 0.507 of the serial work.",
+ "firmware": {
+  "codex-boot121": {
+   "sha256": "aeb4cf35f85ffc01ada487e243bdd42da141e0965a1e832a052e481add963542",
+   "note": "as found (Codex): exact math reuse, hot voices, tick-tail prefetch, parallel reverb"
+  },
+  "split-boot122": {
+   "sha256": "3b75ca3fd2a31912e57f602c50e5e0035b4c2e5bcd8ae23879466557203738b8",
+   "note": "+ two-core voice mixing"
+  },
+  "v2-boot125": {
+   "sha256": "565c7fb60057974f76575dae39c6d69dab5eb05d3605e6bde7cec67e14d5a8b4",
+   "note": "+ per-part arithmetic without software doubles, 8-bit kernel, frame info / vibrato in the player"
+  },
+  "v3-boot127": {
+   "sha256": "90f1d75dd24b1ab55983aa87c1ce8adf167866e55fb125f4531ceac30ccf7f44",
+   "note": "+ jobs made once per tick, MOD period range cache"
+  },
+  "final-boot128": {
+   "sha256": "48bf349999d9f3dfe7edf6834940f421f7b4a7cbfdb0212722a7dd5e308e419b",
+   "bytes": 1751072,
+   "note": "deployed: v3 plus the declared LARGE memory estimate 160 -> 256 KB (no DSP change)"
+  }
+ },
+ "runs": {
+  "codex-boot121-dry": {
+   "reverb": "disabled (as found)",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 48.29,
+     "cpuMax": 58.9,
+     "trackerCpuMean": 42.45,
+     "trackerCpuMax": 53,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 0,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 13,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 121,
+     "cpuPerSecond": [
+      35.2,
+      46.2,
+      54.4,
+      48.3,
+      46.4,
+      41.7,
+      44.5,
+      53.9,
+      58.9,
+      50.3,
+      51.4
+     ],
+     "renderUsMaxSinceBoot": 11393
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 72.4,
+     "cpuMax": 97.3,
+     "trackerCpuMean": 66.56,
+     "trackerCpuMax": 91.5,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 0,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 407,
+      "underruns": 11,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 121,
+     "cpuPerSecond": [
+      19.9,
+      64.8,
+      77.7,
+      80.4,
+      82.6,
+      79.8,
+      78.7,
+      97.3,
+      92.8,
+      68,
+      54.4
+     ],
+     "renderUsMaxSinceBoot": 11393
+    },
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 76.41,
+     "cpuMax": 99.1,
+     "trackerCpuMean": 70.43,
+     "trackerCpuMax": 93.1,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 0,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 490,
+      "underruns": 6,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 121,
+     "cpuPerSecond": [
+      44.3,
+      56.7,
+      76,
+      81.1,
+      92.9,
+      99.1,
+      90.1,
+      79.2,
+      74.8,
+      73.4,
+      72.9
+     ],
+     "renderUsMaxSinceBoot": 11393
+    }
+   ]
+  },
+  "codex-boot121-wet": {
+   "reverb": "enabled for the windows (Bright Plate, quality 0), disabled again after",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 62.29,
+     "cpuMax": 75.4,
+     "trackerCpuMean": 41.7,
+     "trackerCpuMax": 54,
+     "reverbCpuMean": 13.76,
+     "trackerParallelJobs": 0,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 115,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 121,
+     "cpuPerSecond": [
+      27,
+      55.9,
+      67.2,
+      70,
+      65.5,
+      61.9,
+      59.1,
+      63.5,
+      75.4,
+      72.9,
+      66.8
+     ],
+     "renderUsMaxSinceBoot": 11393
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 90.83,
+     "cpuMax": 118,
+     "trackerCpuMean": 69.55,
+     "trackerCpuMax": 96.8,
+     "reverbCpuMean": 14.35,
+     "trackerParallelJobs": 0,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 711,
+      "underruns": 77,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 121,
+     "cpuPerSecond": [
+      52.3,
+      88.1,
+      95.9,
+      98,
+      99,
+      95.2,
+      99.7,
+      118,
+      101.5,
+      81.4,
+      70
+     ],
+     "renderUsMaxSinceBoot": 11818
+    },
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 92.6,
+     "cpuMax": 115.4,
+     "trackerCpuMean": 71.3,
+     "trackerCpuMax": 93.9,
+     "reverbCpuMean": 14.28,
+     "trackerParallelJobs": 0,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 773,
+      "underruns": 93,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 121,
+     "cpuPerSecond": [
+      46.8,
+      70.7,
+      87.1,
+      97.7,
+      104.8,
+      115.4,
+      111.2,
+      111.2,
+      92.3,
+      91.2,
+      90.2
+     ],
+     "renderUsMaxSinceBoot": 11818
+    }
+   ]
+  },
+  "split-boot122-dry": {
+   "reverb": "disabled (as found)",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 33.25,
+     "cpuMax": 41.8,
+     "trackerCpuMean": 27.18,
+     "trackerCpuMax": 35.6,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2044,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 3,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 122,
+     "cpuPerSecond": [
+      16.9,
+      30.1,
+      36.3,
+      36.2,
+      34.4,
+      32.1,
+      30.8,
+      33.5,
+      41.8,
+      38.2,
+      35.5
+     ],
+     "renderUsMaxSinceBoot": 36200
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 51.09,
+     "cpuMax": 67.6,
+     "trackerCpuMean": 44.89,
+     "trackerCpuMax": 61.3,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 1834,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 67,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 122,
+     "cpuPerSecond": [
+      30.2,
+      49.1,
+      52,
+      53.6,
+      53.8,
+      51.1,
+      56.7,
+      67.6,
+      54.1,
+      42.7
+     ],
+     "renderUsMaxSinceBoot": 36200
+    },
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 49.3,
+     "cpuMax": 63.8,
+     "trackerCpuMean": 43.15,
+     "trackerCpuMax": 57.5,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2033,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 66,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 122,
+     "cpuPerSecond": [
+      14.3,
+      37.5,
+      44.1,
+      53.9,
+      56.8,
+      63.6,
+      63.8,
+      57.3,
+      51.8,
+      49.8,
+      49.4
+     ],
+     "renderUsMaxSinceBoot": 36200
+    }
+   ]
+  },
+  "split-boot122-wet": {
+   "reverb": "enabled for the windows (Bright Plate, quality 0), disabled again after",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 48.25,
+     "cpuMax": 59.6,
+     "trackerCpuMean": 27.86,
+     "trackerCpuMax": 37.9,
+     "reverbCpuMean": 13.34,
+     "trackerParallelJobs": 2034,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 19,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 122,
+     "cpuPerSecond": [
+      11.2,
+      44.8,
+      50.5,
+      55.5,
+      51.8,
+      51,
+      48.4,
+      49.3,
+      55,
+      59.6,
+      53.7
+     ],
+     "renderUsMaxSinceBoot": 36200
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 65.3,
+     "cpuMax": 82.1,
+     "trackerCpuMean": 43.64,
+     "trackerCpuMax": 60.3,
+     "reverbCpuMean": 14.35,
+     "trackerParallelJobs": 2043,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 203,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 122,
+     "cpuPerSecond": [
+      32.6,
+      68.9,
+      69.5,
+      72.1,
+      70.3,
+      69,
+      82.1,
+      80.7,
+      64.5,
+      55.3,
+      53.3
+     ],
+     "renderUsMaxSinceBoot": 36200
+    },
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 69.02,
+     "cpuMax": 83.8,
+     "trackerCpuMean": 47.21,
+     "trackerCpuMax": 61.8,
+     "reverbCpuMean": 14.39,
+     "trackerParallelJobs": 2042,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 294,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 122,
+     "cpuPerSecond": [
+      48.3,
+      57.1,
+      68.6,
+      72.5,
+      77.7,
+      83.8,
+      77.8,
+      71.8,
+      67.9,
+      67.1,
+      66.6
+     ],
+     "renderUsMaxSinceBoot": 36200
+    }
+   ]
+  },
+  "v2-boot125-dry": {
+   "reverb": "disabled (as found)",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 30.18,
+     "cpuMax": 36.6,
+     "trackerCpuMean": 24.29,
+     "trackerCpuMax": 30.5,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2044,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 4,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      14.3,
+      25.5,
+      31.4,
+      33.9,
+      31.2,
+      29.6,
+      27.9,
+      35.4,
+      36.6,
+      32.4,
+      33.8
+     ],
+     "renderUsMaxSinceBoot": 7572
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 45.06,
+     "cpuMax": 58.1,
+     "trackerCpuMean": 38.97,
+     "trackerCpuMax": 52,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2036,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 21,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      41,
+      45.7,
+      47,
+      48.1,
+      46.6,
+      47.3,
+      58.1,
+      54.7,
+      40.9,
+      34,
+      32.3
+     ],
+     "renderUsMaxSinceBoot": 9063
+    },
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 47.2,
+     "cpuMax": 58.8,
+     "trackerCpuMean": 40.93,
+     "trackerCpuMax": 52.5,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2028,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 30,
+      "underruns": 3,
+      "audioLate": 0,
+      "wsDropped": 1
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      30.9,
+      41.2,
+      47.4,
+      49.3,
+      55.8,
+      58.8,
+      53.7,
+      47.8,
+      45.3,
+      44.3,
+      44.7
+     ],
+     "renderUsMaxSinceBoot": 37755
+    }
+   ]
+  },
+  "v2-boot125-dry-repeat": {
+   "reverb": "disabled (as found)",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 44.89,
+     "cpuMax": 58.2,
+     "trackerCpuMean": 38.75,
+     "trackerCpuMax": 51.8,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2026,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 30,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      17.1,
+      34.6,
+      41.4,
+      48.6,
+      51.6,
+      58.2,
+      56.6,
+      50.5,
+      45.9,
+      45.1,
+      44.2
+     ],
+     "renderUsMaxSinceBoot": 39070
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 42.68,
+     "cpuMax": 60,
+     "trackerCpuMean": 36.61,
+     "trackerCpuMax": 53.7,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2039,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 31,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      24.1,
+      26,
+      43.8,
+      45.9,
+      48.1,
+      48.2,
+      49.9,
+      60,
+      50.3,
+      39.6,
+      33.6
+     ],
+     "renderUsMaxSinceBoot": 39070
+    },
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 31.9,
+     "cpuMax": 36.8,
+     "trackerCpuMean": 25.82,
+     "trackerCpuMax": 30.6,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2042,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 4,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      26.4,
+      32,
+      33.6,
+      31.3,
+      29.6,
+      28.4,
+      30.2,
+      36.3,
+      36.8,
+      32.3,
+      34
+     ],
+     "renderUsMaxSinceBoot": 39070
+    }
+   ]
+  },
+  "v2-boot125-wet": {
+   "reverb": "enabled for the windows (Bright Plate, quality 0), disabled again after",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 48.49,
+     "cpuMax": 55.2,
+     "trackerCpuMean": 27.07,
+     "trackerCpuMax": 33.8,
+     "reverbCpuMean": 14.25,
+     "trackerParallelJobs": 2038,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 7,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      39.3,
+      46.2,
+      51.9,
+      48.9,
+      49.2,
+      45.9,
+      45.9,
+      49.8,
+      55.2,
+      51.6,
+      49.5
+     ],
+     "renderUsMaxSinceBoot": 37755
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 62.55,
+     "cpuMax": 77.3,
+     "trackerCpuMean": 40.92,
+     "trackerCpuMax": 55.5,
+     "reverbCpuMean": 14.35,
+     "trackerParallelJobs": 2038,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 136,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      51.9,
+      62.8,
+      63.5,
+      65.8,
+      65.4,
+      62.9,
+      72,
+      77.3,
+      62.5,
+      53.7,
+      50.3
+     ],
+     "renderUsMaxSinceBoot": 37755
+    },
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 63.01,
+     "cpuMax": 76.2,
+     "trackerCpuMean": 41.3,
+     "trackerCpuMax": 54.3,
+     "reverbCpuMean": 14.4,
+     "trackerParallelJobs": 2035,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 181,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 125,
+     "cpuPerSecond": [
+      38.9,
+      52.5,
+      61.2,
+      66.5,
+      69.3,
+      76.2,
+      73.6,
+      67,
+      63.8,
+      62,
+      62.1
+     ],
+     "renderUsMaxSinceBoot": 37755
+    }
+   ]
+  },
+  "v3-boot127-dry": {
+   "reverb": "disabled (as found)",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 43.64,
+     "cpuMax": 55.9,
+     "trackerCpuMean": 37.38,
+     "trackerCpuMax": 49.5,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2028,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 36,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 127,
+     "cpuPerSecond": [
+      14.7,
+      33.7,
+      39.9,
+      47.5,
+      50.1,
+      55.9,
+      55.5,
+      50.2,
+      45.3,
+      43.8,
+      43.4
+     ],
+     "renderUsMaxSinceBoot": 9074
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 44.91,
+     "cpuMax": 58.9,
+     "trackerCpuMean": 38.67,
+     "trackerCpuMax": 52.6,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 1835,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 29,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 127,
+     "cpuPerSecond": [
+      25.6,
+      43.4,
+      44.9,
+      47.1,
+      47.3,
+      45.3,
+      48.9,
+      58.9,
+      49.2,
+      38.5
+     ],
+     "renderUsMaxSinceBoot": 9074
+    },
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 29.54,
+     "cpuMax": 35.7,
+     "trackerCpuMean": 23.51,
+     "trackerCpuMax": 29.5,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2044,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 2,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 127,
+     "cpuPerSecond": [
+      11.3,
+      25.6,
+      31.2,
+      33.3,
+      30.5,
+      27.7,
+      29.5,
+      35.7,
+      35.4,
+      31.4,
+      33.3
+     ],
+     "renderUsMaxSinceBoot": 9074
+    }
+   ]
+  },
+  "v3-boot127-wet": {
+   "reverb": "enabled for the windows (Bright Plate, quality 0), disabled again after",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 62.85,
+     "cpuMax": 74.9,
+     "trackerCpuMean": 41.07,
+     "trackerCpuMax": 52.9,
+     "reverbCpuMean": 14.35,
+     "trackerParallelJobs": 2036,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 188,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 127,
+     "cpuPerSecond": [
+      45.9,
+      53.1,
+      62.7,
+      65.8,
+      70.3,
+      74.9,
+      70.1,
+      65,
+      62,
+      60.9,
+      60.7
+     ],
+     "renderUsMaxSinceBoot": 9143
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 61.73,
+     "cpuMax": 74.1,
+     "trackerCpuMean": 40.04,
+     "trackerCpuMax": 52.5,
+     "reverbCpuMean": 14.3,
+     "trackerParallelJobs": 2040,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 129,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 127,
+     "cpuPerSecond": [
+      54.2,
+      62.2,
+      62.6,
+      65.7,
+      63.7,
+      62.3,
+      72.9,
+      74.1,
+      59.7,
+      52.2,
+      49.4
+     ],
+     "renderUsMaxSinceBoot": 24546
+    },
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 47.88,
+     "cpuMax": 54.4,
+     "trackerCpuMean": 26.33,
+     "trackerCpuMax": 32.9,
+     "reverbCpuMean": 14.24,
+     "trackerParallelJobs": 2036,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 10,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 127,
+     "cpuPerSecond": [
+      39.2,
+      45.2,
+      51.3,
+      48.8,
+      48.3,
+      45.6,
+      45.4,
+      49,
+      54.4,
+      50.4,
+      49.1
+     ],
+     "renderUsMaxSinceBoot": 24546
+    }
+   ]
+  },
+  "final-boot128-dry": {
+   "reverb": "disabled (as found)",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 43.96,
+     "cpuMax": 56.8,
+     "trackerCpuMean": 37.71,
+     "trackerCpuMax": 50.4,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2037,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 33,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 128,
+     "cpuPerSecond": [
+      17.4,
+      34.2,
+      40.8,
+      47.5,
+      50.5,
+      56.8,
+      54.9,
+      49.2,
+      45,
+      43.9,
+      43.4
+     ],
+     "renderUsMaxSinceBoot": 37930
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 42.16,
+     "cpuMax": 59,
+     "trackerCpuMean": 36.06,
+     "trackerCpuMax": 52.8,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2040,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 30,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 128,
+     "cpuPerSecond": [
+      20.2,
+      26.5,
+      43,
+      45.1,
+      47.1,
+      47.3,
+      45,
+      49.3,
+      59,
+      48.4,
+      32.9
+     ],
+     "renderUsMaxSinceBoot": 37930
+    },
+    {
+     "start": 180.0,
+     "seconds": 12.0,
+     "tick": 725760,
+     "cpuMean": 31.15,
+     "cpuMax": 36.1,
+     "trackerCpuMean": 25.0,
+     "trackerCpuMax": 29.8,
+     "reverbCpuMean": 0,
+     "trackerParallelJobs": 2040,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 3,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 128,
+     "cpuPerSecond": [
+      25.8,
+      31.6,
+      32.6,
+      30.7,
+      29.1,
+      27.4,
+      29.7,
+      36.1,
+      35.1,
+      31.2,
+      33.4
+     ],
+     "renderUsMaxSinceBoot": 37930
+    }
+   ]
+  },
+  "final-boot128-wet": {
+   "reverb": "enabled for the windows (Bright Plate, quality 0), disabled again after",
+   "projectRestored": true,
+   "windows": [
+    {
+     "start": 268.0,
+     "seconds": 12.0,
+     "tick": 1080576,
+     "cpuMean": 63.84,
+     "cpuMax": 73.4,
+     "trackerCpuMean": 42.07,
+     "trackerCpuMax": 51.5,
+     "reverbCpuMean": 14.31,
+     "trackerParallelJobs": 2028,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 185,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 128,
+     "cpuPerSecond": [
+      50.8,
+      57.2,
+      64.9,
+      67,
+      73.4,
+      72.9,
+      67.6,
+      63.2,
+      61,
+      61,
+      63.2
+     ],
+     "renderUsMaxSinceBoot": 37930
+    },
+    {
+     "start": 150.0,
+     "seconds": 12.0,
+     "tick": 604800,
+     "cpuMean": 61.11,
+     "cpuMax": 76.3,
+     "trackerCpuMean": 39.37,
+     "trackerCpuMax": 54.4,
+     "reverbCpuMean": 14.35,
+     "trackerParallelJobs": 2040,
+     "trackerParallelDeclined": 0,
+     "deltas": {
+      "overruns": 136,
+      "underruns": 0,
+      "audioLate": 0,
+      "wsDropped": 0
+     },
+     "boot": 128,
+     "cpuPerSecond": [
+      43.1,
+      59.8,
+      62.4,
+      63.8,
+      64.5,
+      62.5,
+      66.3,
+      76.3,
+      67.3,
+      55.7,
+      50.5
+     ],
+     "renderUsMaxSinceBoot": 37930
+    }
+   ]
+  }
+ },
+ "profiles": {
+  "note": "temporary builds (removed): CCOUNT around the player and the mixer, microseconds per second of audio, reported through report() codes and a temporary diagnostics field",
+  "split-boot123": {
+   "180": {
+    "player": 74767,
+    "mixWall": 205130,
+    "localJob": 183393,
+    "remoteJob": 178826,
+    "localKernel": 146134,
+    "remoteKernel": 146791,
+    "partsSplit": 202,
+    "playerMaxPerTick": 2704,
+    "blockMax": 4263,
+    "voicesX10": 552,
+    "trackerTotal": 286860,
+    "splitAndJoin": 17858
+   },
+   "150": {
+    "player": 106774,
+    "mixWall": 338730,
+    "localJob": 311927,
+    "remoteJob": 308344,
+    "localKernel": 251835,
+    "remoteKernel": 252161,
+    "partsSplit": 202,
+    "playerMaxPerTick": 3709,
+    "blockMax": 6148,
+    "voicesX10": 954,
+    "trackerTotal": 452652,
+    "splitAndJoin": 20618
+   },
+   "268": {
+    "player": 111992,
+    "mixWall": 347014,
+    "localJob": 314948,
+    "remoteJob": 312856,
+    "localKernel": 251382,
+    "remoteKernel": 253538,
+    "partsSplit": 202,
+    "playerMaxPerTick": 3880,
+    "blockMax": 6315,
+    "voicesX10": 966,
+    "trackerTotal": 466349,
+    "splitAndJoin": 25953
+   }
+  },
+  "split-boot124": {
+   "268": {
+    "player": 113481,
+    "mixWall": 348110,
+    "localJob": 315602,
+    "remoteJob": 313859,
+    "localKernel": 252193,
+    "remoteKernel": 254351,
+    "partsSplit": 202,
+    "playerMaxPerTick": 4125,
+    "blockMax": 6824,
+    "voicesX10": 970,
+    "trackerTotal": 468966,
+    "readRow": 13154,
+    "updateVolume": 2634,
+    "updateFrequency": 4628,
+    "updatePan": 266,
+    "processVolume": 13936,
+    "processFrequency": 33717,
+    "processPan": 7520,
+    "channelLoop": 89768,
+    "mono8KiloFrames": 39114,
+    "mono16KiloFrames": 2213,
+    "splitAndJoin": 25956
+   },
+   "150": {
+    "player": 109027,
+    "mixWall": 339214,
+    "localJob": 311670,
+    "remoteJob": 308541,
+    "localKernel": 251702,
+    "remoteKernel": 252031,
+    "partsSplit": 202,
+    "playerMaxPerTick": 3526,
+    "blockMax": 6249,
+    "voicesX10": 953,
+    "trackerTotal": 455538,
+    "readRow": 11270,
+    "updateVolume": 2555,
+    "updateFrequency": 4578,
+    "updatePan": 263,
+    "processVolume": 13711,
+    "processFrequency": 34468,
+    "processPan": 6475,
+    "channelLoop": 87533,
+    "mono8KiloFrames": 40899,
+    "splitAndJoin": 20768
+   }
+  },
+  "v2-boot126": {
+   "268": {
+    "player": 104701,
+    "mixWall": 308274,
+    "localJob": 274940,
+    "remoteJob": 273971,
+    "localKernel": 224754,
+    "remoteKernel": 227221,
+    "partsSplit": 202,
+    "playerMaxPerTick": 3714,
+    "blockMax": 6087,
+    "voicesX10": 978,
+    "split": 20940,
+    "trackerTotal": 420647,
+    "readRow": 13227,
+    "updateVolume": 2656,
+    "updateFrequency": 4588,
+    "updatePan": 251,
+    "processVolume": 13717,
+    "processFrequency": 27894,
+    "processPan": 7700,
+    "channelLoop": 80978,
+    "mono8KiloFrames": 39427,
+    "mono16KiloFrames": 2150,
+    "join": 5135,
+    "parallelWall": 281902
+   },
+   "150": {
+    "player": 99663,
+    "mixWall": 287647,
+    "localJob": 261388,
+    "remoteJob": 258021,
+    "localKernel": 215633,
+    "remoteKernel": 216016,
+    "partsSplit": 203,
+    "playerMaxPerTick": 3412,
+    "blockMax": 5451,
+    "voicesX10": 923,
+    "split": 15432,
+    "trackerTotal": 394907,
+    "readRow": 11266,
+    "updateVolume": 2493,
+    "updateFrequency": 4374,
+    "updatePan": 236,
+    "processVolume": 13041,
+    "processFrequency": 29036,
+    "processPan": 6429,
+    "channelLoop": 78283,
+    "mono8KiloFrames": 39582,
+    "join": 5111,
+    "parallelWall": 266812
+   }
+  }
+ },
+ "bootStall": "Every boot of these and the earlier builds (Codex boots 103, 106, 109, 111) shows one render block of 24-41 ms within its first minute, and some stop -> play transitions of the measurement script (play 0.3 s after stop) show the same, with up to 5 DMA underruns at that moment (final boot 128: 4 before the first window, 3 between the dry and the reverb run). Inside every measured window: none. Suspected: a flash write (the autosave starts when the transport stops) stalling code that runs from flash; not traced.",
+ "verification": {
+  "pcm": "byte-identical to the previous (boot 121) plugin: 272 files (libxmp test-dev corpus + ac-ootb.it) x nearest / linear / spline, chases, host tempo 97 / 140 BPM, odd block sizes, a real second thread and a host declining every third call; 18 longer windows (ac-ootb 5 positions, 4 formats, a 21-channel XM, 4 ProTracker MODs)",
+  "threadSanitizer": "clang TSan, ac-ootb 3 positions + 134 IT / XM files: no report",
+  "sdkChecks": "test_plugins 1442",
+  "dawHostTests": "pass"
+ }
+}

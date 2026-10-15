@@ -1,0 +1,9 @@
+{
+  "name": "fx_limiter",
+  "id": "org.smhgzll.fx.limiter",
+  "entry": "daw_plugin_entry_fx_limiter",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.limiter", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

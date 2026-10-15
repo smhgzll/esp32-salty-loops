@@ -1,0 +1,9 @@
+{
+  "name": "fx_filter",
+  "id": "org.smhgzll.fx.filter",
+  "entry": "daw_plugin_entry_fx_filter",
+  "licenseFiles": [],
+  "provenance": [{"component": "fx.filter", "origin": "original work", "author": "smhgzll", "license": "MIT"}],
+  "dependencies": [],
+  "ui": {"editor": "generic"}
+}

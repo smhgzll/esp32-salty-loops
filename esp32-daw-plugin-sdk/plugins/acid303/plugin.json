@@ -1,0 +1,14 @@
+{
+  "name": "acid303",
+  "id": "org.smhgzll.acid303",
+  "entry": "daw_plugin_entry_acid303",
+  "licenseFiles": ["LICENSE.Open303"],
+  "provenance": [
+    {"component": "acid303", "origin": "original work (PolyBLEP SAW303 / SQUARE303 oscillator, halfband decimator, held-note array, DAW event handling, parameters, presets); voice logic adapted from rosic_Open303.cpp", "author": "smhgzll", "license": "MIT"},
+    {"component": "Open303 DSP classes", "origin": "https://github.com/RobinSchmidt/Open303", "commit": "313bf0d9ade7c1dcb6b3a74f5ea1780a29d70074",
+     "files": ["Source/DSPCode/rosic_TeeBeeFilter.*", "Source/DSPCode/rosic_AnalogEnvelope.*", "Source/DSPCode/rosic_DecayEnvelope.*", "Source/DSPCode/rosic_LeakyIntegrator.*", "Source/DSPCode/rosic_OnePoleFilter.*", "Source/DSPCode/rosic_BiquadFilter.*", "Source/DSPCode/GlobalDefinitions.h", "Source/DSPCode/GlobalFunctions.*", "Source/DSPCode/rosic_RealFunctions.*", "Source/DSPCode/rosic_NumberManipulations.*"],
+     "license": "MIT", "modifications": "third_party/patches/open303-esp32-daw.patch: double -> float throughout (the ESP32-S3 FPU is single precision), compiled with -fsingle-precision-constant; GlobalFunctions.h exp2 / log2 / round left to the C++ library"}
+  ],
+  "dependencies": [{"name": "Open303", "version": "313bf0d", "license": "MIT"}],
+  "ui": {"editor": "generic", "color": "#ffb03a", "icon": "wave"}
+}

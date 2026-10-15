@@ -1,0 +1,307 @@
+--- a/main/app_main.cpp
++++ b/main/app_main.cpp
+@@ -12,6 +12,7 @@
+ #include "audio_worker.hpp"
+ #include "cJSON.h"
+ #include "control.hpp"
++#include "clock_trial.hpp"
+ #include "daw/engine.hpp"
+ #include "daw/plugin_host.hpp"
+ #include "daw/session.hpp"
+@@ -111,6 +112,11 @@
+         snprintf(key, sizeof key, "%u", (unsigned)mhz);
+         cJSON_AddBoolToObject(clocks, key, rtc_clk_cpu_freq_mhz_to_config(mhz, &clockConfig));
+     }
++#if CONFIG_DAW_CLOCK_TRIAL
++    clockTrialDiag(d);
++    cJSON_AddNumberToObject(d, "audioFrames", (double)audioOutStats().frames.load());
++    cJSON_AddStringToObject(d, "audioClockSource", "XTAL");
++#endif
+     AudioOutStats &a = audioOutStats();
+     cJSON_AddNumberToObject(d, "underruns", a.underruns.load());
+     cJSON_AddNumberToObject(d, "audioLate", a.late.load());
+@@ -366,6 +372,10 @@
+     };
+     if (DAW_QEMU)
+         cb.testFailNextHealth = [] { settingsSetFlag("tfh"); };
++#if CONFIG_DAW_CLOCK_TRIAL
++    clockTrialBind(s_engine);
++    cb.testClock = clockTrialStart;
++#endif
+     web::start(cb, CONFIG_DAW_WEB_PORT, settings.adminPassword /* empty: privileged operations disabled */);
+     xTaskCreatePinnedToCore(healthTask, "health", 3072, nullptr, 3, nullptr, 0);
+ 
+--- a/main/CMakeLists.txt
++++ b/main/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-3.0-or-later
+-idf_component_register(SRCS "app_main.cpp" "control.cpp" "selftest.cpp"
++idf_component_register(SRCS "app_main.cpp" "clock_trial.cpp" "control.cpp" "selftest.cpp"
+                        INCLUDE_DIRS "."
+                        REQUIRES daw_core daw_hal daw_esp_storage daw_webserver daw_plugins nvs_flash app_update
+                                 esp_timer esp_system spi_flash esp_psram heap espcoredump)
+--- a/main/Kconfig.projbuild
++++ b/main/Kconfig.projbuild
+@@ -2,6 +2,11 @@
+ 
+ config DAW_QEMU_BUILD
+     bool "QEMU build (null audio, OpenCores Ethernet, boot self-test)"
++    default n
++
++config DAW_CLOCK_TRIAL
++    bool "Temporary authenticated 20-second 260 MHz hardware experiment"
++    depends on IDF_TARGET_ESP32S3 && !DAW_QEMU_BUILD
+     default n
+ 
+ config DAW_SELFTEST
+--- a/components/daw_webserver/include/web_server.hpp
++++ b/components/daw_webserver/include/web_server.hpp
+@@ -36,6 +36,7 @@
+     // QEMU builds only (the route does not exist otherwise): make the next OTA boot's health check
+     // fail, to test the rollback path in emulation (POST /api/test/fail-next-health, token)
+     std::function<void()> testFailNextHealth;
++    std::function<bool()> testClock; // temporary hardware experiment build only
+ };
+ 
+ // network (Wi-Fi AP / STA, or OpenCores Ethernet under QEMU)
+--- a/components/daw_webserver/web_server.cpp
++++ b/components/daw_webserver/web_server.cpp
+@@ -583,6 +583,14 @@
+         return replyError(req, "401 Unauthorized", "log in first");
+     s_cb.testFailNextHealth();
+     return reply(req, "200 OK", "application/json", "{\"ok\":true}");
++}
++
++static esp_err_t onTestClock(httpd_req_t *req)
++{
++    if (!sameOrigin(req)) return replyError(req, "403 Forbidden", "cross-origin request");
++    if (!authorized(req)) return replyError(req, "401 Unauthorized", "log in first");
++    if (!s_cb.testClock()) return replyError(req, "409 Conflict", "trial busy or insufficient memory");
++    return reply(req, "200 OK", "application/json", "{\"ok\":true,\"seconds\":20,\"targetMHz\":260}");
+ }
+ 
+ static esp_err_t onSamplesGet(httpd_req_t *req)
+@@ -746,6 +754,10 @@
+     for (const auto &u : uris)
+         if (httpd_register_uri_handler(s_server, &u) != ESP_OK)
+             ESP_LOGE(TAG, "cannot register %s", u.uri);
++    if (s_cb.testClock) {
++        const httpd_uri_t t = {.uri = "/api/test/clock-260", .method = HTTP_POST, .handler = onTestClock, .user_ctx = nullptr};
++        httpd_register_uri_handler(s_server, &t);
++    }
+     if (s_cb.testFailNextHealth) {
+         const httpd_uri_t t = {.uri = "/api/test/fail-next-health", .method = HTTP_POST, .handler = onTestFailHealth, .user_ctx = nullptr};
+         httpd_register_uri_handler(s_server, &t);
+--- a/components/daw_hal/audio_out.cpp
++++ b/components/daw_hal/audio_out.cpp
+@@ -55,6 +55,9 @@
+                 .invert_flags = {.mclk_inv = false, .bclk_inv = false, .ws_inv = false},
+             },
+     };
++#if CONFIG_DAW_CLOCK_TRIAL
++    std.clk_cfg.clk_src = I2S_CLK_SRC_XTAL;
++#endif
+     esp_err_t err = i2s_new_channel(&chan, &s_tx, nullptr);
+     if (err != ESP_OK)
+         return err;
+--- a/components/daw_hal/platform_esp.cpp
++++ b/components/daw_hal/platform_esp.cpp
+@@ -17,6 +17,7 @@
+ #include "esp_log.h"
+ #include "esp_random.h"
+ #include "esp_timer.h"
++#include "esp_rom_sys.h"
+ 
+ namespace daw::platform {
+ 
+@@ -35,7 +36,13 @@
+ 
+ uint64_t micros() { return (uint64_t)esp_timer_get_time(); }
+ uint32_t cycles() { return (uint32_t)esp_cpu_get_cycle_count(); }
+-uint32_t cyclesPerMicro() { return CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ; }
++uint32_t cyclesPerMicro() {
++#if CONFIG_DAW_CLOCK_TRIAL
++    return esp_rom_get_cpu_ticks_per_us();
++#else
++    return CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ;
++#endif
++}
+ 
+ void log(Log level, const char *tag, const char *fmt, ...)
+ {
+--- a/config/sdkconfig.hardware.defaults
++++ b/config/sdkconfig.hardware.defaults
+@@ -5,3 +5,5 @@
+ CONFIG_DAW_AUDIO_PRIORITY=24
+ CONFIG_SPIRAM_MODE_OCT=y
+ CONFIG_DAW_MDNS=y
++
++CONFIG_DAW_CLOCK_TRIAL=y
+--- a/main/clock_trial.cpp
++++ b/main/clock_trial.cpp
+@@ -0,0 +1,153 @@
++// SPDX-License-Identifier: GPL-3.0-or-later
++// One-shot 260 MHz BBPLL experiment. See docs/performance for the measured outcome.
++// Register approach independently checked against ESP-IDF's ESP32-S3 clock LL;
++// experimental precedent: Neol00/OpenWatchFace/OpenWatchFace/overclock.h (GPL-3.0).
++#include "clock_trial.hpp"
++#include "sdkconfig.h"
++#if CONFIG_DAW_CLOCK_TRIAL
++#include <atomic>
++#include "esp_attr.h"
++#include "audio_out.hpp"
++#include "esp_cpu.h"
++#include "esp_heap_caps.h"
++#include "esp_private/cache_utils.h"
++#include "esp_rom_regi2c.h"
++#include "esp_rom_sys.h"
++#include "esp_timer.h"
++#include "esp_system.h"
++#include "freertos/FreeRTOS.h"
++#include "freertos/task.h"
++#include "hal/clk_tree_ll.h"
++#include "soc/regi2c_bbpll.h"
++
++static std::atomic<bool> s_busy{false};
++static std::atomic<int> s_stage{0}, s_canary{0};
++static std::atomic<uint32_t> s_actualKhz{0}, s_restoredKhz{0};
++static volatile uint32_t *s_probe;
++static constexpr unsigned kWords = 16384;
++static daw::Engine *s_engine;
++struct Sample { int64_t us; uint64_t frames; uint32_t cpu, overruns, underruns; };
++// Keep the result over the deliberate reboot that restores the radio's stock clocks too.
++struct Trace { uint32_t magic, actualKhz, restoredKhz; int canary; unsigned count; Sample samples[21]; };
++static RTC_NOINIT_ATTR Trace s_trace;
++static constexpr uint32_t kTraceMagic = 0xc10c0260;
++
++void clockTrialBind(daw::Engine *engine) { s_engine = engine; }
++
++static void sample()
++{
++    if (s_trace.count >= 21) return;
++    auto &a = daw::audioOutStats();
++    auto &e = s_engine->status();
++    s_trace.samples[s_trace.count++] = {esp_timer_get_time(), a.frames.load(), e.cpuPermille.load(),
++                            e.overruns.load(), a.underruns.load()};
++}
++
++// Both cores and their caches are parked by the standard flash critical section.
++// Everything between disable/enable is IRAM, inline MMIO, or ROM. Keep stock voltage.
++static void IRAM_ATTR switchClock(uint32_t cpuMhz)
++{
++    spi_flash_disable_interrupts_caches_and_other_cpu();
++    clk_ll_cpu_set_src(SOC_CPU_CLK_SRC_XTAL);
++    esp_rom_set_cpu_ticks_per_us(40);
++    esp_rom_regi2c_write(I2C_BBPLL, I2C_BBPLL_HOSTID, I2C_BBPLL_OC_DIV_7_0,
++                         static_cast<uint8_t>(cpuMhz / 20 - 4));
++    REG_SET_FIELD(SYSTEM_CPU_PER_CONF_REG, SYSTEM_PLL_FREQ_SEL, 1);
++    esp_rom_delay_us(100);
++    clk_ll_cpu_set_freq_mhz_from_pll(240); // 480-class CPU divider /2, regardless of VCO
++    clk_ll_cpu_set_src(SOC_CPU_CLK_SRC_PLL);
++    esp_rom_set_cpu_ticks_per_us(cpuMhz);
++    spi_flash_enable_interrupts_caches_and_other_cpu();
++}
++
++static uint32_t measuredKhz()
++{
++    // Pinned task: CCOUNT from the same CPU, measured against XTAL-driven SYSTIMER.
++    const int64_t t0 = esp_timer_get_time();
++    const uint32_t c0 = esp_cpu_get_cycle_count();
++    int64_t t1;
++    do { t1 = esp_timer_get_time(); } while (t1 - t0 < 2000);
++    return static_cast<uint32_t>(uint64_t(esp_cpu_get_cycle_count() - c0) * 1000 / (t1 - t0));
++}
++
++static bool checkRam()
++{
++    // Volatile accesses prevent an optimizer from removing the memory exercise.
++    for (unsigned i = 0; i < kWords; ++i) s_probe[i] = i * 2654435761u ^ 0x59a36cb7u;
++    for (unsigned i = 0; i < kWords; ++i)
++        if (s_probe[i] != (i * 2654435761u ^ 0x59a36cb7u)) return false;
++    return true;
++}
++
++static void trialTask(void *)
++{
++    vTaskDelay(pdMS_TO_TICKS(500)); // HTTP acknowledgement leaves while the radio is stock.
++    s_stage = 1;
++    const int64_t until = esp_timer_get_time() + 20000000;
++    s_trace = {};
++    switchClock(260);
++    s_stage = 2;
++    s_actualKhz = measuredKhz();
++    s_canary = checkRam() ? 1 : -1;
++    if (s_canary == 1) {
++        s_stage = 3;
++        int64_t next = esp_timer_get_time();
++        while (esp_timer_get_time() < until) {
++            if (esp_timer_get_time() >= next) { sample(); next += 1000000; }
++            vTaskDelay(pdMS_TO_TICKS(20));
++        }
++        sample();
++        if (!checkRam()) s_canary = -1;
++    }
++    s_stage = 4;
++    switchClock(240); // XTAL timeout, independent of HTTP/Wi-Fi and scheduler tick frequency.
++    s_restoredKhz = measuredKhz();
++    s_trace.actualKhz = s_actualKhz.load();
++    s_trace.restoredKhz = s_restoredKhz.load();
++    s_trace.canary = s_canary.load();
++    s_trace.magic = kTraceMagic; // publish only a completed trace
++    s_stage = 5;
++    heap_caps_free(const_cast<uint32_t *>(s_probe));
++    s_probe = nullptr;
++    s_busy = false;
++    vTaskDelay(pdMS_TO_TICKS(1000));
++    esp_restart(); // radio firmware also restarts at the known stock clock
++}
++
++bool clockTrialStart()
++{
++    if (s_busy.exchange(true)) return false;
++    s_probe = static_cast<volatile uint32_t *>(heap_caps_malloc(kWords * 4, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT));
++    if (!s_probe) { s_busy = false; return false; }
++    s_stage = 0; s_canary = 0; s_actualKhz = 0; s_restoredKhz = 0;
++    if (xTaskCreatePinnedToCore(trialTask, "clock-trial", 3072, nullptr, 24, nullptr, 0) != pdPASS) {
++        heap_caps_free(const_cast<uint32_t *>(s_probe)); s_probe = nullptr; s_busy = false;
++        return false;
++    }
++    return true;
++}
++
++void clockTrialDiag(cJSON *d)
++{
++    cJSON *o = cJSON_AddObjectToObject(d, "clockTrial");
++    cJSON_AddBoolToObject(o, "busy", s_busy.load());
++    cJSON_AddNumberToObject(o, "stage", s_stage.load());
++    const bool complete = !s_busy && s_trace.magic == kTraceMagic;
++    cJSON_AddNumberToObject(o, "psramCanary", complete ? s_trace.canary : s_canary.load());
++    cJSON_AddNumberToObject(o, "measuredKhz", complete ? s_trace.actualKhz : s_actualKhz.load());
++    cJSON_AddNumberToObject(o, "restoredKhz", complete ? s_trace.restoredKhz : s_restoredKhz.load());
++    if (complete) {
++        cJSON *list = cJSON_AddArrayToObject(o, "samples");
++        for (unsigned i = 0; i < s_trace.count && i < 21; ++i) {
++            const Sample &s = s_trace.samples[i];
++            cJSON *v = cJSON_CreateObject();
++            cJSON_AddNumberToObject(v, "us", (double)s.us);
++            cJSON_AddNumberToObject(v, "frames", (double)s.frames);
++            cJSON_AddNumberToObject(v, "cpu", s.cpu / 10.0);
++            cJSON_AddNumberToObject(v, "overruns", s.overruns);
++            cJSON_AddNumberToObject(v, "underruns", s.underruns);
++            cJSON_AddItemToArray(list, v);
++        }
++    }
++}
++#endif
+--- a/main/clock_trial.hpp
++++ b/main/clock_trial.hpp
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: GPL-3.0-or-later
++#pragma once
++#include "cJSON.h"
++#include "daw/engine.hpp"
++
++// Temporary hardware experiment: never changes the boot clock.
++bool clockTrialStart();
++void clockTrialBind(daw::Engine *engine);
++void clockTrialDiag(cJSON *d);

@@ -1,0 +1,56 @@
+{
+  "referenceDawCommit": "3562e67",
+  "target": "esp32s3",
+  "cpuMHz": 240,
+  "sampleRate": 44100,
+  "blockFrames": 256,
+  "durationSeconds": 30,
+  "transportChanged": false,
+  "projectChanged": false,
+  "boot": 52,
+  "partition": "ota_0",
+  "cpuMean": 79.1,
+  "cpuMaxOneSecond": 86.9,
+  "overrunsDelta": 56,
+  "cpuGuardDropsDelta": 182,
+  "underrunsDelta": 0,
+  "workerBusy": 69.8,
+  "workerWait": 8.1,
+  "plugins": [
+    {
+      "name": "Distortion Guitar",
+      "plugin": "3xosc",
+      "cpuMean": 30.7,
+      "voicesMax": 6
+    },
+    {
+      "name": "Overdriven Guitar",
+      "plugin": "3xosc",
+      "cpuMean": 26.0,
+      "voicesMax": 5
+    },
+    {
+      "name": "Drums",
+      "plugin": "drumlab",
+      "cpuMean": 28.2,
+      "voicesMax": 4
+    },
+    {
+      "name": "Drum Reverb",
+      "plugin": "reverb",
+      "cpuMean": 22.0,
+      "voicesMax": 0
+    },
+    {
+      "name": "Electric Bass (pick)",
+      "plugin": "acid303",
+      "cpuMean": 16.3,
+      "voicesMax": 1
+    }
+  ],
+  "limitations": [
+    "Guard skips depress failing averages.",
+    "Per-plugin shares overlap on both CPU cores.",
+    "This is a 30-second current-song window, not a maximum-polyphony capacity probe."
+  ]
+}
